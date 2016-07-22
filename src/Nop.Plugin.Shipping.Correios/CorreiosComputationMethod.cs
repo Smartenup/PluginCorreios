@@ -2,6 +2,7 @@
 using Nop.Core.Domain.Directory;
 using Nop.Core.Domain.Discounts;
 using Nop.Core.Domain.Shipping;
+using Nop.Core.Domain.Tasks;
 using Nop.Core.Plugins;
 using Nop.Plugin.Shipping.Correios.CalcPrecoPrazoWebReference;
 using Nop.Plugin.Shipping.Correios.Domain;
@@ -11,6 +12,7 @@ using Nop.Services.Directory;
 using Nop.Services.Logging;
 using Nop.Services.Orders;
 using Nop.Services.Shipping;
+using Nop.Services.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -21,10 +23,10 @@ using System.Web.Routing;
 
 namespace Nop.Plugin.Shipping.Correios
 {
-	/// <summary>
-	/// Correios computation method.
-	/// </summary>
-	public class CorreiosComputationMethod : BasePlugin, IShippingRateComputationMethod
+    /// <summary>
+    /// Correios computation method.
+    /// </summary>
+    public class CorreiosComputationMethod : BasePlugin, IShippingRateComputationMethod
 	{
 
         private const string CODIGO_SERVICO_PAC_GRANDES_DIMENSOES = "41300";
@@ -68,25 +70,30 @@ namespace Nop.Plugin.Shipping.Correios
 		private readonly ShippingSettings _shippingSettings;
 		private readonly IAddressService _addressService;
 		private readonly ILogger _logger;
-		#endregion
+        private readonly IScheduleTaskService _scheduleTaskService;
+        #endregion
 
-		#region Ctor
-		public CorreiosComputationMethod(IMeasureService measureService,
+        #region Ctor
+        public CorreiosComputationMethod(IMeasureService measureService,
 			IShippingService shippingService, ISettingService settingService,
 			CorreiosSettings correiosSettings, IOrderTotalCalculationService orderTotalCalculationService,
-			ICurrencyService currencyService, CurrencySettings currencySettings, ShippingSettings shippingSettings, IAddressService addressService, ILogger logger)
+			ICurrencyService currencyService, CurrencySettings currencySettings, ShippingSettings shippingSettings, 
+            IAddressService addressService, ILogger logger,
+            IScheduleTaskService scheduleTaskService
+            )
 		{
-			this._measureService = measureService;
-			this._shippingService = shippingService;
-			this._settingService = settingService;
-			this._correiosSettings = correiosSettings;
-			this._orderTotalCalculationService = orderTotalCalculationService;
-			this._currencyService = currencyService;
-			this._currencySettings = currencySettings;
-			this._shippingSettings = shippingSettings;
-			this._addressService = addressService;
-			this._logger = logger;
-		}
+            _measureService = measureService;
+            _shippingService = shippingService;
+            _settingService = settingService;
+            _correiosSettings = correiosSettings;
+            _orderTotalCalculationService = orderTotalCalculationService;
+            _currencyService = currencyService;
+            _currencySettings = currencySettings;
+            _shippingSettings = shippingSettings;
+            _addressService = addressService;
+            _logger = logger;
+            _scheduleTaskService = scheduleTaskService;
+        }
 		#endregion
 
 		#region Utilities
@@ -117,9 +124,9 @@ namespace Nop.Plugin.Shipping.Correios
 
 			string cepOrigem = null;
 
-			if (this._shippingSettings.ShippingOriginAddressId > 0)
+			if (_shippingSettings.ShippingOriginAddressId > 0)
 			{
-				var addr = this._addressService.GetAddressById(this._shippingSettings.ShippingOriginAddressId);
+				var addr = _addressService.GetAddressById(_shippingSettings.ShippingOriginAddressId);
 
 				if (addr != null && !String.IsNullOrEmpty(addr.ZipPostalCode) && addr.ZipPostalCode.Length >= 8 && addr.ZipPostalCode.Length <= 9)
 				{
@@ -571,21 +578,50 @@ namespace Nop.Plugin.Shipping.Correios
 			var settings = new CorreiosSettings()
 			{
 				Url = "http://ws.correios.com.br/calculador/CalcPrecoPrazo.asmx",
-				CodigoEmpresa = String.Empty,
-				Senha = String.Empty
+				//CodigoEmpresa = String.Empty,
+				//Senha = String.Empty
 			};
 
 			_settingService.SaveSetting(settings);
 
 			base.Install();
-		}
-		#endregion
 
-		#region Properties
-		/// <summary>
-		/// Gets a shipping rate computation method type
-		/// </summary>
-		public ShippingRateComputationMethodType ShippingRateComputationMethodType
+            ScheduleTask taskByType = _scheduleTaskService.GetTaskByType("Nop.Plugin.Shipping.Correios.CorreioShippingUpdateTask, Nop.Plugin.Shipping.Correios");
+
+            if (taskByType == null)
+            {
+                taskByType = new ScheduleTask()
+                {
+                    Enabled = false,
+                    Name = "CorreioShippingUpdateTask",
+                    Seconds = 600,
+                    StopOnError = false,
+                    Type = "Nop.Plugin.Shipping.Correios.CorreioShippingUpdateTask, Nop.Plugin.Shipping.Correios"
+                };
+
+                _scheduleTaskService.InsertTask(taskByType);
+            }
+        }
+
+        public override void Uninstall()
+        {
+            base.Uninstall();
+
+            ScheduleTask taskByType = _scheduleTaskService.GetTaskByType("Nop.Plugin.Shipping.Correios.CorreioShippingUpdateTask, Nop.Plugin.Shipping.Correios");
+
+            if (taskByType != null)
+            {
+                _scheduleTaskService.DeleteTask(taskByType);
+            }
+        }
+
+        #endregion
+
+        #region Properties
+        /// <summary>
+        /// Gets a shipping rate computation method type
+        /// </summary>
+        public ShippingRateComputationMethodType ShippingRateComputationMethodType
 		{
 			get
 			{
@@ -596,7 +632,7 @@ namespace Nop.Plugin.Shipping.Correios
 
 		public Services.Shipping.Tracking.IShipmentTracker ShipmentTracker
 		{
-			get { return new CorreiosShipmentTracker(this._logger, this._correiosSettings); }
+			get { return new CorreiosShipmentTracker(_logger, _correiosSettings); }
 		}
 	}
 }

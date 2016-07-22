@@ -19,9 +19,9 @@ namespace Nop.Plugin.Shipping.Correios.Controllers
 
 		public ShippingCorreiosController(CorreiosSettings correiosSettings, ISettingService settingService, ILocalizationService localizationService)
 		{
-			this._correiosSettings = correiosSettings;
-			this._settingService = settingService;
-			this._localizationService = localizationService;
+            _correiosSettings = correiosSettings;
+            _settingService = settingService;
+            _localizationService = localizationService;
 		}
 
         [AdminAuthorize]    
@@ -116,7 +116,7 @@ namespace Nop.Plugin.Shipping.Correios.Controllers
 
 			_settingService.SaveSetting(_correiosSettings);
 
-			ViewData["sucesso"] = this._localizationService.GetResource("Admin.Configuration.Updated");
+			ViewData["sucesso"] = _localizationService.GetResource("Admin.Configuration.Updated");
 
 			return Configure();
 		}

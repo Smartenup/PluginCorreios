@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://resource.webservice.correios.com.br/" targetNamespace="http://resource.webservice.correios.com.br/" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="ListaEntregaExterna" type="tns:ListaEntregaExterna" />
+  <xs:element name="ListaEntregaExternaResponse" type="tns:ListaEntregaExternaResponse" />
+  <xs:element name="RastroJson" type="tns:RastroJson" />
+  <xs:element name="RastroJsonResponse" type="tns:RastroJsonResponse" />
+  <xs:element name="UnidadesSRO" type="tns:UnidadesSRO" />
+  <xs:element name="UnidadesSROResponse" type="tns:UnidadesSROResponse" />
+  <xs:element name="buscaEventos" type="tns:buscaEventos" />
+  <xs:element name="buscaEventosLista" type="tns:buscaEventosLista" />
+  <xs:element name="buscaEventosListaResponse" type="tns:buscaEventosListaResponse" />
+  <xs:element name="buscaEventosResponse" type="tns:buscaEventosResponse" />
+  <xs:element name="destino" type="tns:destinos" />
+  <xs:element name="endereco" type="tns:enderecoMobile" />
+  <xs:element name="evento" type="tns:eventos" />
+  <xs:element name="objeto" type="tns:objeto" />
+  <xs:element name="rastro" type="tns:sroxml" />
+  <xs:complexType name="buscaEventosLista">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="usuario" type="xs:string" />
+      <xs:element minOccurs="0" name="senha" type="xs:string" />
+      <xs:element minOccurs="0" name="tipo" type="xs:string" />
+      <xs:element minOccurs="0" name="resultado" type="xs:string" />
+      <xs:element minOccurs="0" name="lingua" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="objetos" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="buscaEventosListaResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:sroxml" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="sroxml">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="versao" type="xs:string" />
+      <xs:element minOccurs="0" name="qtd" type="xs:string" />
+      <xs:element minOccurs="0" name="TipoPesquisa" type="xs:string" />
+      <xs:element minOccurs="0" name="TipoResultado" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" ref="tns:objeto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="objeto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="numero" type="xs:string" />
+      <xs:element minOccurs="0" name="sigla" type="xs:string" />
+      <xs:element minOccurs="0" name="nome" type="xs:string" />
+      <xs:element minOccurs="0" name="categoria" type="xs:string" />
+      <xs:element minOccurs="0" name="erro" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" ref="tns:evento" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="eventos">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="tipo" type="xs:string" />
+      <xs:element minOccurs="0" name="status" type="xs:string" />
+      <xs:element minOccurs="0" name="data" type="xs:string" />
+      <xs:element minOccurs="0" name="hora" type="xs:string" />
+      <xs:element minOccurs="0" name="descricao" type="xs:string" />
+      <xs:element minOccurs="0" name="detalhe" type="xs:string" />
+      <xs:element minOccurs="0" name="recebedor" type="xs:string" />
+      <xs:element minOccurs="0" name="documento" type="xs:string" />
+      <xs:element minOccurs="0" name="comentario" type="xs:string" />
+      <xs:element minOccurs="0" name="local" type="xs:string" />
+      <xs:element minOccurs="0" name="codigo" type="xs:string" />
+      <xs:element minOccurs="0" name="cidade" type="xs:string" />
+      <xs:element minOccurs="0" name="uf" type="xs:string" />
+      <xs:element minOccurs="0" name="sto" type="xs:string" />
+      <xs:element minOccurs="0" name="amazoncode" type="xs:string" />
+      <xs:element minOccurs="0" name="amazontimezone" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" ref="tns:destino" />
+      <xs:element minOccurs="0" ref="tns:endereco" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="destinos">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="local" type="xs:string" />
+      <xs:element minOccurs="0" name="codigo" type="xs:string" />
+      <xs:element minOccurs="0" name="cidade" type="xs:string" />
+      <xs:element minOccurs="0" name="bairro" type="xs:string" />
+      <xs:element minOccurs="0" name="uf" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="enderecoMobile">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="codigo" type="xs:string" />
+      <xs:element minOccurs="0" name="cep" type="xs:string" />
+      <xs:element minOccurs="0" name="logradouro" type="xs:string" />
+      <xs:element minOccurs="0" name="complemento" type="xs:string" />
+      <xs:element minOccurs="0" name="numero" type="xs:string" />
+      <xs:element minOccurs="0" name="localidade" type="xs:string" />
+      <xs:element minOccurs="0" name="uf" type="xs:string" />
+      <xs:element minOccurs="0" name="bairro" type="xs:string" />
+      <xs:element minOccurs="0" name="latitude" type="xs:string" />
+      <xs:element minOccurs="0" name="longitude" type="xs:string" />
+      <xs:element minOccurs="0" name="celular" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="buscaEventos">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="usuario" type="xs:string" />
+      <xs:element minOccurs="0" name="senha" type="xs:string" />
+      <xs:element minOccurs="0" name="tipo" type="xs:string" />
+      <xs:element minOccurs="0" name="resultado" type="xs:string" />
+      <xs:element minOccurs="0" name="lingua" type="xs:string" />
+      <xs:element minOccurs="0" name="objetos" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="buscaEventosResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:sroxml" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ListaEntregaExterna">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="loec" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ListaEntregaExternaResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:listaEntregaExterna" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="listaEntregaExterna">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="carteiro" type="xs:string" />
+      <xs:element minOccurs="0" name="data" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="distrito" type="xs:string" />
+      <xs:element minOccurs="0" name="estacao" type="xs:string" />
+      <xs:element minOccurs="0" name="id" type="xs:string" />
+      <xs:element minOccurs="0" name="loec" type="xs:string" />
+      <xs:element minOccurs="0" name="nomeCarteiro" type="xs:string" />
+      <xs:element minOccurs="0" name="nomeUnidade" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="objetos" nillable="true" type="tns:objetoPostal" />
+      <xs:element minOccurs="0" name="unidade" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="objetoPostal">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="agrupamento" type="xs:string" />
+      <xs:element minOccurs="0" name="avisoRecebimento" type="xs:string" />
+      <xs:element minOccurs="0" name="devolucaoDocumento" type="xs:string" />
+      <xs:element minOccurs="0" name="devolucaoObjeto" type="xs:string" />
+      <xs:element minOccurs="0" name="maoPropria" type="xs:string" />
+      <xs:element minOccurs="0" name="numeroObjeto" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="RastroJson">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="usuario" type="xs:string" />
+      <xs:element minOccurs="0" name="senha" type="xs:string" />
+      <xs:element minOccurs="0" name="tipo" type="xs:string" />
+      <xs:element minOccurs="0" name="resultado" type="xs:string" />
+      <xs:element minOccurs="0" name="lingua" type="xs:string" />
+      <xs:element minOccurs="0" name="objetos" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="RastroJsonResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="UnidadesSRO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="codigoSRO" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="UnidadesSROResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="return" type="tns:registroUnidades" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="registroUnidades">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="codigoDR" type="xs:string" />
+      <xs:element minOccurs="0" name="codigoMCU" type="xs:string" />
+      <xs:element minOccurs="0" name="codigoSRO" type="xs:string" />
+      <xs:element minOccurs="0" name="nomeUnidade" type="xs:string" />
+      <xs:element minOccurs="0" name="siglaDR" type="xs:string" />
+      <xs:element minOccurs="0" name="siglaTipoUnidade" type="xs:string" />
+      <xs:element minOccurs="0" name="tipoUnidade" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

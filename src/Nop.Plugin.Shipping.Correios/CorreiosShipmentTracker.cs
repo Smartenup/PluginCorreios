@@ -1,25 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Web.Services.Protocols;
-using Nop.Core.Domain.Localization;
-using Nop.Services.Localization;
+﻿using System.Collections.Generic;
 using Nop.Services.Logging;
 using Nop.Services.Shipping.Tracking;
 
 namespace Nop.Plugin.Shipping.Correios
 {
-	public class CorreiosShipmentTracker : IShipmentTracker
+    public class CorreiosShipmentTracker : IShipmentTracker
 	{
 		private readonly ILogger _logger;
 		private readonly CorreiosSettings _correiosSettings;
 
 		public CorreiosShipmentTracker(ILogger logger, CorreiosSettings correiosSettings)
 		{
-			this._logger = logger;
-			this._correiosSettings = correiosSettings;
+            _logger = logger;
+            _correiosSettings = correiosSettings;
 		}
 
 		public bool IsMatch(string trackingNumber)
