@@ -103,6 +103,11 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="RouteProvider.cs" />
+    <Compile Include="Service References\wsAtendeClienteService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Service References\wsRastro\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -124,6 +129,139 @@
     <Content Include="logo.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Service References\wsAtendeClienteService\AtendeClienteService.wsdl" />
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.assuntoPIMaster.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.atualizaPLPResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.bloquearObjetoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.buscaClienteResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.buscaContratoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.buscaPagamentoEntregaResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.buscaServicosResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.cancelarObjetoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.cancelarPedidoScolResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.clienteERP.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.consultaCEPResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.consultarPedidosInformacaoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.consultaSROResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.contratoERP.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.embalagemLRSMaster.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.enderecoERP.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.fechaPlpResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.fechaPlpVariosServicosResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.geraDigitoVerificadorEtiquetasResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.getStatusCartaoPostagemResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.getStatusPLPResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.integrarUsuarioScolResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.mensagemRetornoPIMaster.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.motivoPIMaster.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterAssuntosPIResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterClienteAtualizacaoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterEmbalagemLRSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterMensagemRetornoPIResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterMotivosPIResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.registrarPedidosInformacaoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.retorno.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.retornoCancelamentoTO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.servicoERP.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.solicitaEtiquetasResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.solicitaPLPResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.solicitarPostagemScolResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.solicitaXmlPlpResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.statusCartao.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.statusPlp.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.validaEtiquetaPLPResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.validaPlpResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.validarPostagemReversaResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.validarPostagemSimultaneaResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.verificaDisponibilidadeServicoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\wsRastro\configuration91.svcinfo" />
     <None Include="Service References\wsRastro\configuration.svcinfo" />
     <None Include="Service References\wsRastro\Nop.Plugin.Shipping.Correios.wsRastro.buscaEventosListaResponse.datasource">
@@ -151,6 +289,12 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\wsRastro\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\configuration91.svcinfo" />
+    <None Include="Service References\wsAtendeClienteService\configuration.svcinfo" />
+    <None Include="Service References\wsAtendeClienteService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
@@ -202,6 +346,7 @@
     </WebReferenceUrl>
   </ItemGroup>
   <ItemGroup>
+    <WCFMetadataStorage Include="Service References\wsAtendeClienteService\" />
     <WCFMetadataStorage Include="Service References\wsRastro\" />
   </ItemGroup>
   <ItemGroup>

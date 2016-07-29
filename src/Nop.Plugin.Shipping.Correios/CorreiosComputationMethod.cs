@@ -194,7 +194,7 @@ namespace Nop.Plugin.Shipping.Correios
 				width = MIN_PACKAGE_WIDTH;
 			}
 
-            var correiosCalculation = new CorreiosBatchCalculation(_logger)
+            var correiosCalculation = new CorreiosBatchCalculation(_logger, getShippingOptionRequest.Customer)
             {
                 CodigoEmpresa = _correiosSettings.CodigoEmpresa,
                 Senha = _correiosSettings.Senha,
@@ -393,18 +393,6 @@ namespace Nop.Plugin.Shipping.Correios
 
 				foreach (cServico servico in result.Servicos.OrderBy(s => decimal.Parse(s.Valor, CultureInfo.GetCultureInfo("pt-BR"))))
 				{
-					Debug.WriteLine("Plugin.Shipping.Correios: Retorno WS");
-					Debug.WriteLine("Codigo: " + servico.Codigo);
-					Debug.WriteLine("Valor: " + servico.Valor);
-					Debug.WriteLine("Valor Mão Própria: " + servico.ValorMaoPropria);
-					Debug.WriteLine("Valor Aviso Recebimento: " + servico.ValorAvisoRecebimento);
-					Debug.WriteLine("Valor Declarado: " + servico.ValorValorDeclarado);
-					Debug.WriteLine("Prazo Entrega: " + servico.PrazoEntrega);
-					Debug.WriteLine("Entrega Domiciliar: " + servico.EntregaDomiciliar);
-					Debug.WriteLine("Entrega Sabado: " + servico.EntregaSabado);
-					Debug.WriteLine("Erro: " + servico.Erro);
-					Debug.WriteLine("Msg Erro: " + servico.MsgErro);
-
                     int codigoErro = 0;
 
                     if (Int32.TryParse(servico.Erro, out codigoErro))
@@ -444,14 +432,26 @@ namespace Nop.Plugin.Shipping.Correios
 
                             default:
 
-                                _logger.Error("Plugin.Shipping.Correios: erro ao calcular frete: (" + CorreiosServices.GetServiceName(servico.Codigo.ToString()) + ")( " + servico.Erro + ") " + servico.MsgErro + " - CEP " + getShippingOptionRequest.ShippingAddress.ZipPostalCode);
+                                string msgError = string.Format("Plugin.Shipping.Correios: erro ao calcular frete: ({0})({1}){2} - CEP {3}",
+                                    CorreiosServices.GetServiceName(servico.Codigo.ToString()),
+                                    servico.Erro,
+                                    servico.MsgErro,
+                                    getShippingOptionRequest.ShippingAddress.ZipPostalCode);
+
+                                _logger.Error(msgError, exception: null, customer: getShippingOptionRequest.Customer);
 
                                 break;
                         }
                     }
                     else
                     {
-                        _logger.Error("Plugin.Shipping.Correios: erro ao calcular frete: (" + CorreiosServices.GetServiceName(servico.Codigo.ToString()) + ")( " + servico.Erro + ") " + servico.MsgErro);
+                        string msgError = string.Format("Plugin.Shipping.Correios: erro ao calcular frete: ({0})({1}){2} - CEP {3}",
+                                    CorreiosServices.GetServiceName(servico.Codigo.ToString()),
+                                    servico.Erro,
+                                    servico.MsgErro,
+                                    getShippingOptionRequest.ShippingAddress.ZipPostalCode);
+
+                        _logger.Error(msgError, exception: null, customer: getShippingOptionRequest.Customer);
                     }
 
                 }
