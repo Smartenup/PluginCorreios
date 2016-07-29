@@ -1,10 +1,13 @@
-﻿using Nop.Plugin.Shipping.Correios.Domain;
+﻿using Nop.Core.Caching;
+using Nop.Plugin.Shipping.Correios.Domain;
 using Nop.Plugin.Shipping.Correios.Models;
 using Nop.Services.Configuration;
 using Nop.Services.Localization;
+using Nop.Web.Framework;
 using Nop.Web.Framework.Controllers;
 using Nop.Web.Framework.Security;
 using System;
+using System.ServiceModel;
 using System.Text;
 using System.Web.Mvc;
 
@@ -16,13 +19,17 @@ namespace Nop.Plugin.Shipping.Correios.Controllers
 		private readonly CorreiosSettings _correiosSettings;
 		private readonly ISettingService _settingService;
 		private readonly ILocalizationService _localizationService;
+        private readonly ICacheManager _cacheManager;
 
-		public ShippingCorreiosController(CorreiosSettings correiosSettings, ISettingService settingService, ILocalizationService localizationService)
+        public ShippingCorreiosController(CorreiosSettings correiosSettings, 
+            ISettingService settingService, 
+            ILocalizationService localizationService
+            )
 		{
             _correiosSettings = correiosSettings;
             _settingService = settingService;
             _localizationService = localizationService;
-		}
+        }
 
         [AdminAuthorize]    
         [ChildActionOnly]
@@ -120,5 +127,28 @@ namespace Nop.Plugin.Shipping.Correios.Controllers
 
 			return Configure();
 		}
-	}
+
+
+        //available even when navigation is not allowed
+        [PublicStoreAllowNavigation(true)]
+        [AcceptVerbs(HttpVerbs.Get)]
+        public ActionResult GetAddresByCEP(string cep)
+        {
+            //this action method gets called via an ajax request
+            if (String.IsNullOrEmpty(cep))
+                throw new ArgumentNullException("cep");
+
+            BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
+
+            EndpointAddress address = new EndpointAddress("https://apps.correios.com.br/SigepMasterJPA/AtendeClienteService/AtendeCliente?wsdl");
+
+            wsAtendeClienteService.AtendeClienteClient ws = new wsAtendeClienteService.AtendeClienteClient(binding, address);
+
+            wsAtendeClienteService.enderecoERP dados = ws.consultaCEP(cep);
+
+            return Json(dados, JsonRequestBehavior.AllowGet);
+        }
+
+
+    }
 }

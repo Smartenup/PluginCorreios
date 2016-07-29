@@ -13,6 +13,12 @@ namespace Nop.Plugin.Shipping.Correios
                  new { controller = "ShippingCorreios", action = "Configure" },
                  new[] { "Nop.Plugin.Shipping.Correios.Controllers" }
             );
+
+            //get address by CEP (AJAX link)
+            routes.MapRoute("Plugin.Shipping.Correios.GetAddresByCEP",
+                            "Plugins/ShippingCorreios/GetAddresByCEP",
+                            new { controller = "ShippingCorreios", action = "GetAddresByCEP" },
+                            new[] { "Nop.Plugin.Shipping.Correios.Controllerss" });
         }
         public int Priority
         {

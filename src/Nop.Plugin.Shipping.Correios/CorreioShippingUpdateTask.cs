@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json.Linq;
-using Nop.Core.Domain.Orders;
 using Nop.Services.Logging;
 using Nop.Services.Orders;
 using Nop.Services.Tasks;
@@ -13,6 +12,8 @@ namespace Nop.Plugin.Shipping.Correios
         private readonly IOrderService _orderService;
         private readonly IOrderProcessingService _orderProcessingService;
         private readonly ILogger _logger;
+        private wsRastro.ServiceClient _wsRastro;
+
 
         public CorreioShippingUpdateTask(IOrderService orderService,
             IOrderProcessingService orderProcessingService,
@@ -21,55 +22,102 @@ namespace Nop.Plugin.Shipping.Correios
             _orderService = orderService;
             _orderProcessingService = orderProcessingService;
             _logger = logger;
-
         }
 
         public void Execute()
         {
-            var ordersShipped = _orderService.SearchOrders(os: OrderStatus.Processing, ss: Core.Domain.Shipping.ShippingStatus.Shipped
+            var ordersShipped = _orderService.SearchOrders(ss: Core.Domain.Shipping.ShippingStatus.Shipped
             );
 
-            var ordersPartiallyShipped = _orderService.SearchOrders(os: OrderStatus.Processing, ss: Core.Domain.Shipping.ShippingStatus.PartiallyShipped
+            var ordersPartiallyShipped = _orderService.SearchOrders(ss: Core.Domain.Shipping.ShippingStatus.PartiallyShipped
             );
-
-
-            foreach (var order in ordersShipped)
-            {
-                foreach (var shipment in order.Shipments)
-                {
-                    CheckMarkShipmentDelivered(shipment);
-                }
-            }
-
-            foreach (var order in ordersPartiallyShipped)
-            {
-                foreach (var shipment in order.Shipments)
-                {
-                    CheckMarkShipmentDelivered(shipment);
-                }
-            }
-        }
-
-        private void CheckMarkShipmentDelivered(Core.Domain.Shipping.Shipment shipment)
-        {
-
-            BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
-
-            EndpointAddress address = new EndpointAddress("http://webservice.correios.com.br:80/service/rastro");
-
-            wsRastro.ServiceClient wsRastro = new wsRastro.ServiceClient(binding, address);
 
             try
             {
-                string rastreio = wsRastro.RastroJson("ECT", "SRO", "L", "U", "101", shipment.TrackingNumber);
 
-                if (string.IsNullOrWhiteSpace(rastreio) || rastreio.Equals("{}"))
+                ConfigurarWsRastro();
+
+                foreach (var order in ordersShipped)
+                {
+                    foreach (var shipment in order.Shipments)
+                    {
+                        CheckMarkShipmentDelivered(shipment);
+                    }
+                }
+
+                foreach (var order in ordersPartiallyShipped)
+                {
+                    foreach (var shipment in order.Shipments)
+                    {
+                        CheckMarkShipmentDelivered(shipment);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Plugin.Shipping.Correios: Erro atualização status de rastreamento", ex);
+            }
+            finally
+            {
+                FecharWsRastro();
+            }
+
+            
+
+        }
+
+
+        private void ConfigurarWsRastro()
+        {
+            BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
+
+            binding.OpenTimeout = new TimeSpan(0, 10, 0);
+            binding.CloseTimeout = new TimeSpan(0, 10, 0);
+            binding.SendTimeout = new TimeSpan(0, 10, 0);
+            binding.ReceiveTimeout = new TimeSpan(0, 10, 0);
+
+            EndpointAddress address = new EndpointAddress("http://webservice.correios.com.br:80/service/rastro");
+
+            _wsRastro = new wsRastro.ServiceClient(binding, address);
+        }
+
+        private void FecharWsRastro()
+        {
+            if (_wsRastro.State != CommunicationState.Closed)
+                _wsRastro.Close();
+        }
+
+
+        private void CheckMarkShipmentDelivered(Core.Domain.Shipping.Shipment shipment)
+        {
+            if (shipment.DeliveryDateUtc.HasValue)
+                return;
+
+            string tracking = string.Empty;
+
+            try
+            {
+                tracking = _wsRastro.RastroJson("ECT", "SRO", "L", "U", "101", shipment.TrackingNumber.ToUpperInvariant());
+
+                if (string.IsNullOrWhiteSpace(tracking) || tracking.Equals("{}"))
+                {
+                    string logTrackingEmpty = string.Format("Plugin.Shipping.Correios: Rastreio {0} - Ordem {1} - RetornoCorreios ({2})",
+                        shipment.TrackingNumber, shipment.OrderId.ToString(), tracking);
+
+                    _logger.Information(logTrackingEmpty);
+
                     return;
+                }
 
-                JObject jObject = JObject.Parse(rastreio);
+                JObject jObject = JObject.Parse(tracking);
 
                 string lastShipmentTipo = GetLastShipmentTipo(jObject);
                 string lastShipmentStatus = GetLastShipmentStatus(jObject);
+
+                string logInformation = string.Format("Plugin.Shipping.Correios: Rastreio {0} - Status {1} - Tipo {2} - Ordem {3}",
+                    shipment.TrackingNumber, lastShipmentStatus, lastShipmentTipo, shipment.OrderId.ToString());
+
+                _logger.Information(logInformation);
 
                 if (lastShipmentTipo.Equals("BDE", StringComparison.InvariantCultureIgnoreCase) ||
                      lastShipmentTipo.Equals("BDI", StringComparison.InvariantCultureIgnoreCase) ||
@@ -78,23 +126,28 @@ namespace Nop.Plugin.Shipping.Correios
                     if (lastShipmentStatus.Equals("01", StringComparison.InvariantCultureIgnoreCase) ||
                         lastShipmentStatus.Equals("02", StringComparison.InvariantCultureIgnoreCase))
                     {
+                        string logDelivered = string.Format("Plugin.Shipping.Correios: Entregue {0} - Ordem {1}",
+                            shipment.TrackingNumber, shipment.OrderId.ToString());
+
+                        _logger.Information(logDelivered);
+
                         _orderProcessingService.Deliver(shipment, true);
                     }
                 }
             }
             catch (Exception ex)
             {
-                _logger.Error("Plugin.Shipping.Correios: Erro na atualização de status de rastreamento, Ordem " + shipment.OrderId.ToString() + " - rastreio " + shipment.TrackingNumber, ex);
-            }
-            finally
-            {
-                if(wsRastro.State != CommunicationState.Closed)
-                    wsRastro.Close();
+                string logError = string.Format("Plugin.Shipping.Correios: Erro atualização status de rastreamento, Ordem {0} - Rastreio {1} - RetornoCorreios {2}",
+                    shipment.OrderId.ToString(),
+                    shipment.TrackingNumber,
+                    tracking);
+
+                _logger.Error(logError, ex, shipment.Order.Customer);
             }
             
         }
 
-        private static string GetLastShipmentStatus(JObject jObject)
+        private string GetLastShipmentStatus(JObject jObject)
         {
             try
             {
@@ -115,7 +168,7 @@ namespace Nop.Plugin.Shipping.Correios
             }
         }
 
-        private static string GetLastShipmentTipo(JObject jObject)
+        private string GetLastShipmentTipo(JObject jObject)
         {
             try
             {

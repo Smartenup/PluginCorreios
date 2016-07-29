@@ -144,6 +144,27 @@
 				default: return "Desconhecido";
 			}
 		}
-		#endregion
-	}
+
+
+		public static bool ValidateServicePublicName(string publicName)
+        {
+            switch (publicName)
+            {
+
+                case "SEDEX 10": 
+                case "SEDEX Hoje":
+                case "SEDEX":
+                case "SEDEX a Cobrar":
+                case "PAC": 
+                case "PAC Grandes Volumes":
+                case "e-SEDEX":
+                    {
+                        return true;
+                    }
+                default: return false;
+            }
+        }
+
+        #endregion
+    }
 }

@@ -1,4 +1,5 @@
-﻿using Nop.Plugin.Shipping.Correios.CalcPrecoPrazoWebReference;
+﻿using Nop.Core.Domain.Customers;
+using Nop.Plugin.Shipping.Correios.CalcPrecoPrazoWebReference;
 using Nop.Services.Logging;
 using System;
 using System.Collections.Generic;
@@ -22,14 +23,17 @@ namespace Nop.Plugin.Shipping.Correios
 		public List<Pacote> Pacotes {get; set;}
 
 		private ILogger _logger;
-		#endregion
+        private Customer _customer;
+        #endregion
 
-		#region Ctor
-		public CorreiosBatchCalculation(ILogger logger)
+        #region Ctor
+        public CorreiosBatchCalculation(ILogger logger, Customer Customer)
 		{
 			Pacotes = new List<Pacote>();
 			_logger = logger;
-		}
+            _customer = Customer;
+
+        }
 		#endregion
 
 		#region Methods
@@ -77,7 +81,7 @@ namespace Nop.Plugin.Shipping.Correios
 				}
 				catch (Exception ex)
 				{
-					_logger.Error("Plugin.Shipping.Correios: - Erro ao chamar WS dos Correios.\n" + ex.ToString());
+					_logger.Error("Plugin.Shipping.Correios: - Erro ao chamar WS dos Correios.\n" + ex.ToString(), ex, _customer);
 
 					return null;
 				}
