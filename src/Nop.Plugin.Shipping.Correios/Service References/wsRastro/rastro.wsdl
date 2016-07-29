@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsp="http://www.w3.org/ns/ws-policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:tns="http://resource.webservice.correios.com.br/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsp1_2="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" name="rastro" targetNamespace="http://resource.webservice.correios.com.br/" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <xsd:schema>
+      <xsd:import schemaLocation="Rastro_schema1.xsd" namespace="http://resource.webservice.correios.com.br/" />
+    </xsd:schema>
+  </types>
+  <message name="buscaEventosResponse">
+    <part name="parameters" element="tns:buscaEventosResponse" />
+  </message>
+  <message name="buscaEventosListaResponse">
+    <part name="parameters" element="tns:buscaEventosListaResponse" />
+  </message>
+  <message name="buscaEventosLista">
+    <part name="parameters" element="tns:buscaEventosLista" />
+  </message>
+  <message name="UnidadesSRO">
+    <part name="parameters" element="tns:UnidadesSRO" />
+  </message>
+  <message name="RastroJsonResponse">
+    <part name="parameters" element="tns:RastroJsonResponse" />
+  </message>
+  <message name="buscaEventos">
+    <part name="parameters" element="tns:buscaEventos" />
+  </message>
+  <message name="ListaEntregaExterna">
+    <part name="parameters" element="tns:ListaEntregaExterna" />
+  </message>
+  <message name="UnidadesSROResponse">
+    <part name="parameters" element="tns:UnidadesSROResponse" />
+  </message>
+  <message name="ListaEntregaExternaResponse">
+    <part name="parameters" element="tns:ListaEntregaExternaResponse" />
+  </message>
+  <message name="RastroJson">
+    <part name="parameters" element="tns:RastroJson" />
+  </message>
+  <portType name="Service">
+    <operation name="buscaEventos">
+      <input wsam:Action="buscaEventos" message="tns:buscaEventos" />
+      <output wsam:Action="http://resource.webservice.correios.com.br/Service/buscaEventosResponse" message="tns:buscaEventosResponse" />
+    </operation>
+    <operation name="buscaEventosLista">
+      <input wsam:Action="buscaEventosLista" message="tns:buscaEventosLista" />
+      <output wsam:Action="http://resource.webservice.correios.com.br/Service/buscaEventosListaResponse" message="tns:buscaEventosListaResponse" />
+    </operation>
+    <operation name="RastroJson">
+      <input wsam:Action="RastroJson" message="tns:RastroJson" />
+      <output wsam:Action="http://resource.webservice.correios.com.br/Service/RastroJsonResponse" message="tns:RastroJsonResponse" />
+    </operation>
+    <operation name="ListaEntregaExterna">
+      <input wsam:Action="ListaEntregaExterna" message="tns:ListaEntregaExterna" />
+      <output wsam:Action="http://resource.webservice.correios.com.br/Service/ListaEntregaExternaResponse" message="tns:ListaEntregaExternaResponse" />
+    </operation>
+    <operation name="UnidadesSRO">
+      <input wsam:Action="UnidadesSRO" message="tns:UnidadesSRO" />
+      <output wsam:Action="http://resource.webservice.correios.com.br/Service/UnidadesSROResponse" message="tns:UnidadesSROResponse" />
+    </operation>
+  </portType>
+  <binding name="ServicePortBinding" type="tns:Service">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="buscaEventos">
+      <soap:operation soapAction="buscaEventos" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="buscaEventosLista">
+      <soap:operation soapAction="buscaEventosLista" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="RastroJson">
+      <soap:operation soapAction="RastroJson" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="ListaEntregaExterna">
+      <soap:operation soapAction="ListaEntregaExterna" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="UnidadesSRO">
+      <soap:operation soapAction="UnidadesSRO" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+  </binding>
+  <service name="rastro">
+    <port name="ServicePort" binding="tns:ServicePortBinding">
+      <soap:address location="http://webservice.correios.com.br:80/service/rastro" />
+    </port>
+  </service>
+</definitions>

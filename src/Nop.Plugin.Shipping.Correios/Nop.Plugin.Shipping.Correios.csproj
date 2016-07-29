@@ -18,7 +18,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\Presentation\Nop.Web\Plugins\Shipping.Correios\</OutputPath>
+    <OutputPath>..\..\..\nopCommerce_3.70_Source\Presentation\Nop.Web\Plugins\Shipping.Correios\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -27,28 +27,58 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\Presentation\Nop.Web\Plugins\Shipping.Correios\</OutputPath>
+    <OutputPath>..\..\..\nopCommerce_3.70_Source\Presentation\Nop.Web\Plugins\Shipping.Correios\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\nopCommerce_3.70_Source\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\..\nopCommerce_3.70_Source\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+      <HintPath>..\..\..\nopCommerce_3.70_Source\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\nopCommerce_3.70_Source\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\nopCommerce_3.70_Source\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Web.Services" />
-    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+      <HintPath>..\..\..\nopCommerce_3.70_Source\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\nopCommerce_3.70_Source\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\nopCommerce_3.70_Source\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Xml.Linq" />
@@ -61,6 +91,7 @@
     <Compile Include="Controllers\ShippingCorreiosController.cs" />
     <Compile Include="CorreiosBatchCalculation.cs" />
     <Compile Include="CorreiosComputationMethod.cs" />
+    <Compile Include="CorreioShippingUpdateTask.cs" />
     <Compile Include="CorreiosSettings.cs" />
     <Compile Include="CorreiosShipmentTracker.cs" />
     <Compile Include="Domain\CorreiosServices.cs" />
@@ -72,6 +103,16 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="RouteProvider.cs" />
+    <Compile Include="Service References\wsAtendeClienteService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\wsRastro\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Web References\CalcPrecoPrazoWebReference\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -80,6 +121,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -87,9 +129,182 @@
     <Content Include="logo.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Service References\wsAtendeClienteService\AtendeClienteService.wsdl" />
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.assuntoPIMaster.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.atualizaPLPResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.bloquearObjetoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.buscaClienteResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.buscaContratoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.buscaPagamentoEntregaResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.buscaServicosResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.cancelarObjetoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.cancelarPedidoScolResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.clienteERP.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.consultaCEPResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.consultarPedidosInformacaoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.consultaSROResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.contratoERP.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.embalagemLRSMaster.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.enderecoERP.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.fechaPlpResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.fechaPlpVariosServicosResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.geraDigitoVerificadorEtiquetasResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.getStatusCartaoPostagemResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.getStatusPLPResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.integrarUsuarioScolResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.mensagemRetornoPIMaster.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.motivoPIMaster.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterAssuntosPIResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterClienteAtualizacaoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterEmbalagemLRSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterMensagemRetornoPIResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterMotivosPIResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.registrarPedidosInformacaoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.retorno.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.retornoCancelamentoTO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.servicoERP.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.solicitaEtiquetasResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.solicitaPLPResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.solicitarPostagemScolResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.solicitaXmlPlpResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.statusCartao.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.statusPlp.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.validaEtiquetaPLPResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.validaPlpResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.validarPostagemReversaResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.validarPostagemSimultaneaResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.verificaDisponibilidadeServicoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsRastro\configuration91.svcinfo" />
+    <None Include="Service References\wsRastro\configuration.svcinfo" />
+    <None Include="Service References\wsRastro\Nop.Plugin.Shipping.Correios.wsRastro.buscaEventosListaResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsRastro\Nop.Plugin.Shipping.Correios.wsRastro.buscaEventosResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsRastro\Nop.Plugin.Shipping.Correios.wsRastro.listaEntregaExterna.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsRastro\Nop.Plugin.Shipping.Correios.wsRastro.ListaEntregaExternaResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsRastro\Nop.Plugin.Shipping.Correios.wsRastro.RastroJsonResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsRastro\Nop.Plugin.Shipping.Correios.wsRastro.registroUnidades.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsRastro\Nop.Plugin.Shipping.Correios.wsRastro.sroxml.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsRastro\Nop.Plugin.Shipping.Correios.wsRastro.UnidadesSROResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsRastro\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\configuration91.svcinfo" />
+    <None Include="Service References\wsAtendeClienteService\configuration.svcinfo" />
+    <None Include="Service References\wsAtendeClienteService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
     <Content Include="Views\ShippingCorreios\Configure.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Service References\wsRastro\rastro.wsdl" />
+    <None Include="Service References\wsRastro\Rastro_schema1.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Web References\CalcPrecoPrazoWebReference\CalcPrecoPrazo.wsdl" />
     <None Include="Web References\CalcPrecoPrazoWebReference\cResultado.datasource">
       <DependentUpon>Reference.map</DependentUpon>
@@ -99,7 +314,7 @@
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
     <None Include="web.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -131,17 +346,26 @@
     </WebReferenceUrl>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\Source\Repos\nopCommerce\src\Libraries\Nop.Core\Nop.Core.csproj">
+    <WCFMetadataStorage Include="Service References\wsAtendeClienteService\" />
+    <WCFMetadataStorage Include="Service References\wsRastro\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\nopCommerce_3.70_Source\Libraries\Nop.Core\Nop.Core.csproj">
       <Project>{6bda8332-939f-45b7-a25e-7a797260ae59}</Project>
       <Name>Nop.Core</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\Source\Repos\nopCommerce\src\Libraries\Nop.Services\Nop.Services.csproj">
+    <ProjectReference Include="..\..\..\nopCommerce_3.70_Source\Libraries\Nop.Data\Nop.Data.csproj">
+      <Project>{ccd7f2c9-6a2c-4cf0-8e89-076b8fc0f144}</Project>
+      <Name>Nop.Data</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\nopCommerce_3.70_Source\Libraries\Nop.Services\Nop.Services.csproj">
       <Project>{210541ad-f659-47da-8763-16f36c5cd2f4}</Project>
       <Name>Nop.Services</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\Source\Repos\nopCommerce\src\Presentation\Nop.Web.Framework\Nop.Web.Framework.csproj">
+    <ProjectReference Include="..\..\..\nopCommerce_3.70_Source\Presentation\Nop.Web.Framework\Nop.Web.Framework.csproj">
       <Project>{75fd4163-333c-4dd5-854d-2ef294e45d94}</Project>
       <Name>Nop.Web.Framework</Name>
       <Private>False</Private>

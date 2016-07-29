@@ -1,0 +1,14 @@
+﻿Dúvidas, sugestões e erros, envie para pedrousinskas@smartenup.com.br, para que eu possa te ajudar.
+
+É necessário que a loja possua as medidas Kg e Milimeters (O nome pode ser traduzido, o código não).
+
+A instalação é padrão do Nop Commerce.
+
+1) Coloque a pasta do plugin (Shipping.Correios) dentro da pasta Plugins do Nop.
+2) Através da interface administrativa em Configuração > Plugin, instale o Plugin.
+3) Na mesma tela, clique em Configurar e preencha as opções de acordo.
+4) Em Configuração > Configurações > Configuracões de Envio, coloque o CEP de origem que será utilizado para o calculo dos preços, no ultimo campo da tela (CEP / Código Postal ou ZIP Code), no formato: 00000000.
+5) Em Configurações > Envio > Métodos de Calculo de Taxa de Envio, você deve ativar o Plugin, selecionando Editar e depois marcando como ativo.
+
+Seguindo estas etapas, o plugin já deve estar funcionando corretamente.
+
