@@ -13,13 +13,12 @@ using System.Web.Mvc;
 
 namespace Nop.Plugin.Shipping.Correios.Controllers
 {
-	
-	public class ShippingCorreiosController : Controller
+    [AdminAuthorize]
+    public class ShippingCorreiosController : Controller
 	{
 		private readonly CorreiosSettings _correiosSettings;
 		private readonly ISettingService _settingService;
-		private readonly ILocalizationService _localizationService;
-        private readonly ICacheManager _cacheManager;
+		private readonly ILocalizationService _localizationService;        
 
         public ShippingCorreiosController(CorreiosSettings correiosSettings, 
             ISettingService settingService, 
@@ -31,7 +30,7 @@ namespace Nop.Plugin.Shipping.Correios.Controllers
             _localizationService = localizationService;
         }
 
-        [AdminAuthorize]    
+        
         [ChildActionOnly]
         public ActionResult Configure()
         {
@@ -123,7 +122,7 @@ namespace Nop.Plugin.Shipping.Correios.Controllers
 
 			_settingService.SaveSetting(_correiosSettings);
 
-			ViewData["sucesso"] = _localizationService.GetResource("Admin.Configuration.Updated");
+			//ViewData["sucesso"] = _localizationService.GetResource("Admin.Configuration.Updated");
 
 			return Configure();
 		}

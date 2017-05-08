@@ -2,7 +2,7 @@
 FriendlyName: Correios
 SystemName: Shipping.Correios
 Version: 2.00
-SupportedVersions: 3.70
-Author: Pedro Usinskas/Smartenup
+SupportedVersions: 3.80
+Author: SmartenUP team/Pedro Usinskas
 DisplayOrder: 1
 FileName: Nop.Plugin.Shipping.Correios.dll

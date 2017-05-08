@@ -3,7 +3,12 @@ using Nop.Services.Logging;
 using Nop.Services.Orders;
 using Nop.Services.Tasks;
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.ServiceModel;
+using System.ServiceModel.Description;
+using System.ServiceModel.Dispatcher;
+using System.Xml.Serialization;
 
 namespace Nop.Plugin.Shipping.Correios
 {
@@ -13,6 +18,7 @@ namespace Nop.Plugin.Shipping.Correios
         private readonly IOrderProcessingService _orderProcessingService;
         private readonly ILogger _logger;
         private wsRastro.ServiceClient _wsRastro;
+        private InspectorBehavior _requestInterceptor;
 
 
         public CorreioShippingUpdateTask(IOrderService orderService,
@@ -26,26 +32,18 @@ namespace Nop.Plugin.Shipping.Correios
 
         public void Execute()
         {
-            var ordersShipped = _orderService.SearchOrders(ss: Core.Domain.Shipping.ShippingStatus.Shipped
-            );
+            var lstShippingStatus = new List<int>();
 
-            var ordersPartiallyShipped = _orderService.SearchOrders(ss: Core.Domain.Shipping.ShippingStatus.PartiallyShipped
-            );
+            lstShippingStatus.Add((int)Core.Domain.Shipping.ShippingStatus.Shipped);
+            lstShippingStatus.Add((int)Core.Domain.Shipping.ShippingStatus.PartiallyShipped);
 
+            var ordersShipped = _orderService.SearchOrders(ssIds: lstShippingStatus);
+            
             try
             {
-
                 ConfigurarWsRastro();
 
                 foreach (var order in ordersShipped)
-                {
-                    foreach (var shipment in order.Shipments)
-                    {
-                        CheckMarkShipmentDelivered(shipment);
-                    }
-                }
-
-                foreach (var order in ordersPartiallyShipped)
                 {
                     foreach (var shipment in order.Shipments)
                     {
@@ -61,9 +59,6 @@ namespace Nop.Plugin.Shipping.Correios
             {
                 FecharWsRastro();
             }
-
-            
-
         }
 
 
@@ -79,6 +74,9 @@ namespace Nop.Plugin.Shipping.Correios
             EndpointAddress address = new EndpointAddress("http://webservice.correios.com.br:80/service/rastro");
 
             _wsRastro = new wsRastro.ServiceClient(binding, address);
+
+            _requestInterceptor = new InspectorBehavior();
+            _wsRastro.Endpoint.Behaviors.Add(_requestInterceptor);
         }
 
         private void FecharWsRastro()
@@ -92,101 +90,596 @@ namespace Nop.Plugin.Shipping.Correios
         {
             if (shipment.DeliveryDateUtc.HasValue)
                 return;
-
-            string tracking = string.Empty;
-
             try
             {
-                tracking = _wsRastro.RastroJson("ECT", "SRO", "L", "U", "101", shipment.TrackingNumber.ToUpperInvariant());
+                _wsRastro.buscaEventos("ECT", "SRO", "L", "U", "101", shipment.TrackingNumber.ToUpperInvariant());
 
-                if (string.IsNullOrWhiteSpace(tracking) || tracking.Equals("{}"))
+                var ser = new XmlSerializer(typeof(Envelope));
+                var envelope = new Envelope();
+
+                using (TextReader reader = new StringReader(_requestInterceptor.LastResponseXML))
                 {
-                    string logTrackingEmpty = string.Format("Plugin.Shipping.Correios: Rastreio {0} - Ordem {1} - RetornoCorreios ({2})",
-                        shipment.TrackingNumber, shipment.OrderId.ToString(), tracking);
-
-                    _logger.Information(logTrackingEmpty);
-
-                    return;
+                    envelope = (Envelope)ser.Deserialize(reader);
                 }
 
-                JObject jObject = JObject.Parse(tracking);
+                returnObjeto objetoRastreado = envelope.Body.buscaEventosResponse.@return.objeto;
 
-                string lastShipmentTipo = GetLastShipmentTipo(jObject);
-                string lastShipmentStatus = GetLastShipmentStatus(jObject);
-
-                string logInformation = string.Format("Plugin.Shipping.Correios: Rastreio {0} - Status {1} - Tipo {2} - Ordem {3}",
-                    shipment.TrackingNumber, lastShipmentStatus, lastShipmentTipo, shipment.OrderId.ToString());
-
-                _logger.Information(logInformation);
-
-                if (lastShipmentTipo.Equals("BDE", StringComparison.InvariantCultureIgnoreCase) ||
-                     lastShipmentTipo.Equals("BDI", StringComparison.InvariantCultureIgnoreCase) ||
-                     lastShipmentTipo.Equals("BDR", StringComparison.InvariantCultureIgnoreCase))
+                foreach (var evento in objetoRastreado.evento)
                 {
-                    if (lastShipmentStatus.Equals("01", StringComparison.InvariantCultureIgnoreCase) ||
-                        lastShipmentStatus.Equals("02", StringComparison.InvariantCultureIgnoreCase))
+                    if (evento.tipo.Equals("BDE", StringComparison.InvariantCultureIgnoreCase) ||
+                        evento.tipo.Equals("BDI", StringComparison.InvariantCultureIgnoreCase) ||
+                        evento.tipo.Equals("BDR", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        string logDelivered = string.Format("Plugin.Shipping.Correios: Entregue {0} - Ordem {1}",
-                            shipment.TrackingNumber, shipment.OrderId.ToString());
+                        if (evento.status == 1 || evento.status == 2)
+                        {
+                            string logDelivered = string.Format("Plugin.Shipping.Correios: Entregue {0} - Ordem {1}",
+                                shipment.TrackingNumber, shipment.OrderId.ToString());
 
-                        _logger.Information(logDelivered);
+                            _logger.Information(logDelivered);
 
-                        _orderProcessingService.Deliver(shipment, true);
+                            _orderProcessingService.Deliver(shipment, true);
+                        }
                     }
                 }
             }
             catch (Exception ex)
             {
-                string logError = string.Format("Plugin.Shipping.Correios: Erro atualização status de rastreamento, Ordem {0} - Rastreio {1} - RetornoCorreios {2}",
+                string logError = string.Format("Plugin.Shipping.Correios: Erro atualização status de rastreamento, Ordem {0} - Rastreio {1}",
                     shipment.OrderId.ToString(),
-                    shipment.TrackingNumber,
-                    tracking);
+                    shipment.TrackingNumber);
 
-                _logger.Error(logError, ex, shipment.Order.Customer);
+                _logger.Error(logError, ex, (Core.Domain.Customers.Customer)shipment.Order.Customer);
             }
             
         }
+    }
 
-        private string GetLastShipmentStatus(JObject jObject)
+    public class InspectorBehavior : IEndpointBehavior
+    {
+        public string LastRequestXML
         {
-            try
+            get
             {
-
-                try
-                {
-                    return (string)jObject["sroxml"]["objeto"]["evento"][0]["status"];
-                }
-                catch (Exception)
-                {
-                    return (string)jObject["sroxml"]["objeto"]["evento"]["status"];
-                }
-
-            }
-            catch (Exception)
-            {
-                return string.Empty;
+                return myMessageInspector.LastRequestXML;
             }
         }
 
-        private string GetLastShipmentTipo(JObject jObject)
+        public string LastResponseXML
         {
-            try
+            get
             {
-
-                try
-                {
-                    return (string)jObject["sroxml"]["objeto"]["evento"][0]["tipo"];
-                }
-                catch (Exception)
-                {
-                    return (string)jObject["sroxml"]["objeto"]["evento"]["tipo"];
-                }
+                return myMessageInspector.LastResponseXML;
             }
-            catch (Exception)
+        }
+
+
+        private MyMessageInspector myMessageInspector = new MyMessageInspector();
+        public void AddBindingParameters(ServiceEndpoint endpoint, System.ServiceModel.Channels.BindingParameterCollection bindingParameters)
+        {
+
+        }
+
+        public void ApplyDispatchBehavior(ServiceEndpoint endpoint, EndpointDispatcher endpointDispatcher)
+        {
+
+        }
+
+        public void Validate(ServiceEndpoint endpoint)
+        {
+
+        }
+
+
+        public void ApplyClientBehavior(ServiceEndpoint endpoint, ClientRuntime clientRuntime)
+        {
+            clientRuntime.MessageInspectors.Add(myMessageInspector);
+        }
+    }
+
+
+    public class MyMessageInspector : IClientMessageInspector
+    {
+        public string LastRequestXML { get; private set; }
+        public string LastResponseXML { get; private set; }
+        public void AfterReceiveReply(ref System.ServiceModel.Channels.Message reply, object correlationState)
+        {
+            LastResponseXML = reply.ToString();
+        }
+
+        public object BeforeSendRequest(ref System.ServiceModel.Channels.Message request, System.ServiceModel.IClientChannel channel)
+        {
+            LastRequestXML = request.ToString();
+            return request;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true, Namespace = "http://schemas.xmlsoap.org/soap/envelope/")]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.xmlsoap.org/soap/envelope/", IsNullable = false)]
+    public partial class Envelope
+    {
+
+        private EnvelopeHeader headerField;
+
+        private EnvelopeBody bodyField;
+
+        /// <remarks/>
+        public EnvelopeHeader Header
+        {
+            get
             {
-                return string.Empty;
+                return this.headerField;
             }
+            set
+            {
+                this.headerField = value;
+            }
+        }
 
+        /// <remarks/>
+        public EnvelopeBody Body
+        {
+            get
+            {
+                return this.bodyField;
+            }
+            set
+            {
+                this.bodyField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true, Namespace = "http://schemas.xmlsoap.org/soap/envelope/")]
+    public partial class EnvelopeHeader
+    {
+
+        private string xOPNETTransactionTraceField;
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("X-OPNET-Transaction-Trace", Namespace = "http://opnet.com")]
+        public string XOPNETTransactionTrace
+        {
+            get
+            {
+                return this.xOPNETTransactionTraceField;
+            }
+            set
+            {
+                this.xOPNETTransactionTraceField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true, Namespace = "http://schemas.xmlsoap.org/soap/envelope/")]
+    public partial class EnvelopeBody
+    {
+
+        private buscaEventosResponse buscaEventosResponseField;
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Namespace = "http://resource.webservice.correios.com.br/")]
+        public buscaEventosResponse buscaEventosResponse
+        {
+            get
+            {
+                return this.buscaEventosResponseField;
+            }
+            set
+            {
+                this.buscaEventosResponseField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true, Namespace = "http://resource.webservice.correios.com.br/")]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://resource.webservice.correios.com.br/", IsNullable = false)]
+    public partial class buscaEventosResponse
+    {
+
+        private @return returnField;
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Namespace = "")]
+        public @return @return
+        {
+            get
+            {
+                return this.returnField;
+            }
+            set
+            {
+                this.returnField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
+    public partial class @return
+    {
+
+        private decimal versaoField;
+
+        private byte qtdField;
+
+        private returnObjeto objetoField;
+
+        /// <remarks/>
+        public decimal versao
+        {
+            get
+            {
+                return this.versaoField;
+            }
+            set
+            {
+                this.versaoField = value;
+            }
+        }
+
+        /// <remarks/>
+        public byte qtd
+        {
+            get
+            {
+                return this.qtdField;
+            }
+            set
+            {
+                this.qtdField = value;
+            }
+        }
+
+        /// <remarks/>
+        public returnObjeto objeto
+        {
+            get
+            {
+                return this.objetoField;
+            }
+            set
+            {
+                this.objetoField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+    public partial class returnObjeto
+    {
+
+        private string numeroField;
+
+        private string siglaField;
+
+        private string nomeField;
+
+        private string categoriaField;
+
+        private returnObjetoEvento[] eventoField;
+
+        /// <remarks/>
+        public string numero
+        {
+            get
+            {
+                return this.numeroField;
+            }
+            set
+            {
+                this.numeroField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string sigla
+        {
+            get
+            {
+                return this.siglaField;
+            }
+            set
+            {
+                this.siglaField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string nome
+        {
+            get
+            {
+                return this.nomeField;
+            }
+            set
+            {
+                this.nomeField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string categoria
+        {
+            get
+            {
+                return this.categoriaField;
+            }
+            set
+            {
+                this.categoriaField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("evento")]
+        public returnObjetoEvento[] evento
+        {
+            get
+            {
+                return this.eventoField;
+            }
+            set
+            {
+                this.eventoField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+    public partial class returnObjetoEvento
+    {
+
+        private string tipoField;
+
+        private byte statusField;
+
+        private string dataField;
+
+        private string horaField;
+
+        private string descricaoField;
+
+        private string detalheField;
+
+        private string localField;
+
+        private uint codigoField;
+
+        private string cidadeField;
+
+        private string ufField;
+
+        private returnObjetoEventoDestino destinoField;
+
+        /// <remarks/>
+        public string tipo
+        {
+            get
+            {
+                return this.tipoField;
+            }
+            set
+            {
+                this.tipoField = value;
+            }
+        }
+
+        /// <remarks/>
+        public byte status
+        {
+            get
+            {
+                return this.statusField;
+            }
+            set
+            {
+                this.statusField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string data
+        {
+            get
+            {
+                return this.dataField;
+            }
+            set
+            {
+                this.dataField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string hora
+        {
+            get
+            {
+                return this.horaField;
+            }
+            set
+            {
+                this.horaField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string descricao
+        {
+            get
+            {
+                return this.descricaoField;
+            }
+            set
+            {
+                this.descricaoField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string detalhe
+        {
+            get
+            {
+                return this.detalheField;
+            }
+            set
+            {
+                this.detalheField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string local
+        {
+            get
+            {
+                return this.localField;
+            }
+            set
+            {
+                this.localField = value;
+            }
+        }
+
+        /// <remarks/>
+        public uint codigo
+        {
+            get
+            {
+                return this.codigoField;
+            }
+            set
+            {
+                this.codigoField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string cidade
+        {
+            get
+            {
+                return this.cidadeField;
+            }
+            set
+            {
+                this.cidadeField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string uf
+        {
+            get
+            {
+                return this.ufField;
+            }
+            set
+            {
+                this.ufField = value;
+            }
+        }
+
+        /// <remarks/>
+        public returnObjetoEventoDestino destino
+        {
+            get
+            {
+                return this.destinoField;
+            }
+            set
+            {
+                this.destinoField = value;
+            }
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+    public partial class returnObjetoEventoDestino
+    {
+
+        private string localField;
+
+        private uint codigoField;
+
+        private string cidadeField;
+
+        private string bairroField;
+
+        private string ufField;
+
+        /// <remarks/>
+        public string local
+        {
+            get
+            {
+                return this.localField;
+            }
+            set
+            {
+                this.localField = value;
+            }
+        }
+
+        /// <remarks/>
+        public uint codigo
+        {
+            get
+            {
+                return this.codigoField;
+            }
+            set
+            {
+                this.codigoField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string cidade
+        {
+            get
+            {
+                return this.cidadeField;
+            }
+            set
+            {
+                this.cidadeField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string bairro
+        {
+            get
+            {
+                return this.bairroField;
+            }
+            set
+            {
+                this.bairroField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string uf
+        {
+            get
+            {
+                return this.ufField;
+            }
+            set
+            {
+                this.ufField = value;
+            }
         }
     }
 }

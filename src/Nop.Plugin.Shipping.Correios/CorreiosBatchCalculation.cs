@@ -88,7 +88,7 @@ namespace Nop.Plugin.Shipping.Correios
 			}
 			else
 			{
-				//Para uma lógica futura de divisão de produtos em pacotes.
+				///TODO: Para uma lógica futura de divisão de produtos em pacotes.
 				return null;
 			}
 		}

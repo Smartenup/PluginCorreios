@@ -29,11 +29,11 @@ namespace Nop.Plugin.Shipping.Correios
     public class CorreiosComputationMethod : BasePlugin, IShippingRateComputationMethod
 	{
 
+        #region Constants
         private const string CODIGO_SERVICO_PAC_GRANDES_DIMENSOES = "41300";
         private const int MAX_PACKAGE_TOTAL_DIMENSION_PAC_GRANDE = 300;
         private const int MAX_PACKAGE_SIZES_PAC_GRANDE = 150;
 
-        #region Constants
         private const int MAX_PACKAGE_WEIGHT = 30;
 		private const int MAX_PACKAGE_TOTAL_DIMENSION = 200;
 		private const int MAX_PACKAGE_SIZES = 105;
@@ -60,6 +60,7 @@ namespace Nop.Plugin.Shipping.Correios
 		#endregion
 
 		#region Fields
+
 		private readonly IMeasureService _measureService;
 		private readonly IShippingService _shippingService;
 		private readonly ISettingService _settingService;
@@ -71,9 +72,11 @@ namespace Nop.Plugin.Shipping.Correios
 		private readonly IAddressService _addressService;
 		private readonly ILogger _logger;
         private readonly IScheduleTaskService _scheduleTaskService;
+
         #endregion
 
         #region Ctor
+
         public CorreiosComputationMethod(IMeasureService measureService,
 			IShippingService shippingService, ISettingService settingService,
 			CorreiosSettings correiosSettings, IOrderTotalCalculationService orderTotalCalculationService,
@@ -94,10 +97,224 @@ namespace Nop.Plugin.Shipping.Correios
             _logger = logger;
             _scheduleTaskService = scheduleTaskService;
         }
-		#endregion
 
-		#region Utilities
-		private cResultado ProcessShipping(GetShippingOptionRequest getShippingOptionRequest)
+        #endregion
+
+
+
+        #region Properties
+        /// <summary>
+        /// Gets a shipping rate computation method type
+        /// </summary>
+        public ShippingRateComputationMethodType ShippingRateComputationMethodType
+        {
+            get
+            {
+                return ShippingRateComputationMethodType.Realtime;
+            }
+        }
+
+        public Services.Shipping.Tracking.IShipmentTracker ShipmentTracker
+        {
+            get { return new CorreiosShipmentTracker(_logger, _correiosSettings); }
+        }
+        #endregion
+
+        #region Methods
+        /// <summary>
+        ///  Gets available shipping options
+        /// </summary>
+        /// <param name="getShippingOptionRequest">A request for getting shipping options</param>
+        /// <returns>Represents a response of getting shipping rate options</returns>
+        public GetShippingOptionResponse GetShippingOptions(GetShippingOptionRequest getShippingOptionRequest)
+        {
+            if (getShippingOptionRequest == null)
+                throw new ArgumentNullException("getShippingOptionRequest");
+
+            var response = new GetShippingOptionResponse();
+
+            if (getShippingOptionRequest.Items == null)
+            {
+                response.AddError("Sem items para enviar");
+                return response;
+            }
+
+            if (getShippingOptionRequest.ShippingAddress == null)
+            {
+                response.AddError("Endereço de envio em branco");
+                return response;
+            }
+
+            if (getShippingOptionRequest.ShippingAddress.ZipPostalCode == null)
+            {
+                response.AddError("CEP de envio em branco");
+                return response;
+            }
+
+            var result = ProcessShipping(getShippingOptionRequest);
+
+            if (result == null)
+            {
+                response.AddError("Não há serviços disponíveis no momento");
+                return response;
+            }
+            else
+            {
+                List<string> group = new List<string>();
+
+                foreach (cServico servico in result.Servicos.OrderBy(s => decimal.Parse(s.Valor, CultureInfo.GetCultureInfo("pt-BR"))))
+                {
+                    int codigoErro = 0;
+
+                    if (Int32.TryParse(servico.Erro, out codigoErro))
+                    {
+                        switch (codigoErro)
+                        {
+                            case 0:
+                            case 10:
+
+                                string name = CorreiosServices.GetServicePublicNameById(servico.Codigo.ToString());
+
+                                if (
+                                    (!group.Contains(name) && !getShippingOptionRequest.IsOrderBasead) || 
+                                    (getShippingOptionRequest.IsOrderBasead && getShippingOptionRequest.ShippingMethod.Equals(name))
+                                    )
+                                {
+                                    ShippingOption option = new ShippingOption();
+
+                                    int prazo = (int.Parse(servico.PrazoEntrega) + _correiosSettings.DiasUteisAdicionais);
+
+                                    if (prazo == 1)
+                                        option.Description = "Prazo médio de entrega " + (prazo).ToString() + " dia útil";
+                                    else
+                                        option.Description = "Prazo médio de entrega " + (prazo).ToString() + " dias úteis";
+
+                                    if (CheckFreeShipping(servico.Codigo, getShippingOptionRequest))
+                                    {
+                                        option.Name = name + " [Frete Grátis]";
+                                        option.Rate = 0;
+                                        response.ShippingOptions.Insert(0, option);
+                                    }
+                                    else
+                                    {
+                                        option.Name = name;
+
+                                        if (!getShippingOptionRequest.IsOrderBasead)
+                                        {
+                                            option.Rate = decimal.Parse(servico.Valor, CultureInfo.GetCultureInfo("pt-BR")) +
+                                            _orderTotalCalculationService.GetShoppingCartAdditionalShippingCharge(getShippingOptionRequest.Items.Select(x => x.ShoppingCartItem).ToList()) +
+                                            _correiosSettings.CustoAdicionalEnvio;
+                                        }
+
+                                        response.ShippingOptions.Add(option);
+                                    }
+
+                                    group.Add(name);
+                                }
+                                break;
+
+                            default:
+
+                                string msgError = string.Format("Plugin.Shipping.Correios: erro ao calcular frete: ({0})({1}){2} - CEP {3}",
+                                    CorreiosServices.GetServiceName(servico.Codigo.ToString()),
+                                    servico.Erro,
+                                    servico.MsgErro,
+                                    getShippingOptionRequest.ShippingAddress.ZipPostalCode);
+
+                                _logger.Error(msgError, exception: null, customer: getShippingOptionRequest.Customer);
+
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        string msgError = string.Format("Plugin.Shipping.Correios: erro ao calcular frete: ({0})({1}){2} - CEP {3}",
+                                    CorreiosServices.GetServiceName(servico.Codigo.ToString()),
+                                    servico.Erro,
+                                    servico.MsgErro,
+                                    getShippingOptionRequest.ShippingAddress.ZipPostalCode);
+
+                        _logger.Error(msgError, exception: null, customer: getShippingOptionRequest.Customer);
+                    }
+
+                }
+
+                return response;
+            }
+        }
+
+        /// <summary>
+        /// Gets fixed shipping rate (if shipping rate computation method allows it and the rate can be calculated before checkout).
+        /// </summary>
+        /// <param name="getShippingOptionRequest">A request for getting shipping options</param>
+        /// <returns>Fixed shipping rate; or null in case there's no fixed shipping rate</returns>
+        public decimal? GetFixedRate(GetShippingOptionRequest getShippingOptionRequest)
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// Gets a route for provider configuration
+        /// </summary>
+        /// <param name="actionName">Action name</param>
+        /// <param name="controllerName">Controller name</param>
+        /// <param name="routeValues">Route values</param>
+        public void GetConfigurationRoute(out string actionName, out string controllerName, out RouteValueDictionary routeValues)
+        {
+            actionName = "Configure";
+            controllerName = "ShippingCorreios";
+            routeValues = new RouteValueDictionary() { { "Namespaces", "Nop.Plugin.Shipping.Correios.Controllers" }, { "area", null } };
+        }
+
+        /// <summary>
+        /// Install plugin
+        /// </summary>
+        public override void Install()
+        {
+            var settings = new CorreiosSettings()
+            {
+                Url = "http://ws.correios.com.br/calculador/CalcPrecoPrazo.asmx",
+                //CodigoEmpresa = String.Empty,
+                //Senha = String.Empty
+            };
+
+            _settingService.SaveSetting(settings);
+
+            base.Install();
+
+            ScheduleTask taskByType = _scheduleTaskService.GetTaskByType("Nop.Plugin.Shipping.Correios.CorreioShippingUpdateTask, Nop.Plugin.Shipping.Correios");
+
+            if (taskByType == null)
+            {
+                taskByType = new ScheduleTask()
+                {
+                    Enabled = false,
+                    Name = "CorreioShippingUpdateTask",
+                    Seconds = 600,
+                    StopOnError = false,
+                    Type = "Nop.Plugin.Shipping.Correios.CorreioShippingUpdateTask, Nop.Plugin.Shipping.Correios"
+                };
+
+                _scheduleTaskService.InsertTask(taskByType);
+            }
+        }
+
+        public override void Uninstall()
+        {
+            base.Uninstall();
+
+            ScheduleTask taskByType = _scheduleTaskService.GetTaskByType("Nop.Plugin.Shipping.Correios.CorreioShippingUpdateTask, Nop.Plugin.Shipping.Correios");
+
+            if (taskByType != null)
+            {
+                _scheduleTaskService.DeleteTask(taskByType);
+            }
+        }
+
+        #endregion
+
+        #region Utilities
+        private cResultado ProcessShipping(GetShippingOptionRequest getShippingOptionRequest)
 		{
 			var usedMeasureWeight = _measureService.GetMeasureWeightBySystemKeyword(MEASURE_WEIGHT_SYSTEM_KEYWORD);
 
@@ -144,40 +361,62 @@ namespace Nop.Plugin.Shipping.Correios
             string cepDestino = Regex.Replace(getShippingOptionRequest.ShippingAddress.ZipPostalCode, @"<(.|\n)*?>", " - ");
 
             cepDestino = cepDestino.Replace("/","");
-            
 			
 
 			decimal subtotalBase = decimal.Zero;
             bool includingTax = false;
 			decimal orderSubTotalDiscountAmount = decimal.Zero;
-			Discount orderSubTotalAppliedDiscount = null;
+			List<Discount> orderSubTotalAppliedDiscount = null;
 			decimal subTotalWithoutDiscountBase = decimal.Zero;
 			decimal subTotalWithDiscountBase = decimal.Zero;
 
 
-            _orderTotalCalculationService.GetShoppingCartSubTotal(getShippingOptionRequest.Items.Select(x => x.ShoppingCartItem).ToList(), includingTax,
-                out orderSubTotalDiscountAmount, out orderSubTotalAppliedDiscount,
-				out subTotalWithoutDiscountBase, out subTotalWithDiscountBase);
+            if (getShippingOptionRequest.IsOrderBasead)
+            {
+                orderSubTotalDiscountAmount = getShippingOptionRequest.Order.OrderSubTotalDiscountInclTax;
+                subTotalWithoutDiscountBase = getShippingOptionRequest.Order.OrderSubtotalInclTax;
+                subTotalWithDiscountBase = getShippingOptionRequest.Order.OrderSubtotalExclTax;
+            }
+            else
+            {
+                _orderTotalCalculationService.GetShoppingCartSubTotal(getShippingOptionRequest.Items.Select(x => x.ShoppingCartItem).ToList(), includingTax,
+                    out orderSubTotalDiscountAmount, out orderSubTotalAppliedDiscount,
+                    out subTotalWithoutDiscountBase, out subTotalWithDiscountBase);
+            }
 
-			subtotalBase = subTotalWithDiscountBase;
-
+            subtotalBase = subTotalWithDiscountBase;
 
             decimal lengthTmp, widthTmp, heightTmp;
 
-            _shippingService.GetDimensions(getShippingOptionRequest.Items, out widthTmp, out lengthTmp, out heightTmp);
+            if (getShippingOptionRequest.IsOrderBasead)
+                _shippingService.GetDimensionsByOrder(getShippingOptionRequest.Items, out widthTmp, out lengthTmp, out heightTmp);
+            else
+                _shippingService.GetDimensions(getShippingOptionRequest.Items, out widthTmp, out lengthTmp, out heightTmp);
+            
 
 
             int length = Convert.ToInt32(Math.Ceiling(_measureService.ConvertFromPrimaryMeasureDimension(lengthTmp, usedMeasureDimension)) / 10);
             int height = Convert.ToInt32(Math.Ceiling(_measureService.ConvertFromPrimaryMeasureDimension(heightTmp, usedMeasureDimension)) / 10);
             int width = Convert.ToInt32(Math.Ceiling(_measureService.ConvertFromPrimaryMeasureDimension(widthTmp, usedMeasureDimension)) / 10);
-            int weight = Convert.ToInt32(Math.Ceiling(_measureService.ConvertFromPrimaryMeasureWeight(_shippingService.GetTotalWeight(getShippingOptionRequest), usedMeasureWeight)));
 
-			if (length < 1)
+            int weight = 0;
+
+            if (getShippingOptionRequest.IsOrderBasead)
+                weight = Convert.ToInt32(Math.Ceiling(_measureService.ConvertFromPrimaryMeasureWeight(_shippingService.GetTotalWeightByOrder(getShippingOptionRequest), 
+                    usedMeasureWeight)));
+            else
+                weight = Convert.ToInt32(Math.Ceiling(_measureService.ConvertFromPrimaryMeasureWeight(_shippingService.GetTotalWeight(getShippingOptionRequest), 
+                    usedMeasureWeight)));
+
+            if (length < 1)
 				length = 1;
+
 			if (height < 1)
 				height = 1;
+
 			if (width < 1)
 				width = 1;
+
 			if (weight < 1)
 				weight = 1;
 
@@ -207,8 +446,6 @@ namespace Nop.Plugin.Shipping.Correios
 
             if ((!IsPackageTooHeavy(weight)) && (!IsPackageTooLarge(length, height, width, _correiosSettings.CarrierServicesOffered)))
             {
-				Debug.WriteLine("Plugin.Shipping.Correios: Pacote unico");
-
                 correiosCalculation.Servicos = GetServiceNotTooHeavyTooLarge(_correiosSettings.CarrierServicesOffered);
 
                 correiosCalculation.Pacotes.Add(new CorreiosBatchCalculation.Pacote()
@@ -347,122 +584,10 @@ namespace Nop.Plugin.Shipping.Correios
 			else
 				return false;
 		}
-		#endregion
-
-		#region Methods
-		/// <summary>
-		///  Gets available shipping options
-		/// </summary>
-		/// <param name="getShippingOptionRequest">A request for getting shipping options</param>
-		/// <returns>Represents a response of getting shipping rate options</returns>
-		public GetShippingOptionResponse GetShippingOptions(GetShippingOptionRequest getShippingOptionRequest)
-		{
-			if (getShippingOptionRequest == null)
-				throw new ArgumentNullException("getShippingOptionRequest");
-
-			var response = new GetShippingOptionResponse();
-
-			if (getShippingOptionRequest.Items == null)
-			{
-				response.AddError("Sem items para enviar");
-				return response;
-			}
-
-			if (getShippingOptionRequest.ShippingAddress == null)
-			{
-				response.AddError("Endereço de envio em branco");
-				return response;
-			}
-
-			if (getShippingOptionRequest.ShippingAddress.ZipPostalCode == null)
-			{
-				response.AddError("CEP de envio em branco");
-				return response;
-			}
-
-			var result = ProcessShipping(getShippingOptionRequest);
-    
-			if (result == null)
-			{
-				response.AddError("Não há serviços disponíveis no momento");
-				return response;
-			}
-			else
-			{
-				List<string> group = new List<string>();
-
-				foreach (cServico servico in result.Servicos.OrderBy(s => decimal.Parse(s.Valor, CultureInfo.GetCultureInfo("pt-BR"))))
-				{
-                    int codigoErro = 0;
-
-                    if (Int32.TryParse(servico.Erro, out codigoErro))
-                    {
-                        switch (codigoErro)
-                        {
-                            case 0:
-                            case 10:
-                    
-						        string name = CorreiosServices.GetServicePublicNameById(servico.Codigo.ToString());
-
-						        if (!group.Contains(name))
-						        {
-							        ShippingOption option = new ShippingOption();
-							        
-							        option.Description = "Prazo médio de entrega " + ((int.Parse(servico.PrazoEntrega) + _correiosSettings.DiasUteisAdicionais)).ToString() + " dias úteis";
-
-                                    if (CheckFreeShipping(servico.Codigo, getShippingOptionRequest))
-                                    {
-                                        option.Name = name + " [Frete Grátis]";
-                                        option.Rate = 0;
-                                        response.ShippingOptions.Insert(0, option);
-                                    }
-                                    else
-                                    {
-                                        option.Name = name;
-                                        option.Rate = decimal.Parse(servico.Valor, CultureInfo.GetCultureInfo("pt-BR")) +
-                                            _orderTotalCalculationService.GetShoppingCartAdditionalShippingCharge(getShippingOptionRequest.Items.Select(x => x.ShoppingCartItem).ToList()) +
-                                            _correiosSettings.CustoAdicionalEnvio;
-                                        
-                                        response.ShippingOptions.Add(option);
-                                    }
-
-							        group.Add(name);
-						        }
-                                break;
-
-                            default:
-
-                                string msgError = string.Format("Plugin.Shipping.Correios: erro ao calcular frete: ({0})({1}){2} - CEP {3}",
-                                    CorreiosServices.GetServiceName(servico.Codigo.ToString()),
-                                    servico.Erro,
-                                    servico.MsgErro,
-                                    getShippingOptionRequest.ShippingAddress.ZipPostalCode);
-
-                                _logger.Error(msgError, exception: null, customer: getShippingOptionRequest.Customer);
-
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        string msgError = string.Format("Plugin.Shipping.Correios: erro ao calcular frete: ({0})({1}){2} - CEP {3}",
-                                    CorreiosServices.GetServiceName(servico.Codigo.ToString()),
-                                    servico.Erro,
-                                    servico.MsgErro,
-                                    getShippingOptionRequest.ShippingAddress.ZipPostalCode);
-
-                        _logger.Error(msgError, exception: null, customer: getShippingOptionRequest.Customer);
-                    }
-
-                }
-
-                return response;
-            }
-        }
 
         private bool CheckFreeShipping(int CodigoServico, GetShippingOptionRequest getShippingOptionRequest)
         {
-            if(!_correiosSettings.FreteGratis)
+            if (!_correiosSettings.FreteGratis)
                 return false;
 
             if (CodigoServico.ToString().Equals(_correiosSettings.ServicoFreteGratis))
@@ -489,14 +614,27 @@ namespace Nop.Plugin.Shipping.Correios
                     decimal subtotalBase = decimal.Zero;
                     bool includingTax = false;
                     decimal orderSubTotalDiscountAmount = decimal.Zero;
-                    Discount orderSubTotalAppliedDiscount = null;
+                    List<Discount> orderSubTotalAppliedDiscount = null;
                     decimal subTotalWithoutDiscountBase = decimal.Zero;
                     decimal subTotalWithDiscountBase = decimal.Zero;
 
 
-                    _orderTotalCalculationService.GetShoppingCartSubTotal(getShippingOptionRequest.Items.Select(x => x.ShoppingCartItem).ToList(), includingTax,
-                        out orderSubTotalDiscountAmount, out orderSubTotalAppliedDiscount,
-                        out subTotalWithoutDiscountBase, out subTotalWithDiscountBase);
+                    if (getShippingOptionRequest.IsOrderBasead)
+                    {
+                        orderSubTotalDiscountAmount = getShippingOptionRequest.Order.OrderSubTotalDiscountInclTax;
+
+                        if(getShippingOptionRequest.Order.DiscountUsageHistory.SingleOrDefault() != null)
+                            orderSubTotalAppliedDiscount.Add(getShippingOptionRequest.Order.DiscountUsageHistory.SingleOrDefault().Discount);
+
+                        subTotalWithoutDiscountBase = getShippingOptionRequest.Order.OrderSubtotalInclTax;
+                        subTotalWithDiscountBase = getShippingOptionRequest.Order.OrderSubTotalDiscountExclTax;
+                    }
+                    else
+                    {
+                        _orderTotalCalculationService.GetShoppingCartSubTotal(getShippingOptionRequest.Items.Select(x => x.ShoppingCartItem).ToList(), includingTax,
+                            out orderSubTotalDiscountAmount, out orderSubTotalAppliedDiscount,
+                            out subTotalWithoutDiscountBase, out subTotalWithDiscountBase);
+                    }
 
                     subtotalBase = subTotalWithDiscountBase;
 
@@ -505,10 +643,10 @@ namespace Nop.Plugin.Shipping.Correios
                         return false;
                     }
 
-                    
+
                 }
 
-                return true;    
+                return true;
             }
 
 
@@ -524,7 +662,6 @@ namespace Nop.Plugin.Shipping.Correios
 
             return cepFinal;
         }
-
 
         private string ObterCEPInicial(string CepInicial)
         {
@@ -547,92 +684,10 @@ namespace Nop.Plugin.Shipping.Correios
         }
 
 
-		/// <summary>
-		/// Gets fixed shipping rate (if shipping rate computation method allows it and the rate can be calculated before checkout).
-		/// </summary>
-		/// <param name="getShippingOptionRequest">A request for getting shipping options</param>
-		/// <returns>Fixed shipping rate; or null in case there's no fixed shipping rate</returns>
-		public decimal? GetFixedRate(GetShippingOptionRequest getShippingOptionRequest)
-		{
-			return null;
-		}
-
-		/// <summary>
-		/// Gets a route for provider configuration
-		/// </summary>
-		/// <param name="actionName">Action name</param>
-		/// <param name="controllerName">Controller name</param>
-		/// <param name="routeValues">Route values</param>
-		public void GetConfigurationRoute(out string actionName, out string controllerName, out RouteValueDictionary routeValues)
-		{
-			actionName = "Configure";
-			controllerName = "ShippingCorreios";
-			routeValues = new RouteValueDictionary() { { "Namespaces", "Nop.Plugin.Shipping.Correios.Controllers" }, { "area", null } };
-		}
-
-		/// <summary>
-		/// Install plugin
-		/// </summary>
-		public override void Install()
-		{
-			var settings = new CorreiosSettings()
-			{
-				Url = "http://ws.correios.com.br/calculador/CalcPrecoPrazo.asmx",
-				//CodigoEmpresa = String.Empty,
-				//Senha = String.Empty
-			};
-
-			_settingService.SaveSetting(settings);
-
-			base.Install();
-
-            ScheduleTask taskByType = _scheduleTaskService.GetTaskByType("Nop.Plugin.Shipping.Correios.CorreioShippingUpdateTask, Nop.Plugin.Shipping.Correios");
-
-            if (taskByType == null)
-            {
-                taskByType = new ScheduleTask()
-                {
-                    Enabled = false,
-                    Name = "CorreioShippingUpdateTask",
-                    Seconds = 600,
-                    StopOnError = false,
-                    Type = "Nop.Plugin.Shipping.Correios.CorreioShippingUpdateTask, Nop.Plugin.Shipping.Correios"
-                };
-
-                _scheduleTaskService.InsertTask(taskByType);
-            }
-        }
-
-        public override void Uninstall()
-        {
-            base.Uninstall();
-
-            ScheduleTask taskByType = _scheduleTaskService.GetTaskByType("Nop.Plugin.Shipping.Correios.CorreioShippingUpdateTask, Nop.Plugin.Shipping.Correios");
-
-            if (taskByType != null)
-            {
-                _scheduleTaskService.DeleteTask(taskByType);
-            }
-        }
-
         #endregion
 
-        #region Properties
-        /// <summary>
-        /// Gets a shipping rate computation method type
-        /// </summary>
-        public ShippingRateComputationMethodType ShippingRateComputationMethodType
-		{
-			get
-			{
-				return ShippingRateComputationMethodType.Realtime;
-			}
-		}
-		#endregion
+        
 
-		public Services.Shipping.Tracking.IShipmentTracker ShipmentTracker
-		{
-			get { return new CorreiosShipmentTracker(_logger, _correiosSettings); }
-		}
-	}
+
+    }
 }

@@ -47,19 +47,33 @@
 		{
 			switch (serviceId)
 			{
-				case "41106" : return "PAC sem contrato";
-				case "40010" : return "SEDEX sem contrato";
-				case "40045" : return "SEDEX a Cobrar, sem contrato";
+				//case "41106" : return "PAC sem contrato";
+                case "4510": return "PAC sem contrato";
+                case "04510": return "PAC sem contrato";
+
+                //case "40010" : return "SEDEX sem contrato";
+                case "4014": return "SEDEX sem contrato";
+                case "04014": return "SEDEX sem contrato";
+
+                case "40045" : return "SEDEX a Cobrar, sem contrato";
 				case "40126": return "SEDEX a Cobrar, com contrato";
 				case "40215": return "SEDEX 10, sem contrato";
 				case "40290": return "SEDEX Hoje, sem contrato";
-				case "40096": return "SEDEX com contrato";
-				case "40436": return "SEDEX com contrato (40436)";
+
+				//case "40096": return "SEDEX com contrato";
+                case "04162": return "SEDEX com contrato";
+                case "4162": return "SEDEX com contrato";
+
+                case "40436": return "SEDEX com contrato (40436)";
 				case "40444": return "SEDEX com contrato (40444)";
                 case "41300": return "PAC Grandes Volumes";
                 case "81019": return "e-SEDEX, com contrato";
-				case "41068": return "PAC com contrato";
-				case "40568": return "SEDEX com contrato (40568)";
+
+                //case "41068": return "PAC com contrato";
+                case "04669": return "PAC com contrato";
+                case "4669": return "PAC com contrato";
+
+                case "40568": return "SEDEX com contrato (40568)";
 				case "40606": return "SEDEX com contrato (40606)";
 				case "81868": return "(Grupo 1) e-SEDEX, com contrato";
 				case "81833": return "(Grupo 2) e-SEDEX, com contrato";
@@ -79,18 +93,27 @@
 		{
 			switch (serviceName)
 			{
-				case "PAC sem contrato": return "41106";
-				case "SEDEX sem contrato": return "40010";
-				case "SEDEX a Cobrar, sem contrato": return "40045";
+				//case "PAC sem contrato": return "41106";
+                case "PAC sem contrato": return "04510";
+                //case "SEDEX sem contrato": return "40010";
+                case "SEDEX sem contrato": return "04014";
+
+                case "SEDEX a Cobrar, sem contrato": return "40045";
 				case "SEDEX a Cobrar, com contrato": return "40126";
 				case "SEDEX 10, sem contrato": return "40215";
 				case "SEDEX Hoje, sem contrato": return "40290";
-				case "SEDEX com contrato": return "40096";
-				case "SEDEX com contrato (40436)": return "40436";
+
+                //case "SEDEX com contrato": return "40096";
+                case "SEDEX com contrato": return "04162";
+
+                case "SEDEX com contrato (40436)": return "40436";
 				case "SEDEX com contrato (40444)": return "40444";
 				case "e-SEDEX, com contrato": return "81019";
-				case "PAC com contrato": return "41068";
-				case "SEDEX com contrato (40568)": return "40568";
+
+                //case "PAC com contrato": return "41068";
+                case "PAC com contrato": return "04669"; 
+
+                case "SEDEX com contrato (40568)": return "40568";
 				case "SEDEX com contrato (40606)": return "40606";
 				case "(Grupo 1) e-SEDEX, com contrato": return "81868";
 				case "(Grupo 2) e-SEDEX, com contrato": return "81833";
@@ -112,11 +135,17 @@
 			{
 				case "40215": return "SEDEX 10";
 				case "40290": return "SEDEX Hoje";
-				case "40096":
-				case "40436":
+                //case "40096":
+                case "4162":
+                case "04162":
+                case "40436":
 				case "40444":
-				case "40010":
-				case "40568":
+                
+                //case "40010":
+                case "04014":
+                case "4014":
+
+                case "40568":
 				case "40606":
 					{
 						return "SEDEX";
@@ -126,10 +155,15 @@
 					{
 						return "SEDEX a Cobrar";
 					}
+                
+                //case "41106":
+                case "4510":
+                case "04510":
 
-				case "41068":
-				case "41106":
-					{
+                //case "41068":
+                case "4669":
+                case "04669":
+                    {
 						return "PAC";
 					}
                 case "41300": return "PAC Grandes Volumes";
