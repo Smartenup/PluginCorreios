@@ -62,7 +62,7 @@ namespace Nop.Plugin.Shipping.Correios
         }
 
 
-        private void ConfigurarWsRastro()
+        public void ConfigurarWsRastro()
         {
             BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
 
@@ -79,7 +79,7 @@ namespace Nop.Plugin.Shipping.Correios
             _wsRastro.Endpoint.Behaviors.Add(_requestInterceptor);
         }
 
-        private void FecharWsRastro()
+        public void FecharWsRastro()
         {
             if (_wsRastro.State != CommunicationState.Closed)
                 _wsRastro.Close();
