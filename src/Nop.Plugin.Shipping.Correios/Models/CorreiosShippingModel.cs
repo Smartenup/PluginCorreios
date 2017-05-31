@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.Web.Mvc;
 
 namespace Nop.Plugin.Shipping.Correios.Models
 {
@@ -9,7 +10,8 @@ namespace Nop.Plugin.Shipping.Correios.Models
 		{
 			CarrierServicesOffered = new List<string>();
 			AvailableCarrierServices = new List<string>();
-		}
+            AvailableCarrierServicesList = new List<SelectListItem>();
+        }
 
 		[DisplayName("URL")]
 		public string Url { get; set; }
@@ -37,7 +39,9 @@ namespace Nop.Plugin.Shipping.Correios.Models
 
 		public IList<string> CarrierServicesOffered { get; set; }
 		public IList<string> AvailableCarrierServices { get; set; }
-		public string[] CheckedCarrierServices { get; set; }
+        public IList<SelectListItem> AvailableCarrierServicesList { get; set; }
+
+        public string[] CheckedCarrierServices { get; set; }
 
         [DisplayName("Utiliza Frete Grátis?")]
         public bool FreteGratis { get; set; }
@@ -55,7 +59,10 @@ namespace Nop.Plugin.Shipping.Correios.Models
         public decimal ValorMinimo { get; set; }
 
         [DisplayName("Serviço para Frete Grátis")]
-        public string ServicoFreteGratis { get; set; }        
-        
-	}
+        public string ServicoFreteGratis { get; set; }
+
+        [DisplayName("Mostrar Tempo Fabricação")]
+        public bool MostrarTempoFabricacao { get; set; }
+
+    }
 }

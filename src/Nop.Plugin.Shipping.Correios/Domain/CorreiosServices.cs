@@ -2,10 +2,13 @@
 {
 	public class CorreiosServices
 	{
-		/// <summary>
-		/// Correios Service names
-		/// </summary>
-		private string[] _services = {
+
+        public const string PRIMEIRO_LISTA_MAIS_BARATO = "PRIMEIRO";
+
+        /// <summary>
+        /// Correios Service names
+        /// </summary>
+        private string[] _services = {
 										"PAC sem contrato",
 										"SEDEX sem contrato",
 										"SEDEX a Cobrar, sem contrato",

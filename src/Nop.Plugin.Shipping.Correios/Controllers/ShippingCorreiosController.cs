@@ -46,9 +46,24 @@ namespace Nop.Plugin.Shipping.Correios.Controllers
             model.DiasUteisAdicionais       = _correiosSettings.DiasUteisAdicionais;
 
             var services = new CorreiosServices();
+
+            model.AvailableCarrierServicesList.Add(new SelectListItem()
+                {
+                    Text = "Primeiro da lista ou o serviço mais barato do momento",
+                    Value = CorreiosServices.PRIMEIRO_LISTA_MAIS_BARATO
+            }
+            );
+
             // Load service names
             foreach (string service in services.Services)
+            { 
                 model.AvailableCarrierServices.Add(service);
+                model.AvailableCarrierServicesList.Add( new SelectListItem(){
+                           Text = CorreiosServices.GetServiceId(service) + " - " + service,
+                        Value = CorreiosServices.GetServiceId(service)
+                    }
+                );
+            }
 
             string carrierServicesOfferedDomestic = _correiosSettings.CarrierServicesOffered;
 
@@ -64,6 +79,10 @@ namespace Nop.Plugin.Shipping.Correios.Controllers
                     }
                 }
             }
+
+
+            
+            model.MostrarTempoFabricacao = _correiosSettings.MostrarTempoFabricacao;
             model.FreteGratis           = _correiosSettings.FreteGratis;
             model.CEPInicial            = _correiosSettings.CEPInicial;
             model.CEPFinal              = _correiosSettings.CEPFinal;
@@ -113,12 +132,15 @@ namespace Nop.Plugin.Shipping.Correios.Controllers
 			else
 				_correiosSettings.CarrierServicesOffered = carrierServicesOfferedDomestic.ToString().TrimEnd(',');
 
-            _correiosSettings.FreteGratis           = model.FreteGratis;
-            _correiosSettings.CEPInicial            = model.CEPInicial;
-            _correiosSettings.CEPFinal              = model.CEPFinal;
-            _correiosSettings.UtilizaValorMinimo    = model.UtilizaValorMinimo;
-            _correiosSettings.ValorMinimo           = model.ValorMinimo;
-            _correiosSettings.ServicoFreteGratis    = model.ServicoFreteGratis;
+
+            
+            _correiosSettings.MostrarTempoFabricacao = model.MostrarTempoFabricacao;
+            _correiosSettings.FreteGratis            = model.FreteGratis;
+            _correiosSettings.CEPInicial             = model.CEPInicial;
+            _correiosSettings.CEPFinal               = model.CEPFinal;
+            _correiosSettings.UtilizaValorMinimo     = model.UtilizaValorMinimo;
+            _correiosSettings.ValorMinimo            = model.ValorMinimo;
+            _correiosSettings.ServicoFreteGratis     = model.ServicoFreteGratis;
 
 			_settingService.SaveSetting(_correiosSettings);
 

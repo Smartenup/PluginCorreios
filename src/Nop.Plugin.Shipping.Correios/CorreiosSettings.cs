@@ -2,7 +2,7 @@
 
 namespace Nop.Plugin.Shipping.Correios
 {
-	public class CorreiosSettings: ISettings
+    public class CorreiosSettings: ISettings
 	{
 		public string Url { get; set; }
 
@@ -32,6 +32,8 @@ namespace Nop.Plugin.Shipping.Correios
         
         public decimal ValorMinimo { get; set; }
         
-        public string ServicoFreteGratis { get; set; }        
-	}
+        public string ServicoFreteGratis { get; set; }
+
+        public bool MostrarTempoFabricacao { get; set; }
+    }
 }

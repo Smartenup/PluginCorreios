@@ -108,6 +108,15 @@
                 </div>
                 <div class="form-group">
                     <div class="col-md-3">
+                        @Html.NopLabelFor(model => model.MostrarTempoFabricacao)
+                    </div>
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.MostrarTempoFabricacao)
+                        @Html.ValidationMessageFor(model => model.MostrarTempoFabricacao)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
                         @Html.NopLabelFor(model => model.FreteGratis)
                     </div>
                     <div class="col-md-9">
@@ -168,24 +177,9 @@
                         @Html.NopLabelFor(model => model.ServicoFreteGratis)
                     </div>
                     <div class="col-md-9">
-                        @Html.EditorFor(model => model.ServicoFreteGratis)
-                        <br />
-                        <label>04510 - PAC sem contrato</label><br />
-                        <label>04014 - SEDEX sem contrato</label><br />
-                        <label>40045 - SEDEX a Cobrar, sem contrato</label><br />
-                        <label>40126 - SEDEX a Cobrar, com contrato</label><br />
-                        <label>40215 - SEDEX 10, sem contrato</label><br />
-                        <label>40290 - SEDEX Hoje, sem contrato</label><br />
-                        <label>04162 - SEDEX com contrato</label><br />
-                        <label>40436 - SEDEX com contrato (40436)</label><br />
-                        <label>40444 - SEDEX com contrato (40444)</label><br />
-                        <label>81019 - e-SEDEX, com contrato</label><br />
-                        <label>04669 - PAC com contrato</label><br />
-                        <label>40568 - SEDEX com contrato (40568)</label><br />
-                        <label>40606 - SEDEX com contrato (40606)</label><br />
-                        <label>81868 - (Grupo 1) e-SEDEX, com contrato</label><br />
-                        <label>81833 - (Grupo 2) e-SEDEX, com contrato</label><br />
-                        <label>81850 - (Grupo 3) e-SEDEX, com contrato</label><br />
+                        
+                        @Html.NopDropDownList("ServicoFreteGratis", Model.AvailableCarrierServicesList)
+
                     </div>
                 </div>
                 <div class="form-group">
@@ -193,6 +187,7 @@
                         &nbsp;
                     </div>
                     <div class="col-md-9">
+                        <br />
 
                         <label>Exemplos de preenchimento do CEP e comportamento do sistema</label><br /><br />
 

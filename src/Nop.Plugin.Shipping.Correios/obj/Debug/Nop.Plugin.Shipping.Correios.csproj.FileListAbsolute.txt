@@ -57,3 +57,11 @@ C:\Users\uiska\Documents\Visual Studio 2015\Projects\nop_3.8_20161128\Presentati
 C:\Users\uiska\Documents\Visual Studio 2015\Projects\PluginCorreios\src\Nop.Plugin.Shipping.Correios\obj\Debug\Nop.Plugin.Shipping.Correios.dll
 C:\Users\uiska\Documents\Visual Studio 2015\Projects\PluginCorreios\src\Nop.Plugin.Shipping.Correios\obj\Debug\Nop.Plugin.Shipping.Correios.pdb
 C:\Users\uiska\Documents\Visual Studio 2015\Projects\PluginCorreios\src\Nop.Plugin.Shipping.Correios\obj\Debug\Nop.Plugin.Shipping.Correios.csprojResolveAssemblyReference.cache
+C:\Users\uiska\Source\Repos\nopCommerce_03_09_SU\Presentation\Nop.Web\Plugins\Shipping.Correios\Notes.txt
+C:\Users\uiska\Source\Repos\nopCommerce_03_09_SU\Presentation\Nop.Web\Plugins\Shipping.Correios\logo.jpg
+C:\Users\uiska\Source\Repos\nopCommerce_03_09_SU\Presentation\Nop.Web\Plugins\Shipping.Correios\Views\ShippingCorreios\Configure.cshtml
+C:\Users\uiska\Source\Repos\nopCommerce_03_09_SU\Presentation\Nop.Web\Plugins\Shipping.Correios\Description.txt
+C:\Users\uiska\Source\Repos\nopCommerce_03_09_SU\Presentation\Nop.Web\Plugins\Shipping.Correios\web.config
+C:\Users\uiska\Source\Repos\nopCommerce_03_09_SU\Presentation\Nop.Web\Plugins\Shipping.Correios\Nop.Plugin.Shipping.Correios.dll.config
+C:\Users\uiska\Source\Repos\nopCommerce_03_09_SU\Presentation\Nop.Web\Plugins\Shipping.Correios\Nop.Plugin.Shipping.Correios.dll
+C:\Users\uiska\Source\Repos\nopCommerce_03_09_SU\Presentation\Nop.Web\Plugins\Shipping.Correios\Nop.Plugin.Shipping.Correios.pdb
