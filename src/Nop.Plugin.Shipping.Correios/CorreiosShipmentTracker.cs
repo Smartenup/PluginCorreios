@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using Nop.Services.Logging;
+﻿using Nop.Services.Logging;
 using Nop.Services.Shipping.Tracking;
-using System.ServiceModel;
 using System;
-using System.Xml.Serialization;
-using System.IO;
+using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
+using System.ServiceModel;
+using System.Xml.Serialization;
 
 namespace Nop.Plugin.Shipping.Correios
 {

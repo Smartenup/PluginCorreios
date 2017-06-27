@@ -1,4 +1,5 @@
 ﻿using Nop.Core;
+using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Directory;
 using Nop.Core.Domain.Discounts;
 using Nop.Core.Domain.Shipping;
@@ -32,7 +33,7 @@ namespace Nop.Plugin.Shipping.Correios
 	{
 
         #region Constants
-        private const string CODIGO_SERVICO_PAC_GRANDES_DIMENSOES = "41300";
+        private const string CODIGO_SERVICO_PAC_GRANDES_DIMENSOES = "04693";
         private const int MAX_PACKAGE_TOTAL_DIMENSION_PAC_GRANDE = 300;
         private const int MAX_PACKAGE_SIZES_PAC_GRANDE = 150;
 
@@ -106,7 +107,6 @@ namespace Nop.Plugin.Shipping.Correios
         }
 
         #endregion
-
 
 
         #region Properties
@@ -255,41 +255,129 @@ namespace Nop.Plugin.Shipping.Correios
             return response;
         }
 
-        private string ObterDescricaoPrazo(DeliveryDate biggestDeliveryDate, int prazo)
+
+        /// <summary>
+        ///  Gets available shipping options
+        /// </summary>
+        /// <param name="getShippingOptionRequest">A request of product for getting shipping options</param>
+        /// <returns>Represents a response of getting shipping rate options</returns>
+        public GetShippingOptionResponse GetShippingOptions(GetShippingOptionProductRequest getShippingOptionProductRequest)
         {
-            if (_correiosSettings.MostrarTempoFabricacao && biggestDeliveryDate != null)
-                return  ObterDescricaoEnvio(biggestDeliveryDate.GetLocalized(dd => dd.Name)) + " + " + ObterDescricaoPrazo(prazo);
-            else
-                return ObterDescricaoPrazo(prazo);
+            if (getShippingOptionProductRequest == null)
+                throw new ArgumentNullException("getShippingOptionRequest");
+
+            var response = new GetShippingOptionResponse();
+
+            if (getShippingOptionProductRequest.Product == null)
+            {
+                response.AddError("Sem produto para enviar");
+                return response;
+            }
+
+            if (getShippingOptionProductRequest.ShippingAddress == null)
+            {
+                response.AddError("Endereço de envio em branco");
+                return response;
+            }
+
+            if (getShippingOptionProductRequest.ShippingAddress.ZipPostalCode == null)
+            {
+                response.AddError("CEP de envio em branco");
+                return response;
+            }
+
+            var result = ProcessShipping(getShippingOptionProductRequest);
+
+            if (result == null)
+            {
+                response.AddError("Não há serviços disponíveis no momento");
+                return response;
+            }
+
+            bool verificarFreteGratisMaisBarato = CheckFreeShippingMaisBarato();
+            bool primeiroDaLista = false;
+
+            if (verificarFreteGratisMaisBarato)
+            {
+                primeiroDaLista = true;
+            }
+
+            DeliveryDate biggestDeliveryDate = GetBiggestDeliveryDate(getShippingOptionProductRequest.Product);
+
+            var group = new List<string>();
+
+            foreach (cServico servico in result.Servicos.OrderBy(s => decimal.Parse(s.Valor, CultureInfo.GetCultureInfo("pt-BR"))))
+            {
+                int codigoErro = 0;
+
+                if (Int32.TryParse(servico.Erro, out codigoErro))
+                {
+                    switch (codigoErro)
+                    {
+                        case 0:
+                        case 10:
+
+                            string name = CorreiosServices.GetServicePublicNameById(servico.Codigo.ToString());
+
+                            if (!group.Contains(name))
+                            {
+                                var option = new ShippingOption();
+
+                                int prazo = (int.Parse(servico.PrazoEntrega) + _correiosSettings.DiasUteisAdicionais);
+
+                                option.Description = ObterDescricaoPrazo(biggestDeliveryDate, prazo);
+
+                                if (CheckFreeShipping(servico.Codigo, getShippingOptionProductRequest, primeiroDaLista))
+                                {
+                                    primeiroDaLista = false;
+                                    option.Name = name + " [Frete Grátis]";
+                                    option.Rate = 0;
+                                    response.ShippingOptions.Insert(0, option);
+                                }
+                                else
+                                {
+                                    option.Name = name;
+
+                                    option.Rate = decimal.Parse(servico.Valor, CultureInfo.GetCultureInfo("pt-BR")) +                                   
+                                        _correiosSettings.CustoAdicionalEnvio;
+
+                                    response.ShippingOptions.Add(option);
+                                }
+
+                                group.Add(name);
+                            }
+                            break;
+
+                        default:
+
+                            string msgError = string.Format("Plugin.Shipping.Correios: erro ao calcular frete: ({0})({1}){2} - CEP {3}",
+                                CorreiosServices.GetServiceName(servico.Codigo.ToString()),
+                                servico.Erro,
+                                servico.MsgErro,
+                                getShippingOptionProductRequest.ShippingAddress.ZipPostalCode);
+
+                            _logger.Error(msgError, exception: null, customer: getShippingOptionProductRequest.Customer);
+
+                            break;
+                    }
+                }
+                else
+                {
+                    string msgError = string.Format("Plugin.Shipping.Correios: erro ao calcular frete: ({0})({1}){2} - CEP {3}",
+                                CorreiosServices.GetServiceName(servico.Codigo.ToString()),
+                                servico.Erro,
+                                servico.MsgErro,
+                                getShippingOptionProductRequest.ShippingAddress.ZipPostalCode);
+
+                    _logger.Error(msgError, exception: null, customer: getShippingOptionProductRequest.Customer);
+                }
+
+            }
+
+            return response;
+
         }
 
-        private bool CheckFreeShippingMaisBarato()
-        {
-            if (!_correiosSettings.FreteGratis)
-                return false;
-
-            if (_correiosSettings.ServicoFreteGratis.Equals(CorreiosServices.PRIMEIRO_LISTA_MAIS_BARATO))
-                return true;
-
-            return false;
-        }
-
-
-        private string ObterDescricaoEnvio(string prazoMaximo)
-        {
-            string prazoEnvioFabricao = _localizationService.GetResource("Plugins.Shippings.Correios.PrazoEnvioFabricacao");
-
-            //return "Prazo Envio (fabricação) " + prazoMaximo;
-
-            return prazoEnvioFabricao + prazoMaximo;
-        }
-
-        private string ObterDescricaoPrazo(int prazo)
-        {
-            string prazoCorreios = _localizationService.GetResource("Plugins.Shippings.Correios.PrazoCorreios");
-
-            return string.Format(prazoCorreios, prazo);            
-        }
 
         /// <summary>
         /// Gets fixed shipping rate (if shipping rate computation method allows it and the rate can be calculated before checkout).
@@ -362,6 +450,43 @@ namespace Nop.Plugin.Shipping.Correios
         #endregion
 
         #region Utilities
+
+
+        private string ObterDescricaoPrazo(DeliveryDate biggestDeliveryDate, int prazo)
+        {
+            if (_correiosSettings.MostrarTempoFabricacao && biggestDeliveryDate != null)
+                return ObterDescricaoEnvio(biggestDeliveryDate.GetLocalized(dd => dd.Name)) + " + " + ObterDescricaoPrazo(prazo);
+            else
+                return ObterDescricaoPrazo(prazo);
+        }
+
+        private bool CheckFreeShippingMaisBarato()
+        {
+            if (!_correiosSettings.FreteGratis)
+                return false;
+
+            if (_correiosSettings.ServicoFreteGratis.Equals(CorreiosServices.PRIMEIRO_LISTA_MAIS_BARATO))
+                return true;
+
+            return false;
+        }
+
+        private string ObterDescricaoEnvio(string prazoMaximo)
+        {
+            string prazoEnvioFabricao = _localizationService.GetResource("Plugins.Shippings.Correios.PrazoEnvioFabricacao");
+
+            //return "Prazo Envio (fabricação) " + prazoMaximo;
+
+            return prazoEnvioFabricao + prazoMaximo;
+        }
+
+        private string ObterDescricaoPrazo(int prazo)
+        {
+            string prazoCorreios = _localizationService.GetResource("Plugins.Shippings.Correios.PrazoCorreios");
+
+            return string.Format(prazoCorreios, prazo);
+        }
+
         private cResultado ProcessShipping(GetShippingOptionRequest getShippingOptionRequest)
 		{
 			var usedMeasureWeight = _measureService.GetMeasureWeightBySystemKeyword(MEASURE_WEIGHT_SYSTEM_KEYWORD);
@@ -528,6 +653,140 @@ namespace Nop.Plugin.Shipping.Correios
 			}
 		}
 
+        private cResultado ProcessShipping(GetShippingOptionProductRequest getShippingOptionProductRequest)
+        {
+            var usedMeasureWeight = _measureService.GetMeasureWeightBySystemKeyword(MEASURE_WEIGHT_SYSTEM_KEYWORD);
+
+            if (usedMeasureWeight == null)
+            {
+                string e = string.Format("Plugin.Shipping.Correios: Could not load \"{0}\" measure weight", MEASURE_WEIGHT_SYSTEM_KEYWORD);
+
+                _logger.Fatal(e);
+
+                throw new NopException(e);
+            }
+
+            var usedMeasureDimension = _measureService.GetMeasureDimensionBySystemKeyword(MEASURE_DIMENSION_SYSTEM_KEYWORD);
+
+            if (usedMeasureDimension == null)
+            {
+                string e = string.Format("Plugin.Shipping.Correios: Could not load \"{0}\" measure dimension", MEASURE_DIMENSION_SYSTEM_KEYWORD);
+
+                _logger.Fatal(e);
+
+                throw new NopException(e);
+            }
+
+
+            string cepOrigem = null;
+
+            if (_shippingSettings.ShippingOriginAddressId > 0)
+            {
+                var addr = _addressService.GetAddressById(_shippingSettings.ShippingOriginAddressId);
+
+                if (addr != null && !String.IsNullOrEmpty(addr.ZipPostalCode) && addr.ZipPostalCode.Length >= 8 && addr.ZipPostalCode.Length <= 9)
+                {
+                    cepOrigem = addr.ZipPostalCode;
+                }
+            }
+
+            if (cepOrigem == null)
+            {
+                _logger.Fatal("Plugin.Shipping.Correios: CEP de Envio em branco ou inválido, configure nas opções de envio do NopCommerce.Em Administração > Configurações > Configurações de Envio. Formato: 00000000");
+
+                throw new NopException("Plugin.Shipping.Correios: CEP de Envio em branco ou inválido, configure nas opções de envio do NopCommerce.Em Administração > Configurações > Configurações de Envio. Formato: 00000000");
+            }
+
+            string cepDestino = Regex.Replace(getShippingOptionProductRequest.ShippingAddress.ZipPostalCode, @"<(.|\n)*?>", " - ");
+
+            cepDestino = cepDestino.Replace("/", "");
+
+
+            decimal lengthTmp, widthTmp, heightTmp;
+
+            _shippingService.GetDimensions(getShippingOptionProductRequest.Product, getShippingOptionProductRequest.Quantity, out widthTmp, out lengthTmp, out heightTmp);
+
+
+            int length = Convert.ToInt32(Math.Ceiling(_measureService.ConvertFromPrimaryMeasureDimension(lengthTmp, usedMeasureDimension)) / 10);
+            int height = Convert.ToInt32(Math.Ceiling(_measureService.ConvertFromPrimaryMeasureDimension(heightTmp, usedMeasureDimension)) / 10);
+            int width = Convert.ToInt32(Math.Ceiling(_measureService.ConvertFromPrimaryMeasureDimension(widthTmp, usedMeasureDimension)) / 10);
+
+            int weight = 0;
+
+            weight = Convert.ToInt32(Math.Ceiling(_measureService.ConvertFromPrimaryMeasureWeight(getShippingOptionProductRequest.Product.Weight, usedMeasureWeight)));
+            
+            if (length < 1)
+                length = 1;
+
+            if (height < 1)
+                height = 1;
+
+            if (width < 1)
+                width = 1;
+
+            if (weight < 1)
+                weight = 1;
+
+            //Altura não pode ser maior que o comprimento, para evitar erro, igualamos e a embalagem deve ser adaptada.
+            if (height > length)
+            {
+                length = height;
+            }
+
+            if (IsPackageTooSmall(length, height, width))
+            {
+                length = MIN_PACKAGE_LENGTH;
+                height = MIN_PACKAGE_HEIGHT;
+                width = MIN_PACKAGE_WIDTH;
+            }
+
+            var correiosCalculation = new CorreiosBatchCalculation(_logger, getShippingOptionProductRequest.Customer)
+            {
+                CodigoEmpresa = _correiosSettings.CodigoEmpresa,
+                Senha = _correiosSettings.Senha,
+                CepOrigem = cepOrigem,
+                Servicos = _correiosSettings.CarrierServicesOffered,
+                AvisoRecebimento = _correiosSettings.IncluirAvisoRecebimento,
+                MaoPropria = _correiosSettings.IncluirMaoPropria,
+                CepDestino = cepDestino
+            };
+
+            if ((!IsPackageTooHeavy(weight)) && (!IsPackageTooLarge(length, height, width, _correiosSettings.CarrierServicesOffered)))
+            {
+                correiosCalculation.Servicos = GetServiceNotTooHeavyTooLarge(_correiosSettings.CarrierServicesOffered);
+
+                correiosCalculation.Pacotes.Add(new CorreiosBatchCalculation.Pacote()
+                {
+                    Altura = height,
+                    Comprimento = length,
+                    Largura = width,
+                    Diametro = 0,
+                    FormatoPacote = true,
+                    Peso = weight,
+                    ValorDeclarado = 0
+                });
+
+                return correiosCalculation.Calculate();
+            }
+            else
+            {
+                correiosCalculation.Pacotes.Add(new CorreiosBatchCalculation.Pacote()
+                {
+                    Altura = height,
+                    Comprimento = length,
+                    Largura = width,
+                    Diametro = 0,
+                    FormatoPacote = true,
+                    Peso = weight,
+                    ValorDeclarado = 0
+                });
+
+                var result = correiosCalculation.Calculate();
+
+                return result;
+            }
+        }
+
         private string GetServiceNotTooHeavyTooLarge(string carrierServicesOffered)
         {
             string serviceNotTooHeavyTooLarge = carrierServicesOffered;
@@ -617,6 +876,36 @@ namespace Nop.Plugin.Shipping.Correios
 				return false;
 		}
 
+
+
+        [NonAction]
+        private DeliveryDate GetBiggestDeliveryDate(Product product)
+        {
+            DeliveryDate deliveryDate = null;
+
+            int biggestAmountDays = 0;
+
+            DeliveryDate deliveryDateItem = null;
+
+            deliveryDateItem = _shippingService.GetDeliveryDateById(product.DeliveryDateId);
+
+            string deliveryDateText = deliveryDateItem.GetLocalized(dd => dd.Name);
+
+            int? deliveryBigestInteger = GetBiggestInteger(deliveryDateText);
+
+            if (deliveryBigestInteger.HasValue)
+            {
+                if (deliveryBigestInteger.Value > biggestAmountDays)
+                {
+                    biggestAmountDays = deliveryBigestInteger.Value;
+                    deliveryDate = deliveryDateItem;
+                }
+            }
+
+            return deliveryDate;
+        }
+
+
         [NonAction]
         private DeliveryDate GetBiggestDeliveryDate(IList<PackageItem> Items)
         {
@@ -688,6 +977,46 @@ namespace Nop.Plugin.Shipping.Correios
             return integerResult;
         }
 
+
+        private bool CheckFreeShipping(int CodigoServico, GetShippingOptionProductRequest getShippingOptionProductRequest, bool primeirodaListaFreeShepping)
+        {
+            if (!_correiosSettings.FreteGratis)
+                return false;
+
+            if (CodigoServico.ToString().Equals(_correiosSettings.ServicoFreteGratis) || primeirodaListaFreeShepping)
+            {
+                string cepDestino = Regex.Replace(getShippingOptionProductRequest.ShippingAddress.ZipPostalCode, "[^0-9]", string.Empty);
+
+                string cepInicial = ObterCEPInicial(Regex.Replace(_correiosSettings.CEPInicial, "[^0-9]", string.Empty));
+
+                string cepFinal = ObterCEPFinal(
+                                                Regex.Replace(_correiosSettings.CEPInicial, "[^0-9]", string.Empty),
+                                                Regex.Replace(_correiosSettings.CEPFinal, "[^0-9]", string.Empty)
+                                               );
+
+
+                if (int.Parse(cepDestino) < int.Parse(cepInicial))
+                    return false;
+
+                if (int.Parse(cepDestino) > int.Parse(cepFinal))
+                    return false;
+
+
+                if (_correiosSettings.UtilizaValorMinimo)
+                {
+                    decimal subtotalBase = decimal.Zero;                  
+
+                    subtotalBase = getShippingOptionProductRequest.Product.Price * getShippingOptionProductRequest.Quantity;
+
+                    if (subtotalBase < _correiosSettings.ValorMinimo)
+                        return false;
+                }
+
+                return true;
+            }
+
+            return false;
+        }
 
         private bool CheckFreeShipping(int CodigoServico, GetShippingOptionRequest getShippingOptionRequest, bool primeirodaListaFreeShepping)
         {
@@ -792,31 +1121,4 @@ namespace Nop.Plugin.Shipping.Correios
 
     }
 
-    public static class DateTimeExtensions
-    {
-        public static DateTime AddWorkDays(this DateTime date, int workingDays)
-        {
-            return date.GetDates(workingDays < 0)
-                .Where(newDate =>
-                    (newDate.DayOfWeek != DayOfWeek.Saturday &&
-                     newDate.DayOfWeek != DayOfWeek.Sunday &&
-                     !newDate.IsHoliday()))
-                .Take(Math.Abs(workingDays))
-                .Last();
-        }
-
-        private static IEnumerable<DateTime> GetDates(this DateTime date, bool isForward)
-        {
-            while (true)
-            {
-                date = date.AddDays(isForward ? -1 : 1);
-                yield return date;
-            }
-        }
-
-        public static bool IsHoliday(this DateTime date)
-        {
-            return false;
-        }
-    }
 }

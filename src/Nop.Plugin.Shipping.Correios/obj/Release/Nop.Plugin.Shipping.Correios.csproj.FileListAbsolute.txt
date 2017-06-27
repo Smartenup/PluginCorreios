@@ -60,7 +60,7 @@ C:\Users\uiska\Documents\Visual Studio 2015\Projects\nop_3.8_20161128\Presentati
 C:\Users\uiska\Documents\Visual Studio 2015\Projects\nop_3.8_20161128\Presentation\Nop.Web\Plugins\Shipping.Correios\Nop.Plugin.Shipping.Correios.dll
 C:\Users\uiska\Documents\Visual Studio 2015\Projects\nop_3.8_20161128\Presentation\Nop.Web\Plugins\Shipping.Correios\Nop.Plugin.Shipping.Correios.XmlSerializers.dll
 C:\Users\uiska\Documents\Visual Studio 2015\Projects\nop_3.8_20161128\Presentation\Nop.Web\Plugins\Shipping.Correios\Nop.Plugin.Shipping.Correios.pdb
-C:\Users\uiska\Documents\Visual Studio 2015\Projects\PluginCorreios\src\Nop.Plugin.Shipping.Correios\obj\Release\Nop.Plugin.Shipping.Correios.csprojResolveAssemblyReference.cache
 C:\Users\uiska\Documents\Visual Studio 2015\Projects\PluginCorreios\src\Nop.Plugin.Shipping.Correios\obj\Release\Nop.Plugin.Shipping.Correios.dll
 C:\Users\uiska\Documents\Visual Studio 2015\Projects\PluginCorreios\src\Nop.Plugin.Shipping.Correios\obj\Release\Nop.Plugin.Shipping.Correios.pdb
 C:\Users\uiska\Documents\Visual Studio 2015\Projects\PluginCorreios\src\Nop.Plugin.Shipping.Correios\obj\Release\Nop.Plugin.Shipping.Correios.XmlSerializers.dll
+C:\Users\uiska\Documents\Visual Studio 2015\Projects\PluginCorreios\src\Nop.Plugin.Shipping.Correios\obj\Release\Nop.Plugin.Shipping.Correios.csprojResolveAssemblyReference.cache

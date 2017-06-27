@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Nop.Plugin.Shipping.Correios
 {
-	public class CorreiosBatchCalculation
+    public class CorreiosBatchCalculation
 	{
 		#region Fields
 		public readonly CultureInfo PtBrCulture = CultureInfo.GetCultureInfo("pt-BR");

@@ -62,15 +62,19 @@
 				case "40126": return "SEDEX a Cobrar, com contrato";
 				case "40215": return "SEDEX 10, sem contrato";
 				case "40290": return "SEDEX Hoje, sem contrato";
+                case "40169": return "SEDEX 12, com contrato";
 
-				//case "40096": return "SEDEX com contrato";
+                //case "40096": return "SEDEX com contrato";
                 case "04162": return "SEDEX com contrato";
                 case "4162": return "SEDEX com contrato";
 
                 case "40436": return "SEDEX com contrato (40436)";
 				case "40444": return "SEDEX com contrato (40444)";
-                case "41300": return "PAC Grandes Volumes";
+                case "04693": return "PAC Grandes Volumes";//41300
                 case "81019": return "e-SEDEX, com contrato";
+
+                
+                
 
                 //case "41068": return "PAC com contrato";
                 case "04669": return "PAC com contrato";
@@ -121,7 +125,9 @@
 				case "(Grupo 1) e-SEDEX, com contrato": return "81868";
 				case "(Grupo 2) e-SEDEX, com contrato": return "81833";
 				case "(Grupo 3) e-SEDEX, com contrato": return "81850";
-                case "PAC Grandes Volumes": return "41300";
+                case "PAC Grandes Volumes": return "04693";
+                case "SEDEX 12, com contrato": return "40169";
+
 
                 default: return "Desconhecido";
 			}
@@ -136,6 +142,8 @@
 		{
 			switch (serviceId)
 			{
+                
+                case "40169": return "SEDEX 12";
 				case "40215": return "SEDEX 10";
 				case "40290": return "SEDEX Hoje";
                 //case "40096":
@@ -169,7 +177,7 @@
                     {
 						return "PAC";
 					}
-                case "41300": return "PAC Grandes Volumes";
+                case "04693": return "PAC Grandes Volumes";
 				case "81019":
 				case "81868":
 				case "81833":
@@ -188,6 +196,7 @@
             switch (publicName)
             {
 
+                case "SEDEX 12":
                 case "SEDEX 10": 
                 case "SEDEX Hoje":
                 case "SEDEX":
