@@ -1,4 +1,5 @@
-﻿using Nop.Services.Logging;
+﻿using Nop.Plugin.Shipping.Correios.Domain;
+using Nop.Services.Logging;
 using Nop.Services.Shipping.Tracking;
 using System;
 using System.Collections.Generic;
@@ -43,22 +44,25 @@ namespace Nop.Plugin.Shipping.Correios
 
             try
             {
-                BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
+                var binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
 
                 binding.OpenTimeout = new TimeSpan(0, 10, 0);
                 binding.CloseTimeout = new TimeSpan(0, 10, 0);
                 binding.SendTimeout = new TimeSpan(0, 10, 0);
                 binding.ReceiveTimeout = new TimeSpan(0, 10, 0);
 
-                EndpointAddress address = new EndpointAddress("http://webservice.correios.com.br:80/service/rastro");
+                var address = new EndpointAddress("http://webservice.correios.com.br:80/service/rastro");
 
                 _wsRastro = new wsRastro.ServiceClient(binding, address);
 
                 var _requestInterceptor = new InspectorBehavior();
                 _wsRastro.Endpoint.Behaviors.Add(_requestInterceptor);
 
-
-                _wsRastro.buscaEventos("ECT", "SRO", "L", "T", "101", trackingNumber.ToUpperInvariant());
+                if (string.IsNullOrWhiteSpace(_correiosSettings.UsuarioServicoRastreamento))
+                    _wsRastro.buscaEventos("ECT", "SRO", "L", "T", "101", trackingNumber.ToUpperInvariant());
+                else
+                    _wsRastro.buscaEventos(_correiosSettings.UsuarioServicoRastreamento,
+                        _correiosSettings.SenhaServicoRastreamento, "L", "T", "101", trackingNumber.ToUpperInvariant());
 
                 var ser = new XmlSerializer(typeof(Envelope));
                 var envelope = new Envelope();

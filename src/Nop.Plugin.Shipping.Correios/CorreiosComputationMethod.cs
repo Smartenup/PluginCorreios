@@ -1,5 +1,6 @@
 ﻿using Nop.Core;
 using Nop.Core.Domain.Catalog;
+using Nop.Core.Domain.Customers;
 using Nop.Core.Domain.Directory;
 using Nop.Core.Domain.Discounts;
 using Nop.Core.Domain.Shipping;
@@ -186,7 +187,9 @@ namespace Nop.Plugin.Shipping.Correios
                     switch (codigoErro)
                     {
                         case 0:
+                        case 9:
                         case 10:
+                        case 11:
 
                             string name = CorreiosServices.GetServicePublicNameById(servico.Codigo.ToString());
 
@@ -200,6 +203,8 @@ namespace Nop.Plugin.Shipping.Correios
                                 int prazo = (int.Parse(servico.PrazoEntrega) + _correiosSettings.DiasUteisAdicionais);
 
                                 option.Description =  ObterDescricaoPrazo(biggestDeliveryDate, prazo);
+
+                                option.Description += ObterMensagemErro(servico.MsgErro, codigoErro);
 
                                 if (CheckFreeShipping(servico.Codigo, getShippingOptionRequest, primeiroDaLista))
                                 {
@@ -315,7 +320,9 @@ namespace Nop.Plugin.Shipping.Correios
                     switch (codigoErro)
                     {
                         case 0:
+                        case 9:
                         case 10:
+                        case 11:
 
                             string name = CorreiosServices.GetServicePublicNameById(servico.Codigo.ToString());
 
@@ -326,6 +333,8 @@ namespace Nop.Plugin.Shipping.Correios
                                 int prazo = (int.Parse(servico.PrazoEntrega) + _correiosSettings.DiasUteisAdicionais);
 
                                 option.Description = ObterDescricaoPrazo(biggestDeliveryDate, prazo);
+
+                                option.Description += ObterMensagemErro(servico.MsgErro, codigoErro);                                
 
                                 if (CheckFreeShipping(servico.Codigo, getShippingOptionProductRequest, primeiroDaLista))
                                 {
@@ -376,6 +385,21 @@ namespace Nop.Plugin.Shipping.Correios
 
             return response;
 
+        }
+
+        private string ObterMensagemErro(string msgErro, int codigoErro)
+        {
+            if (codigoErro == 11)
+            {
+                return " O CEP de destino está sujeito a condições especiais de entrega pela ECT e é apresentado com o acréscimo de dias úteis ao prazo regular.";
+            }
+
+            if (!string.IsNullOrWhiteSpace(msgErro))
+            {
+                return " " + msgErro;
+            }
+
+            return string.Empty;
         }
 
 
@@ -455,9 +479,9 @@ namespace Nop.Plugin.Shipping.Correios
         private string ObterDescricaoPrazo(DeliveryDate biggestDeliveryDate, int prazo)
         {
             if (_correiosSettings.MostrarTempoFabricacao && biggestDeliveryDate != null)
-                return ObterDescricaoEnvio(biggestDeliveryDate.GetLocalized(dd => dd.Name)) + " + " + ObterDescricaoPrazo(prazo);
+                return ObterDescricaoEnvio(biggestDeliveryDate.GetLocalized(dd => dd.Name)) + " + " + ObterDescricaoPrazo(prazo) + ".";
             else
-                return ObterDescricaoPrazo(prazo);
+                return ObterDescricaoPrazo(prazo) + ".";
         }
 
         private bool CheckFreeShippingMaisBarato()
@@ -978,9 +1002,28 @@ namespace Nop.Plugin.Shipping.Correios
         }
 
 
+        private bool CheckExceptCustomerRoles(Customer customer)
+        {
+            if (!string.IsNullOrWhiteSpace(_correiosSettings.FreteGratisExcetoCustomerRoleIds))
+            { 
+                foreach (var role in customer.CustomerRoles)
+                {
+                    foreach (string id in _correiosSettings.FreteGratisExcetoCustomerRoleIds.Split(';'))
+                        if (int.Parse(id) == role.Id)
+                            return true;
+                }
+            }
+
+            return false;
+        }
+
+
         private bool CheckFreeShipping(int CodigoServico, GetShippingOptionProductRequest getShippingOptionProductRequest, bool primeirodaListaFreeShepping)
         {
             if (!_correiosSettings.FreteGratis)
+                return false;
+
+            if (CheckExceptCustomerRoles(getShippingOptionProductRequest.Customer))
                 return false;
 
             if (CodigoServico.ToString().Equals(_correiosSettings.ServicoFreteGratis) || primeirodaListaFreeShepping)
@@ -1023,6 +1066,9 @@ namespace Nop.Plugin.Shipping.Correios
             if (!_correiosSettings.FreteGratis)
                 return false;
 
+            if (CheckExceptCustomerRoles(getShippingOptionRequest.Customer))
+                return false;
+
             if (CodigoServico.ToString().Equals(_correiosSettings.ServicoFreteGratis) || primeirodaListaFreeShepping)
             {
                 string cepDestino = Regex.Replace(getShippingOptionRequest.ShippingAddress.ZipPostalCode, "[^0-9]", string.Empty);
@@ -1047,7 +1093,7 @@ namespace Nop.Plugin.Shipping.Correios
                     decimal subtotalBase = decimal.Zero;
                     bool includingTax = false;
                     decimal orderSubTotalDiscountAmount = decimal.Zero;
-                    List<Discount> orderSubTotalAppliedDiscount = null;
+                    var orderSubTotalAppliedDiscount = new List<Discount>();
                     decimal subTotalWithoutDiscountBase = decimal.Zero;
                     decimal subTotalWithDiscountBase = decimal.Zero;
 
@@ -1056,7 +1102,7 @@ namespace Nop.Plugin.Shipping.Correios
                     {
                         orderSubTotalDiscountAmount = getShippingOptionRequest.Order.OrderSubTotalDiscountInclTax;
 
-                        if(getShippingOptionRequest.Order.DiscountUsageHistory.SingleOrDefault() != null)
+                        if (getShippingOptionRequest.Order.DiscountUsageHistory.SingleOrDefault() != null)
                             orderSubTotalAppliedDiscount.Add(getShippingOptionRequest.Order.DiscountUsageHistory.SingleOrDefault().Discount);
 
                         subTotalWithoutDiscountBase = getShippingOptionRequest.Order.OrderSubtotalInclTax;

@@ -35,5 +35,11 @@ namespace Nop.Plugin.Shipping.Correios
         public string ServicoFreteGratis { get; set; }
 
         public bool MostrarTempoFabricacao { get; set; }
+
+        public string UsuarioServicoRastreamento { get; set; }
+
+        public string SenhaServicoRastreamento { get; set; }
+
+        public string FreteGratisExcetoCustomerRoleIds { get; set; }
     }
 }
