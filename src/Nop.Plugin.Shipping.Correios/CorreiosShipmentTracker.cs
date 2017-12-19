@@ -1,4 +1,4 @@
-﻿using Nop.Plugin.Shipping.Correios.Domain;
+﻿using Nop.Plugin.Shipping.Correios.Domain.Serialization;
 using Nop.Services.Logging;
 using Nop.Services.Shipping.Tracking;
 using System;

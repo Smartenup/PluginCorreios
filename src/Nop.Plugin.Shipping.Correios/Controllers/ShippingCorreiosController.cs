@@ -1,8 +1,14 @@
-﻿using Nop.Plugin.Shipping.Correios.Domain;
+﻿using Nop.Core.Domain.Directory;
+using Nop.Plugin.Shipping.Correios.Domain;
 using Nop.Plugin.Shipping.Correios.Models;
+using Nop.Plugin.Shipping.Correios.Services;
 using Nop.Services.Configuration;
 using Nop.Services.Customers;
+using Nop.Services.Directory;
 using Nop.Services.Localization;
+using Nop.Services.Logging;
+using Nop.Services.Orders;
+using Nop.Services.Shipping;
 using Nop.Web.Framework;
 using Nop.Web.Framework.Controllers;
 using Nop.Web.Framework.Security;
@@ -15,23 +21,41 @@ namespace Nop.Plugin.Shipping.Correios.Controllers
 {
     [AdminAuthorize]
     public class ShippingCorreiosController : Controller
-	{
-		private readonly CorreiosSettings _correiosSettings;
-		private readonly ISettingService _settingService;
-		private readonly ILocalizationService _localizationService;
+    {
+        private readonly CorreiosSettings _correiosSettings;
+        private readonly ISettingService _settingService;
+        private readonly ILocalizationService _localizationService;
         private readonly ICustomerService _customerService;
+        private readonly ILogger _logger;
+        private readonly IStateProvinceService _stateProvinceService;
+        private readonly ICountryService _countryService;
+        private readonly IOrderService _orderService;
+        private readonly IShipmentService _shipmentService;
+        private readonly ISigepWebService _sigepWebService;
 
-        public ShippingCorreiosController(CorreiosSettings correiosSettings, 
-            ISettingService settingService, 
+        public ShippingCorreiosController(CorreiosSettings correiosSettings,
+            ISettingService settingService,
             ILocalizationService localizationService,
-            ICustomerService customerService
+            ICustomerService customerService,
+            ILogger logger,
+            IStateProvinceService stateProvinceService,
+            ICountryService countryService,
+            IOrderService orderService,
+            IShipmentService shipmentService,
+            ISigepWebService sigepWebService
             )
-		{
+        {
             _customerService = customerService;
             _correiosSettings = correiosSettings;
             _settingService = settingService;
             _localizationService = localizationService;
-        }
+            _logger = logger;
+            _stateProvinceService = stateProvinceService;
+            _countryService = countryService;
+            _orderService = orderService;
+            _shipmentService = shipmentService;
+            _sigepWebService = sigepWebService;
+    }
 
 
         [ChildActionOnly]
@@ -97,8 +121,8 @@ namespace Nop.Plugin.Shipping.Correios.Controllers
             model.SenhaServicoRastreamento = _correiosSettings.SenhaServicoRastreamento;
 
 
-            if(!string.IsNullOrWhiteSpace(_correiosSettings.FreteGratisExcetoCustomerRoleIds))
-                foreach (string id in _correiosSettings.FreteGratisExcetoCustomerRoleIds.Split(';')) 
+            if (!string.IsNullOrWhiteSpace(_correiosSettings.FreteGratisExcetoCustomerRoleIds))
+                foreach (string id in _correiosSettings.FreteGratisExcetoCustomerRoleIds.Split(';'))
                     model.SelectedCustomerRoleIds.Add(int.Parse(id));
 
             var allRoles = _customerService.GetAllCustomerRoles(true);
@@ -112,6 +136,27 @@ namespace Nop.Plugin.Shipping.Correios.Controllers
                     Selected = model.SelectedCustomerRoleIds.Contains(role.Id)
                 });
             }
+
+
+            model.CartaoPostagemSIGEP = _correiosSettings.CartaoPostagemSIGEP;
+            model.NumeroContratoSIGEP = _correiosSettings.NumeroContratoSIGEP;
+            model.CodigoAdministrativoSIGEP = _correiosSettings.CodigoAdministrativoSIGEP;
+            model.UsuarioSIGEP = _correiosSettings.UsuarioSIGEP;
+            model.SenhaSIGEP = _correiosSettings.SenhaSIGEP;
+            model.LogradouroRemetenteSIGEP = _correiosSettings.LogradouroRemetenteSIGEP;
+            model.NumeroRemetenteSIGEP = _correiosSettings.NumeroRemetenteSIGEP;
+            model.ComplementoRemetenteSIGEP = _correiosSettings.ComplementoRemetenteSIGEP;
+            model.BairroRemetenteSIGEP = _correiosSettings.BairroRemetenteSIGEP;
+            model.EmailRemetenteSIGEP = _correiosSettings.EmailRemetenteSIGEP;
+            model.UsarPesoPadraoSIGEP = _correiosSettings.UsarPesoPadraoSIGEP;
+            model.PesoPadraoSIGEP = _correiosSettings.PesoPadraoSIGEP;
+            model.UsarDimensoesMinimasSIGEP = _correiosSettings.UsarDimensoesMinimasSIGEP;
+            model.NumeroCNPJ = _correiosSettings.NumeroCNPJ;
+            model.AmbienteHomologacao = _correiosSettings.AmbienteHomologacao;
+            model.NomeRemetenteSIGEP = _correiosSettings.NomeRemetenteSIGEP;
+            model.Diretoria = _correiosSettings.NumeroDiretoria;
+            model.TelefoneRemetenteSIGEP = _correiosSettings.TelefoneRemetenteSIGEP;
+
 
             return View("~/Plugins/Shipping.Correios/Views/ShippingCorreios/Configure.cshtml", model);
         }
@@ -185,6 +230,25 @@ namespace Nop.Plugin.Shipping.Correios.Controllers
             _correiosSettings.FreteGratisExcetoCustomerRoleIds = selectedCustomerRoleIds;
 
 
+            _correiosSettings.CartaoPostagemSIGEP = model.CartaoPostagemSIGEP;
+            _correiosSettings.NumeroContratoSIGEP = model.NumeroContratoSIGEP;
+            _correiosSettings.CodigoAdministrativoSIGEP = model.CodigoAdministrativoSIGEP;
+            _correiosSettings.UsuarioSIGEP = model.UsuarioSIGEP;
+            _correiosSettings.SenhaSIGEP = model.SenhaSIGEP;
+            _correiosSettings.LogradouroRemetenteSIGEP = model.LogradouroRemetenteSIGEP;
+            _correiosSettings.NumeroRemetenteSIGEP = model.NumeroRemetenteSIGEP;
+            _correiosSettings.ComplementoRemetenteSIGEP = model.ComplementoRemetenteSIGEP;
+            _correiosSettings.BairroRemetenteSIGEP = model.BairroRemetenteSIGEP;
+            _correiosSettings.EmailRemetenteSIGEP = model.EmailRemetenteSIGEP;
+            _correiosSettings.UsarPesoPadraoSIGEP = model.UsarPesoPadraoSIGEP;
+            _correiosSettings.PesoPadraoSIGEP = model.PesoPadraoSIGEP;
+            _correiosSettings.UsarDimensoesMinimasSIGEP = model.UsarDimensoesMinimasSIGEP;
+            _correiosSettings.NumeroCNPJ = model.NumeroCNPJ;
+            _correiosSettings.AmbienteHomologacao = model.AmbienteHomologacao;
+            _correiosSettings.NomeRemetenteSIGEP = model.NomeRemetenteSIGEP;
+            _correiosSettings.NumeroDiretoria = model.Diretoria;
+            _correiosSettings.TelefoneRemetenteSIGEP = model.TelefoneRemetenteSIGEP;
+
             _settingService.SaveSetting(_correiosSettings);
 
             //ViewData["sucesso"] = _localizationService.GetResource("Admin.Configuration.Updated");
@@ -202,17 +266,54 @@ namespace Nop.Plugin.Shipping.Correios.Controllers
             if (String.IsNullOrEmpty(cep))
                 throw new ArgumentNullException("cep");
 
+            if (cep.Trim().Length != 8)
+                throw new ArgumentNullException("cep");
+
             var binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
 
             var address = new EndpointAddress("https://apps.correios.com.br/SigepMasterJPA/AtendeClienteService/AtendeCliente?wsdl");
 
             wsAtendeClienteService.AtendeClienteClient ws = new wsAtendeClienteService.AtendeClienteClient(binding, address);
 
-            wsAtendeClienteService.enderecoERP dados = ws.consultaCEP(cep);
+            wsAtendeClienteService.enderecoERP dados = new wsAtendeClienteService.enderecoERP();
+
+            try
+            {
+                dados = ws.consultaCEP(cep);
+
+
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Plugin.Shipping.Correios: Erro busca cep " + cep, ex);
+                throw ex;
+            }
+            finally
+            {
+                ws.Close();
+            }
+
+
+            if (!string.IsNullOrWhiteSpace(dados.uf))
+            {
+                Country country = _countryService.GetCountryByTwoLetterIsoCode("BR");
+
+                if (country != null && country.Id > 0)
+                {
+                    StateProvince stateProvince = _stateProvinceService.GetStateProvinceByAbbreviation(country.Id, dados.uf);
+
+                    if (stateProvince != null)
+                    {
+                        dados.uf = stateProvince.Id.ToString();
+                    }
+                }
+            }
 
             return Json(dados, JsonRequestBehavior.AllowGet);
+
+
         }
-
-
+        
+       
     }
 }

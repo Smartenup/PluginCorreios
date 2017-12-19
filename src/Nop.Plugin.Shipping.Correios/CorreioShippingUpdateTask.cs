@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using Nop.Plugin.Shipping.Correios.Domain;
+﻿using Nop.Plugin.Shipping.Correios.Domain.Serialization;
 using Nop.Services.Logging;
 using Nop.Services.Orders;
 using Nop.Services.Tasks;
@@ -7,8 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.ServiceModel;
-using System.ServiceModel.Description;
-using System.ServiceModel.Dispatcher;
 using System.Xml.Serialization;
 
 namespace Nop.Plugin.Shipping.Correios

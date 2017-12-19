@@ -15,7 +15,9 @@ using Nop.Services.Localization;
 using Nop.Services.Logging;
 using Nop.Services.Orders;
 using Nop.Services.Shipping;
+using Nop.Services.Shipping.Tracking;
 using Nop.Services.Tasks;
+using Nop.Web.Framework.Menu;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -30,8 +32,8 @@ namespace Nop.Plugin.Shipping.Correios
     /// <summary>
     /// Correios computation method.
     /// </summary>
-    public class CorreiosComputationMethod : BasePlugin, IShippingRateComputationMethod
-	{
+    public class CorreiosComputationMethod : BasePlugin, IShippingRateComputationMethod , IAdminMenuPlugin
+    {
 
         #region Constants
         private const string CODIGO_SERVICO_PAC_GRANDES_DIMENSOES = "04693";
@@ -122,7 +124,7 @@ namespace Nop.Plugin.Shipping.Correios
             }
         }
 
-        public Services.Shipping.Tracking.IShipmentTracker ShipmentTracker
+        public IShipmentTracker ShipmentTracker
         {
             get { return new CorreiosShipmentTracker(_logger, _correiosSettings); }
         }
@@ -471,6 +473,51 @@ namespace Nop.Plugin.Shipping.Correios
             }
         }
 
+        public void ManageSiteMap(SiteMapNode rootNode)
+        {
+            /**/
+            var siteMap = new XmlSiteMap();
+            siteMap.LoadFrom("~/Plugins/Shipping.Correios/sitemap.config");
+
+            //rootNode.ChildNodes.Add(siteMap.RootNode);
+
+            var siteMapNodeRoot = new SiteMapNode();
+
+            siteMapNodeRoot.SystemName = "SigepWeb";
+            siteMapNodeRoot.Title =_localizationService.GetResource("Plugins.Shippings.Correios.SIGEPWEB");
+            siteMapNodeRoot.IconClass = "fa-tags";
+            siteMapNodeRoot.Visible = true;
+
+
+            var siteMapNodePlpAberta = new SiteMapNode();
+
+            siteMapNodePlpAberta.SystemName = "PlpAberta";
+            siteMapNodePlpAberta.Title = _localizationService.GetResource("Plugins.Shippings.Correios.PLPAberta");
+            siteMapNodePlpAberta.IconClass = "fa-dot-circle-o";
+            //siteMapNodePlpAberta.ControllerName = "ShippingCorreiosPluginAdmin";
+            //siteMapNodePlpAberta.ActionName = "PLPAberta";
+            //siteMapNodePlpAberta.RouteValues = new RouteValueDictionary { { "area", "Admin" } };
+            siteMapNodePlpAberta.Visible = true;
+            siteMapNodePlpAberta.Url = "/admin/Plugins/Shipping/ShippingCorreios/PLPAberta";
+
+            var siteMapNodePlpFechada = new SiteMapNode();
+
+            siteMapNodePlpFechada.SystemName = "PlpAberta";
+            siteMapNodePlpFechada.Title = _localizationService.GetResource("Plugins.Shippings.Correios.PLPFechada");
+            siteMapNodePlpFechada.IconClass = "fa-dot-circle-o";
+            siteMapNodePlpFechada.ControllerName = "ShippingCorreiosPluginAdmin";
+            siteMapNodePlpFechada.ActionName = "PLPAberta";
+            siteMapNodePlpFechada.RouteValues = new RouteValueDictionary { { "area", "Admin" } };
+            siteMapNodePlpFechada.Visible = true;
+            siteMapNodePlpFechada.Url = "/admin/Plugins/Shipping/ShippingCorreios/PLPAberta";
+
+            siteMapNodeRoot.ChildNodes.Add(siteMapNodePlpAberta);
+            siteMapNodeRoot.ChildNodes.Add(siteMapNodePlpFechada);
+
+            rootNode.ChildNodes.Add(siteMapNodeRoot);
+
+        }
+
         #endregion
 
         #region Utilities
@@ -641,6 +688,17 @@ namespace Nop.Plugin.Shipping.Correios
                 CepDestino = cepDestino
             };
 
+            decimal valorDeclarado = 0;
+
+            if (_correiosSettings.IncluirValorDeclarado)
+            {
+                if (subtotalBase < CorreiosServices.CONST_VALOR_DECLARADO_MINIMO)
+                    valorDeclarado = CorreiosServices.CONST_VALOR_DECLARADO_MINIMO;
+                else
+                    valorDeclarado = subtotalBase;
+            }
+
+
             if ((!IsPackageTooHeavy(weight)) && (!IsPackageTooLarge(length, height, width, _correiosSettings.CarrierServicesOffered)))
             {
                 correiosCalculation.Servicos = GetServiceNotTooHeavyTooLarge(_correiosSettings.CarrierServicesOffered);
@@ -653,8 +711,8 @@ namespace Nop.Plugin.Shipping.Correios
 					Diametro = 0,
 					FormatoPacote = true,
 					Peso = weight,
-					ValorDeclarado = (_correiosSettings.IncluirValorDeclarado ? subtotalBase : 0)
-				});
+					ValorDeclarado = valorDeclarado
+                });
 
 				return correiosCalculation.Calculate();
 			}
@@ -668,7 +726,7 @@ namespace Nop.Plugin.Shipping.Correios
 					Diametro = 0,
 					FormatoPacote = true,
 					Peso = weight,
-					ValorDeclarado = (_correiosSettings.IncluirValorDeclarado ? subtotalBase : 0)
+					ValorDeclarado = valorDeclarado
                 });
 
 				var result = correiosCalculation.Calculate();
@@ -1161,6 +1219,8 @@ namespace Nop.Plugin.Shipping.Correios
 
             return CepFinal;
         }
+
+
 
 
         #endregion

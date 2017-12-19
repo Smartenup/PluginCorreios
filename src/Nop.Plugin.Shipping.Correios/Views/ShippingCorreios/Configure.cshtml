@@ -2,10 +2,70 @@
     Layout = "";
 }
 @model Nop.Plugin.Shipping.Correios.Models.CorreiosShippingModel
+
+
 @using Nop.Web.Framework;
+@using Nop.Services;
+
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
+
+    <div class="content-header clearfix">
+        <div class="pull-right">
+            <button type="submit" name="save" class="btn bg-blue">
+                <i class="fa fa-floppy-o"></i>
+                @T("Admin.Common.Save")
+            </button>
+        </div>
+    </div>
+    @Html.ValidationSummary(false)
+
+    <script>
+        $(document).ready(function () {
+            bindBootstrapTabSelectEvent('correiossettings-edit');
+        });
+    </script>
+
+
+    <div class="content">
+        <div class="form-horizontal">
+
+            <div id="correiossettings-edit" class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    @Html.RenderBootstrapTabHeader("tab-calculo-frete", @T("Plugins.Shippings.Correios.CalculoFrete"), true)
+                    @Html.RenderBootstrapTabHeader("tab-frete-gratis", @T("Plugins.Shippings.Correios.FreteGratis"))
+                    @Html.RenderBootstrapTabHeader("tab-rastreamento", @T("Plugins.Shippings.Correios.Rastreamento"))
+                    @Html.RenderBootstrapTabHeader("tab-sigepweb", @T("Plugins.Shippings.Correios.SIGEPWEB"))
+                </ul>
+                <div class="tab-content">
+                    @Html.RenderBootstrapTabContent("tab-calculo-frete", @TabCalculoFrete(), true)
+                    @Html.RenderBootstrapTabContent("tab-frete-gratis", @TabFreteGratis())
+                    @Html.RenderBootstrapTabContent("tab-rastreamento", @TabRastreamento())
+                    @Html.RenderBootstrapTabContent("tab-sigepweb", @TabSIGEPWEB())
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {
+        //custom tabs
+        var eventMessage = new Nop.Web.Framework.Events.AdminTabStripCreated(this.Html, "correiossettings-edit");
+        Nop.Core.Infrastructure.EngineContext.Current.Resolve<Nop.Services.Events.IEventPublisher>().Publish(eventMessage);
+        foreach (var eventBlock in eventMessage.BlocksToRender)
+        {
+            @eventBlock
+        }
+    }
+
+    @*save selected tab name*@
+    <input type="hidden" id="selected-tab-name" name="selected-tab-name" value="@(Html.GetSelectedTabName())">
+}
+
+@helper TabCalculoFrete()
+{
+
     <div class="panel-group">
         <div class="panel panel-default">
             <div class="panel-body">
@@ -36,24 +96,7 @@
                         @Html.ValidationMessageFor(model => model.Senha)
                     </div>
                 </div>
-                <div class="form-group">
-                    <div class="col-md-3">
-                        @Html.NopLabelFor(model => model.UsuarioServicoRastreamento)
-                    </div>
-                    <div class="col-md-9">
-                        @Html.EditorFor(model => model.UsuarioServicoRastreamento)
-                        @Html.ValidationMessageFor(model => model.UsuarioServicoRastreamento)
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-3">
-                        @Html.NopLabelFor(model => model.SenhaServicoRastreamento)
-                    </div>
-                    <div class="col-md-9">
-                        @Html.EditorFor(model => model.SenhaServicoRastreamento)
-                        @Html.ValidationMessageFor(model => model.SenhaServicoRastreamento)
-                    </div>
-                </div>
+
                 <div class="form-group">
                     <div class="col-md-3">
                         <div class="label-wrapper">
@@ -133,6 +176,18 @@
                         @Html.ValidationMessageFor(model => model.MostrarTempoFabricacao)
                     </div>
                 </div>
+                
+
+            </div>
+        </div>
+    </div>
+}
+
+@helper TabFreteGratis()
+{
+    <div class="panel-group">
+        <div class="panel panel-default">
+            <div class="panel-body">
                 <div class="form-group">
                     <div class="col-md-3">
                         @Html.NopLabelFor(model => model.FreteGratis)
@@ -195,7 +250,7 @@
                         @Html.NopLabelFor(model => model.ServicoFreteGratis)
                     </div>
                     <div class="col-md-9">
-                        
+
                         @Html.NopDropDownList("ServicoFreteGratis", Model.AvailableCarrierServicesList)
 
                     </div>
@@ -272,16 +327,210 @@
                         <label>** Em caso de dúvidas, problemas ou sugestões, entre em contato com: <a href="mailto:pedrousinskas@smartenup.com.br"> pedrousinskas@smartenup.com.br</a></label>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+}
+
+@helper TabRastreamento()
+{
+
+    <div class="panel-group">
+        <div class="panel panel-default">
+            <div class="panel-body">
+
                 <div class="form-group">
                     <div class="col-md-3">
-                        &nbsp;
+                        @Html.NopLabelFor(model => model.UsuarioServicoRastreamento)
                     </div>
                     <div class="col-md-9">
-                        <input type="submit" name="save" class="btn bg-blue" value="@T("Admin.Common.Save")" />
+                        @Html.EditorFor(model => model.UsuarioServicoRastreamento)
+                        @Html.ValidationMessageFor(model => model.UsuarioServicoRastreamento)
                     </div>
                 </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        @Html.NopLabelFor(model => model.SenhaServicoRastreamento)
+                    </div>
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.SenhaServicoRastreamento)
+                        @Html.ValidationMessageFor(model => model.SenhaServicoRastreamento)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
 
 
+@helper TabSIGEPWEB()
+{
+    <div class="panel-group">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        @Html.NopLabelFor(model => model.NumeroCNPJ)
+                    </div>
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.NumeroCNPJ)
+                        @Html.ValidationMessageFor(model => model.NumeroCNPJ)
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="col-md-3">
+                        @Html.NopLabelFor(model => model.CartaoPostagemSIGEP)
+                    </div>
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.CartaoPostagemSIGEP)
+                        @Html.ValidationMessageFor(model => model.CartaoPostagemSIGEP)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        @Html.NopLabelFor(model => model.NumeroContratoSIGEP)
+                    </div>
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.NumeroContratoSIGEP)
+                        @Html.ValidationMessageFor(model => model.NumeroContratoSIGEP)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        @Html.NopLabelFor(model => model.CodigoAdministrativoSIGEP)
+                    </div>
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.CodigoAdministrativoSIGEP)
+                        @Html.ValidationMessageFor(model => model.CodigoAdministrativoSIGEP)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        @Html.NopLabelFor(model => model.UsuarioSIGEP)
+                    </div>
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.UsuarioSIGEP)
+                        @Html.ValidationMessageFor(model => model.UsuarioSIGEP)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        @Html.NopLabelFor(model => model.SenhaSIGEP)
+                    </div>
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.SenhaSIGEP)
+                        @Html.ValidationMessageFor(model => model.SenhaSIGEP)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        @Html.NopLabelFor(model => model.Diretoria)
+                    </div>
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.Diretoria)
+                        @Html.ValidationMessageFor(model => model.Diretoria)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        @Html.NopLabelFor(model => model.NomeRemetenteSIGEP)
+                    </div>
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.NomeRemetenteSIGEP)
+                        @Html.ValidationMessageFor(model => model.NomeRemetenteSIGEP)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        @Html.NopLabelFor(model => model.LogradouroRemetenteSIGEP)
+                    </div>
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.LogradouroRemetenteSIGEP)
+                        @Html.ValidationMessageFor(model => model.LogradouroRemetenteSIGEP)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        @Html.NopLabelFor(model => model.NumeroRemetenteSIGEP)
+                    </div>
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.NumeroRemetenteSIGEP)
+                        @Html.ValidationMessageFor(model => model.NumeroRemetenteSIGEP)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        @Html.NopLabelFor(model => model.ComplementoRemetenteSIGEP)
+                    </div>
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.ComplementoRemetenteSIGEP)
+                        @Html.ValidationMessageFor(model => model.ComplementoRemetenteSIGEP)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        @Html.NopLabelFor(model => model.BairroRemetenteSIGEP)
+                    </div>
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.BairroRemetenteSIGEP)
+                        @Html.ValidationMessageFor(model => model.BairroRemetenteSIGEP)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        @Html.NopLabelFor(model => model.TelefoneRemetenteSIGEP)
+                    </div>
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.TelefoneRemetenteSIGEP)
+                        @Html.ValidationMessageFor(model => model.TelefoneRemetenteSIGEP)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        @Html.NopLabelFor(model => model.EmailRemetenteSIGEP)
+                    </div>
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.EmailRemetenteSIGEP)
+                        @Html.ValidationMessageFor(model => model.EmailRemetenteSIGEP)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        @Html.NopLabelFor(model => model.UsarPesoPadraoSIGEP)
+                    </div>
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.UsarPesoPadraoSIGEP)
+                        @Html.ValidationMessageFor(model => model.UsarPesoPadraoSIGEP)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        @Html.NopLabelFor(model => model.PesoPadraoSIGEP)
+                    </div>
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.PesoPadraoSIGEP)
+                        @Html.ValidationMessageFor(model => model.PesoPadraoSIGEP)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        @Html.NopLabelFor(model => model.UsarDimensoesMinimasSIGEP)
+                    </div>
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.UsarDimensoesMinimasSIGEP)
+                        @Html.ValidationMessageFor(model => model.UsarDimensoesMinimasSIGEP)
+                    </div>
+                </div>                
+                <div class="form-group">
+                    <div class="col-md-3">
+                        @Html.NopLabelFor(model => model.AmbienteHomologacao)
+                    </div>
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.AmbienteHomologacao)
+                        @Html.ValidationMessageFor(model => model.AmbienteHomologacao)
+                    </div>
+                </div>
             </div>
         </div>
     </div>

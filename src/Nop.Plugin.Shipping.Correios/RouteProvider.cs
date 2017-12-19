@@ -18,7 +18,41 @@ namespace Nop.Plugin.Shipping.Correios
             routes.MapRoute("Plugin.Shipping.Correios.GetAddresByCEP",
                             "Plugins/ShippingCorreios/GetAddresByCEP",
                             new { controller = "ShippingCorreios", action = "GetAddresByCEP" },
-                            new[] { "Nop.Plugin.Shipping.Correios.Controllerss" });
+                            new[] { "Nop.Plugin.Shipping.Correios.Controllers" });
+
+            routes.MapRoute("Plugin.Shipping.Correios.PdfEtiquetaSelected",
+                            "admin/Plugins/Shipping/ShippingCorreios/PdfEtiquetaSelected",
+                            new { controller = "ShippingCorreiosPluginAdmin", action = "PdfEtiquetaSelected" },
+                            new[] { "Nop.Plugin.Shipping.Correios.Controllers.Admin" });
+
+            routes.MapRoute("Plugin.Shipping.Correios.PdfEtiquetaAll",
+                            "admin/Plugins/Shipping/ShippingCorreios/PdfEtiquetaAll",
+                            new { controller = "ShippingCorreiosPluginAdmin", action = "PdfEtiquetaAll" },
+                            new[] { "Nop.Plugin.Shipping.Correios.Controllers.Admin" });
+
+            routes.MapRoute("Plugin.Shipping.Correios.PLPAbertaItemDelete",
+                            "admin/Plugins/Shipping/ShippingCorreios/PLPAbertaItemDelete",
+                            new { controller = "ShippingCorreiosPluginAdmin", action = "PLPAbertaItemDelete" },
+                            new[] { "Nop.Plugin.Shipping.Correios.Controllers.Admin" });
+
+            routes.MapRoute("Plugin.Shipping.Correios.PLPAberta",
+                            "admin/Plugins/Shipping/ShippingCorreios/PLPAberta",
+                            new { controller = "ShippingCorreiosPluginAdmin", action = "PLPAberta" },
+                            new[] { "Nop.Plugin.Shipping.Correios.Controllers.Admin" });
+
+            routes.MapRoute("Plugin.Shipping.Correios.PLPAbertaListSelect",
+                            "admin/Plugins/Shipping/ShippingCorreios/PLPAbertaListSelect",
+                            new { controller = "ShippingCorreiosPluginAdmin", action = "PLPAbertaListSelect" },
+                            new[] { "Nop.Plugin.Shipping.Correios.Controllers.Admin" });
+
+
+            routes.MapRoute("Plugin.Shipping.Correios.Fechada",
+                            "admin/Plugins/Shipping/ShippingCorreios/PLPFechada",
+                            new { controller = "ShippingCorreiosPluginAdmin", action = "PLPFechada" },
+                            new[] { "Nop.Plugin.Shipping.Correios.Controllers.Admin" });
+
+
+
         }
         public int Priority
         {

@@ -1,12 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using Nop.Web.Framework.Mvc;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
 namespace Nop.Plugin.Shipping.Correios.Models
 {
-    public class CorreiosShippingModel
-	{
+    public class CorreiosShippingModel : BaseNopModel
+    {
 		public CorreiosShippingModel()
 		{
 			CarrierServicesOffered = new List<string>();
@@ -16,10 +17,12 @@ namespace Nop.Plugin.Shipping.Correios.Models
             SelectedCustomerRoleIds = new List<int>();
         }
 
+        #region Calculo Frete
+
         [DisplayName("URL")]
 		public string Url { get; set; }
 
-		[DisplayName("Código da Empresa")]
+		[DisplayName("Código da empresa")]
 		public string CodigoEmpresa { get; set; }
 
 		[DisplayName("Senha")]
@@ -28,13 +31,13 @@ namespace Nop.Plugin.Shipping.Correios.Models
 		[DisplayName("Custo adicional de envio")]
 		public string CustoAdicionalEnvio { get; set; }
 
-		[DisplayName("Mão Própria?")]
+		[DisplayName("Mão própria?")]
 		public bool IncluirMaoPropria { get; set; }
 
-		[DisplayName("Valor Declarado?")]
+		[DisplayName("Valor declarado?")]
 		public bool IncluirValorDeclarado { get; set; }
 
-		[DisplayName("Aviso de Recebimento?")]
+		[DisplayName("Aviso de recebimento?")]
 		public bool IncluirAvisoRecebimento { get; set; }
 
 		[DisplayName("Dias uteis adicionais ao prazo")]
@@ -46,41 +49,111 @@ namespace Nop.Plugin.Shipping.Correios.Models
 
         public string[] CheckedCarrierServices { get; set; }
 
-        [DisplayName("Utiliza Frete Grátis?")]
-        public bool FreteGratis { get; set; }
-
-        [DisplayName("Cep Inicial")]
-        public string CEPInicial { get; set; }
-
-        [DisplayName("Cep Final")]
-        public string CEPFinal { get; set; }
-
-        [DisplayName("Utiliza Valor Minimo")]
-        public bool UtilizaValorMinimo { get; set; }
-
-        [DisplayName("Valor Minimo")]
-        public decimal ValorMinimo { get; set; }
-
-        [DisplayName("Serviço para Frete Grátis")]
-        public string ServicoFreteGratis { get; set; }
-
-        [DisplayName("Mostrar Tempo Fabricação")]
+        [DisplayName("Mostrar tempo fabricação")]
         public bool MostrarTempoFabricacao { get; set; }
 
-        [DisplayName("Usuario Serviço Rastreamento")]
-        public string UsuarioServicoRastreamento { get; set; }
 
-        [DisplayName("Senha Serviço Rastreamento")]
-        public string SenhaServicoRastreamento { get; set; }
+        #endregion
 
+        #region Frete Gratis
+
+        [DisplayName("Utiliza frete grátis?")]
+        public bool FreteGratis { get; set; }
+
+        [DisplayName("Cep inicial")]
+        public string CEPInicial { get; set; }
+
+        [DisplayName("Cep final")]
+        public string CEPFinal { get; set; }
+
+        [DisplayName("Utiliza valor minimo")]
+        public bool UtilizaValorMinimo { get; set; }
+
+        [DisplayName("Valor minimo")]
+        public decimal ValorMinimo { get; set; }
+
+        [DisplayName("Serviço para frete grátis")]
+        public string ServicoFreteGratis { get; set; }
 
         //customer roles
-        [DisplayName("Frete Gratis não disponivel para tais Funções de Cliente")]
+        [DisplayName("Frete gratis não disponivel para tais funções de cliente")]
         public string CustomerRoleNames { get; set; }
         public List<SelectListItem> AvailableCustomerRoles { get; set; }
-        [DisplayName("Frete Gratis Exceto Funções de Cliente ")]
+        [DisplayName("Frete gratis exceto funções de cliente ")]
         [UIHint("MultiSelect")]
         public IList<int> SelectedCustomerRoleIds { get; set; }
+
+
+
+        #endregion
+
+        #region Serviço Rastreamento
+
+
+        [DisplayName("Usuario serviço rastreamento")]
+        public string UsuarioServicoRastreamento { get; set; }
+
+        [DisplayName("Senha serviço rastreamento")]
+        public string SenhaServicoRastreamento { get; set; }
+
+        #endregion
+
+        #region  SIGEPWEB
+
+        [DisplayName("Cartão postagem")]
+        public string CartaoPostagemSIGEP { get; set; }
+
+        [DisplayName("Número contrato")]
+        public string NumeroContratoSIGEP { get; set; }
+
+        [DisplayName("Código administrativo")]
+        public string CodigoAdministrativoSIGEP { get; set; }
+
+        [DisplayName("Usuário")]
+        public string UsuarioSIGEP { get; set; }
+
+        [DisplayName("Senha")]
+        public string SenhaSIGEP { get; set; }
+
+        [DisplayName("Diretoria")]
+        public string Diretoria { get; set; }
+
+        [DisplayName("Logradouro remetente")]
+        public string LogradouroRemetenteSIGEP { get; set; }
+
+        [DisplayName("Número remetente")]
+        public string NumeroRemetenteSIGEP { get; set; }
+
+        [DisplayName("Complemento remetente")]
+        public string ComplementoRemetenteSIGEP { get; set; }
+
+        [DisplayName("Bairro remetente")]
+        public string BairroRemetenteSIGEP { get; set; }
+
+        [DisplayName("E-mail remetente")]
+        public string EmailRemetenteSIGEP { get; set; }
+
+        [DisplayName("Usar peso padrão")]
+        public bool UsarPesoPadraoSIGEP { get; set; }
+
+        [DisplayName("Peso padrão PLP (gramas)")]
+        public string PesoPadraoSIGEP { get; set; }
+
+        [DisplayName("Usar dimensões minimas")]
+        public bool UsarDimensoesMinimasSIGEP { get; set; }
+
+        [DisplayName("Número do CNPJ")]
+        public string NumeroCNPJ { get; set; }
+
+        [DisplayName("Ambiente de Homologação")]
+        public bool AmbienteHomologacao { get; set; }
+
+        [DisplayName("Nome Remetente")]
+        public string NomeRemetenteSIGEP { get; set; }
+
+        [DisplayName("Telefone Remetente")]
+        public string TelefoneRemetenteSIGEP { get; set; }
+        #endregion
 
     }
 }
