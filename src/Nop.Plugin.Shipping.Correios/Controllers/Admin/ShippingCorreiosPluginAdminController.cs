@@ -1,9 +1,12 @@
 ﻿using Nop.Core;
+using Nop.Core.Domain.Customers;
 using Nop.Core.Domain.Orders;
 using Nop.Core.Domain.Shipping;
 using Nop.Plugin.Shipping.Correios.Domain;
 using Nop.Plugin.Shipping.Correios.Models;
 using Nop.Plugin.Shipping.Correios.Services;
+using Nop.Services.Customers;
+using Nop.Services.Helpers;
 using Nop.Services.Orders;
 using Nop.Services.Shipping;
 using Nop.Web.Framework.Controllers;
@@ -28,6 +31,8 @@ namespace Nop.Plugin.Shipping.Correios.Controllers.Admin
         private readonly ISigepWebService _sigepWebService;
         private readonly IPdfSigepWebService _pdfSigepWebService;
         private readonly ISigepWebPlpService _sigepWebPlpService;
+        private readonly IDateTimeHelper _dateTimeHelper;
+        private readonly ICustomerService _customerService;
 
 
         public ShippingCorreiosPluginAdminController(
@@ -35,17 +40,82 @@ namespace Nop.Plugin.Shipping.Correios.Controllers.Admin
             IShipmentService shipmentService,
             ISigepWebService sigepWebService,
             IPdfSigepWebService pdfSigepWebService,
-            ISigepWebPlpService sigepWebPlpService)
+            ISigepWebPlpService sigepWebPlpService,
+            IDateTimeHelper dateTimeHelper,
+            ICustomerService customerService)
         {
             _orderService = orderService;
             _shipmentService = shipmentService;
             _sigepWebService = sigepWebService;
             _pdfSigepWebService = pdfSigepWebService;
             _sigepWebPlpService = sigepWebPlpService;
+            _dateTimeHelper = dateTimeHelper;
+            _customerService = customerService;
         }
 
 
 
+        public ActionResult PLPFechada()
+        {
+            var model = new PLPFechadaSearchModel();
+
+            return View("~/Plugins/Shipping.Correios/Views/ShippingCorreios/PLPFechada.cshtml", model);
+
+        }
+
+        public ActionResult PLPFechadaList(DataSourceRequest command, PLPFechadaSearchModel model)
+        {
+
+            DateTime? dataInicioValue = (model.DataInicio == null) ? null
+                : (DateTime?)_dateTimeHelper.ConvertToUtcTime(model.DataInicio.Value, _dateTimeHelper.CurrentTimeZone);
+
+            DateTime? dataFinalValue = (model.DataFinal == null) ? null
+                            : (DateTime?)_dateTimeHelper.ConvertToUtcTime(model.DataFinal.Value, _dateTimeHelper.CurrentTimeZone).AddDays(1);
+
+            var plps = _sigepWebService.ProcurarPlp(PlpSigepWebStatus.Fechada, dataInicioValue, dataFinalValue, 
+                model.NumeroPedido, pageIndex: command.Page - 1, pageSize: command.PageSize);
+
+            var gridModel = new DataSourceResult
+            {
+                Data = plps.Select(x =>
+                {
+                    Customer customer = _customerService.GetCustomerById(x.CustomerId);
+
+                    return new PLPFechadaResultModel
+                    {
+                        Id = x.Id,
+                        CorreiosId = x.PlpSigepWebCorreiosId.Value,
+                        DataFechamento = _dateTimeHelper.ConvertToUserTime(x.FechamentoOnUtc.Value, DateTimeKind.Utc),
+                        QuantidadeObjetos = x.PlpSigepWebShipments.Count(),
+                        UsuarioFechamento = customer.GetFullName()
+                    };
+                }),
+                Total = plps.TotalCount
+            };
+
+            return new JsonResult
+            {
+                Data = gridModel
+            };
+
+        }
+
+        public ActionResult PdfFechamento(int id)
+        {
+            PlpSigepWeb plpSigepWeb = _sigepWebPlpService.ObterPlp(id);
+
+            ///Imprimir o resumo da PLP
+            byte[] bytes;
+            using (var stream = new MemoryStream())
+            {
+                _pdfSigepWebService.PrintFechamentoToPdf(stream, plpSigepWeb);
+                bytes = stream.ToArray();
+            }
+
+            return File(bytes, MimeTypes.ApplicationPdf, string.Format("plp{0}.pdf", plpSigepWeb.PlpSigepWebCorreiosId));
+
+        }
+        
 
 
         public ActionResult PLPAberta()
@@ -65,7 +135,7 @@ namespace Nop.Plugin.Shipping.Correios.Controllers.Admin
                 throw new ArgumentException("Nenhum item de plp encontrado com o id especificado");
 
             ///Liberar a etiqueta
-            _sigepWebService.UpdateEtiquetaCorreios(shipmentPlp.Etiqueta);
+            _sigepWebService.UpdateEtiqueta(shipmentPlp.Etiqueta);
 
             Shipment shipment = _shipmentService.GetShipmentById(shipmentPlp.ShipmentId);
 
@@ -120,11 +190,6 @@ namespace Nop.Plugin.Shipping.Correios.Controllers.Admin
         }
 
 
-
-        //Método de Fechar a PLP
-        //Cria o xml dos pedidos selecionado
-        //Solicita a criação do PLP nos correios
-        //Salva o xml gerado, o id do correios e atualiza o status para fechado
 
 
         public ActionResult PLPAbertaListSelect(DataSourceRequest command, PLPAbertaSearchModel model)
@@ -226,20 +291,13 @@ namespace Nop.Plugin.Shipping.Correios.Controllers.Admin
         public ActionResult PLPFechar(PLPAbertaSearchModel model)
         {
 
+            _sigepWebPlpService.VerificarStatusCartaoPostegem();
+
             //Fechar a PLP
             PlpSigepWeb plpSigepWeb =_sigepWebPlpService.FecharPlp();
 
-            //PlpSigepWeb plpSigepWeb = _sigepWebPlpService.ObterPlp(4);
 
-            ///Imprimir o resumo da PLP
-            byte[] bytes;
-            using (var stream = new MemoryStream())
-            {
-                _pdfSigepWebService.PrintFechamentoToPdf(stream, plpSigepWeb);
-                bytes = stream.ToArray();
-            }
-
-            return File(bytes, MimeTypes.ApplicationPdf, string.Format("plp{0}.pdf", plpSigepWeb.PlpSigepWebCorreiosId));
+            return PLPAberta();            
         }
 
 

@@ -1,4 +1,6 @@
-﻿using Nop.Plugin.Shipping.Correios.Domain;
+﻿using Nop.Core;
+using Nop.Plugin.Shipping.Correios.Domain;
+using System;
 using System.Collections.Generic;
 
 namespace Nop.Plugin.Shipping.Correios.Services
@@ -23,9 +25,13 @@ namespace Nop.Plugin.Shipping.Correios.Services
 
         IList<PlpSigepWebShipment> GetShipmentsByIds(int[] plpSigepWebShimentId);
 
-        void UpdateEtiquetaCorreios(PlpSigepWebEtiqueta etiqueta);
+        void UpdateEtiqueta(PlpSigepWebEtiqueta etiqueta);
 
-        void InsertEtiquetaCorreios(PlpSigepWebEtiqueta etiqueta);
+        void InsertEtiqueta(PlpSigepWebEtiqueta etiqueta);
+
+        IPagedList<PlpSigepWeb> ProcurarPlp(PlpSigepWebStatus status, DateTime? dataFechamentoInicial = null, 
+            DateTime? dataFechamentoFinal = null, int pedidoId = 0,
+            int pageIndex = 0, int pageSize = int.MaxValue);
 
     }
 }

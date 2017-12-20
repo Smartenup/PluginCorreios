@@ -77,7 +77,7 @@ namespace Nop.Plugin.Shipping.Correios.Services
             doc.Open();
 
             var tableMaster = new PdfPTable(1);
-            var pointsValue = Utilities.MillimetersToPoints(212.72f);
+            var pointsValue = Utilities.MillimetersToPoints(208f);
 
             tableMaster.TotalWidth = pointsValue;
             //fix the absolute width of the table
@@ -104,7 +104,7 @@ namespace Nop.Plugin.Shipping.Correios.Services
         private PdfPTable ObterTabelaLinhaPicotada()
         {
             var arial9 = FontFactory.GetFont("Arial", 9, Font.NORMAL);
-            var pointsValue = Utilities.MillimetersToPoints(212);
+            var pointsValue = Utilities.MillimetersToPoints(208);
 
 
             var fechamentoTable = new PdfPTable(1);
@@ -139,7 +139,7 @@ namespace Nop.Plugin.Shipping.Correios.Services
             var arial10Bold = FontFactory.GetFont("Arial", 10, Font.BOLD, BaseColor.BLACK);
             var arial9Bold = FontFactory.GetFont("Arial", 9, Font.BOLD, BaseColor.BLACK);
             var arial9 = FontFactory.GetFont("Arial", 9, Font.NORMAL, BaseColor.BLACK);
-            var pointsValue = Utilities.MillimetersToPoints(200);
+            var pointsValue = Utilities.MillimetersToPoints(208);
 
             var fechamentoTable = new PdfPTable(3);            
             fechamentoTable.TotalWidth = pointsValue;
@@ -300,7 +300,7 @@ namespace Nop.Plugin.Shipping.Correios.Services
 
         private PdfPTable ObterCabecalhoPlpFechamento()
         {
-            var pointsValue = Utilities.MillimetersToPoints(200f);
+            var pointsValue = Utilities.MillimetersToPoints(208f);
             var pointsValue20 = Utilities.MillimetersToPoints(50f);
             var pointsValue50 = Utilities.MillimetersToPoints(50f);
 

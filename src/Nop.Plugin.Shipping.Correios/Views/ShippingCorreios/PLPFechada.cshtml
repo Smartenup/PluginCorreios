@@ -2,7 +2,7 @@
     Layout = "_AdminLayout";
 }
 
-@model Nop.Plugin.Shipping.Correios.Models.PLPAbertaSearchModel
+@model Nop.Plugin.Shipping.Correios.Models.PLPFechadaSearchModel
 
 @using Nop.Web.Framework;
 @using Nop.Services;
@@ -34,21 +34,36 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <div class="col-md-4">
-                                        @Html.NopLabelFor(model => model.OrdersIs)
+                                        @Html.NopLabelFor(model => model.DataInicio)
                                     </div>
                                     <div class="col-md-8">
-                                        @Html.NopEditorFor(model => model.OrdersIs)
+                                        @Html.NopEditorFor(model => model.DataInicio)
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-4">
+                                        @Html.NopLabelFor(model => model.DataFinal)
+                                    </div>
+                                    <div class="col-md-8">
+                                        @Html.NopEditorFor(model => model.DataFinal)
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-4">
+                                        @Html.NopLabelFor(model => model.NumeroPedido)
+                                    </div>
+                                    <div class="col-md-8">
+                                        @Html.NopEditorFor(model => model.NumeroPedido)
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-7 col-md-offset-5">
-                                <button type="button" id="adicionar-plp" class="btn bg-blue">
-                                    <i class="fa fa-plus-square"></i>
-                                    @T("Plugins.Shippings.Correios.Adicionar")
+                                <button type="button" id="search-plps" class="btn btn-primary btn-search">
+                                    <i class="fa fa-search"></i>
+                                    @T("Admin.Common.Search")
                                 </button>
-                                
                             </div>
                         </div>
                     </div>
@@ -56,7 +71,7 @@
 
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <div id="plpaberta-grid"></div>
+                        <div id="plpfechada-grid"></div>
 
                         <script>
                             $(document).ready(function () {
@@ -65,35 +80,16 @@
                                         type: "json",
                                         transport: {
                                             read: {
-                                                url: "/admin/Plugins/Shipping/ShippingCorreios/PLPAbertaListSelect",
+                                                url: "/admin/Plugins/Shipping/ShippingCorreios/PLPFechadaList",
                                                 type: "POST",
                                                 dataType: "json",
                                                 data: additionalData
                                             },
-                                            destroy: {
-                                                url: "/admin/Plugins/Shipping/ShippingCorreios/PLPAbertaItemDelete",
-                                                type: "POST",
-                                                dataType: "json",
-                                                data: addAntiForgeryToken
-                                            }
                                         },
                                         schema: {
                                             data: "Data",
                                             total: "Total",
-                                            errors: "Errors",
-                                            model: {
-                                                id: "Id",
-                                                fields: {
-                                                    TrackingNumber: { editable: false, type: "string" },
-                                                    OrderId: { editable: false, type: "number" },
-                                                    NomeDestinatario: { editable: false, type: "string" },
-                                                    CepDestinatario: { editable: false, type: "string" },
-                                                    Peso: { editable: false, type: "number" },
-                                                    ValorDeclarado: { editable: false, type: "number" },
-                                                    ValorFrete: { editable: false, type: "number" },
-                                                    Id: { editable: false, type: "number" }
-                                                }
-                                            }
+                                            errors: "Errors"
                                         },
                                         error: function(e) {
                                             display_kendoui_grid_error(e);
@@ -110,52 +106,35 @@
                                         pageSizes: [@(gridPageSizes)]
                                     },
                                     //details grid
-                                    
                                     scrollable: false,
-                                    dataBound: onDataBound,
                                     columns: [{
                                         field: "Id",
-                                        headerTemplate: "<input id='mastercheckbox' type='checkbox'/>",
-                                        headerAttributes: { style: "text-align:center" },
-                                        attributes: { style: "text-align:center" },
-                                        template: "<input type='checkbox' value='#=Id#' class='checkboxGroups'/>",
+                                        title: "@T("Plugins.Shippings.Correios.PLPIDNop")",
                                         width: 50
                                     }, {
+                                        field: "CorreiosId",
+                                        title: "@T("Plugins.Shippings.Correios.PLPCorreiosId")",
+                                        width: 100
+                                    }, {
+                                        field: "DataFechamento",
+                                        title: "@T("Plugins.Shippings.Correios.DataFechamento")",
+                                        width: 150,
+                                        type: "date",
+                                        format: "{0:G}"
+                                    }, {
+                                        field: "QuantidadeObjetos",
+                                        title: "@T("Plugins.Shippings.Correios.QuantidadeObjetos")",
+                                        width: 100
+                                    }, {
+                                        field: "UsuarioFechamento",
+                                        title: "@T("Plugins.Shippings.Correios.UsuarioFechamento")",
+                                        width: 100
+                                    },
+                                    {
                                         field: "Id",
-                                        title: "@T("Plugins.Shippings.Correios.PLPID")",
-                                        width: 50
-                                    }, {
-                                        field: "TrackingNumber",
-                                        title: "@T("Plugins.Shippings.Correios.PLPTrackingNumber")",
-                                        width: 100
-                                    }, {
-                                        field: "OrderId",
-                                        title: "@T("Plugins.Shippings.Correios.PLPOrderId")",
-                                        width: 100
-                                    }, {
-                                        field: "NomeDestinatario",
-                                        title: "@T("Plugins.Shippings.Correios.PLPNomeDestinatario")",
-                                        width: 100
-                                    }, {
-                                        field: "CepDestinatario",
-                                        title: "@T("Plugins.Shippings.Correios.PLPCEPDestinatario")",
-                                        width: 100
-                                    }, {
-                                        field: "Peso",
-                                        title: "@T("Plugins.Shippings.Correios.PLPPeso")",
-                                        width: 100
-                                    }, {
-                                        field: "ValorDeclarado",
-                                        title: "@T("Plugins.Shippings.Correios.PLPValorDeclarado")",
-                                        width: 100
-                                    }, {
-                                        field: "ValorFrete",
-                                        title: "@T("Plugins.Shippings.Correios.PLPValorFrete")",
-                                        width: 100
-                                    }, {
-                                    command: { name: "destroy", text: "@T("Admin.Common.Delete")" },
-                                    title: "@T("Admin.Common.Delete")",
-                                        width: 100
+                                        title: "@T("Plugins.Shippings.Correios.PLPPdfFechamento")",
+                                        width: 50,
+                                        template: '<a href="PdfFechamento?id=#=Id#">@T("Plugins.Shippings.Correios.PLPPdfFechamento")</a>'
                                     }
                                     ]
                                 });
@@ -169,77 +148,28 @@
 
                 <script>
 
-                    var selectedIds = [];
 
                     $(document).ready(function () {
 
-
-
-                        $('#adicionar-plp').click(function () {
+                        $('#search-plps').click(function () {
                             //search
-                            var grid = $('#plpaberta-grid').data('kendoGrid');
+                            var grid = $('#plpfechada-grid').data('kendoGrid');
                             grid.dataSource.page(1); //new search. Set page size to 1
                             //grid.dataSource.read(); we already loaded the grid above using "page" function
-                            //clear selected checkboxes
-                            $('.checkboxGroups').attr('checked', false).change();
-                            selectedIds = [];
-                            $('#@Html.FieldIdFor(model => model.OrdersIs)').val("");
                             return false;
-                        });
-
-
-                        $('#mastercheckbox').click(function () {
-                            $('.checkboxGroups').attr('checked', $(this).is(':checked')).change();
-                        });
-
-                        //wire up checkboxes.
-                        $('#plpfechada-grid').on('change', 'input[type=checkbox][id!=mastercheckbox]', function (e) {
-                            var $check = $(this);
-                            if ($check.is(":checked") == true) {
-                                var checked = jQuery.inArray($check.val(), selectedIds);
-                                if (checked == -1) {
-                                    //add id to selectedIds.
-                                    selectedIds.push($check.val());
-                                }
-                            } else {
-                                var checked = jQuery.inArray($check.val(), selectedIds);
-                                if (checked > -1) {
-                                    //remove id from selectedIds.
-                                    selectedIds = $.grep(selectedIds, function (item, index) {
-                                        return item != $check.val();
-                                    });
-                                }
-                            }
-                            updateMasterCheckbox();
                         });
 
                     });
 
                     function additionalData(){
                                 var data = {
-                                    OrdersIs: $('#@Html.FieldIdFor(model => model.OrdersIs)').val(),
+                                    DataInicio: $('#@Html.FieldIdFor(model => model.DataInicio)').val(),
+                                    DataFinal: $('#@Html.FieldIdFor(model => model.DataFinal)').val(),
+                                    NumeroPedido: $('#@Html.FieldIdFor(model => model.NumeroPedido)').val()
                                 };
                                 addAntiForgeryToken(data);
                                 return data;
-                    }
-
-                    function onDataBound(e) {
-                        $('#plpaberta-grid input[type=checkbox][id!=mastercheckbox]').each(function () {
-                            var currentId = $(this).val();
-                            var checked = jQuery.inArray(currentId, selectedIds);
-                            //set checked based on if current checkbox's value is in selectedIds.
-                            $(this).attr('checked', checked > -1);
-                        });
-
-                        updateMasterCheckbox();
-                    }
-
-
-                    function updateMasterCheckbox() {
-                         var numChkBoxes = $('#plpaberta-grid input[type=checkbox][id!=mastercheckbox]').length;
-                         var numChkBoxesChecked = $('#plpaberta-grid input[type=checkbox][id!=mastercheckbox]:checked').length;
-                         $('#mastercheckbox').attr('checked', numChkBoxes == numChkBoxesChecked && numChkBoxes > 0);
-                    }
+                    }                
 
                 </script>
 
@@ -248,21 +178,5 @@
     </div>
 }
 
-@*Print packaging slips selected (XML). We don't use GET approach because it's limited to 2K-4K chars and won't work for large number of entities*@
-@using (Html.BeginForm("PdfEtiquetaSelected", "ShippingCorreiosPluginAdmin", FormMethod.Post, new { id = "pdf-etiqueta-selected-form" }))
-{
-    @Html.AntiForgeryToken()
-    <input type="hidden" id="selectedIds" name="selectedIds" value="" />
-}
 
-<script type="text/javascript">
-                    $(document).ready(function () {
-                        $('#pdf-etiqueta-selected').click(function (e) {
-                            e.preventDefault();
-                            var ids = selectedIds.join(",");
-                            $('#pdf-etiqueta-selected-form #selectedIds').val(ids);
-                            $('#pdf-etiqueta-selected-form').submit();
-                            return false;
-                        });
-                    });
-</script>
+

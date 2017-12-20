@@ -103,22 +103,6 @@ namespace Nop.Plugin.Shipping.Correios.Services
 
 
 
-        private IList<Shipment> ObterPedidos(PlpSigepWeb plpSigepWeb)
-        {
-            var lstShipment = new List<Shipment>();
-
-
-            foreach (var item in plpSigepWeb.PlpSigepWebShipments)
-            {
-                Shipment shipment = _shipmentService.GetShipmentById(item.ShipmentId);
-
-                lstShipment.Add(shipment);
-            }
-
-            return lstShipment;
-        }
-
-
         public PlpSigepWeb ObterPlpEmAberto()
         {
             PlpSigepWeb plpSigebWeb = _sigepWebService.GetPlp(PlpSigepWebStatus.Aberta);
@@ -133,19 +117,6 @@ namespace Nop.Plugin.Shipping.Correios.Services
         }
 
 
-
-        private PlpSigepWeb ObterNovaPLP()
-        {
-            var plp = new PlpSigepWeb();
-
-            plp.CreatedOnUtc = DateTime.UtcNow;
-            plp.CustomerId = _workContext.CurrentCustomer.Id;
-            plp.Deleted = false;
-            plp.PlpStatusId = (int)PlpSigepWebStatus.Aberta;
-            plp.XmlPLP = string.Empty;
-
-            return plp;
-        }
 
 
         public wsAtendeClienteService.clienteERP ObterClienteSigepWEB()
@@ -236,7 +207,7 @@ namespace Nop.Plugin.Shipping.Correios.Services
                 {
                     etiqueta.CodigoUtilizado = true;
 
-                    _sigepWebService.UpdateEtiquetaCorreios(etiqueta);
+                    _sigepWebService.UpdateEtiqueta(etiqueta);
 
                     return etiqueta;
                 }
@@ -402,7 +373,7 @@ namespace Nop.Plugin.Shipping.Correios.Services
 
                                         etiqueta.CodigoUtilizado = false;
 
-                                        _sigepWebService.InsertEtiquetaCorreios(etiqueta);
+                                        _sigepWebService.InsertEtiqueta(etiqueta);
 
                                         lstEtiquetas.Add(etiqueta);
                                     }
@@ -424,7 +395,33 @@ namespace Nop.Plugin.Shipping.Correios.Services
 
 
 
-       
+        private IList<Shipment> ObterPedidos(PlpSigepWeb plpSigepWeb)
+        {
+            var lstShipment = new List<Shipment>();
+
+
+            foreach (var item in plpSigepWeb.PlpSigepWebShipments)
+            {
+                Shipment shipment = _shipmentService.GetShipmentById(item.ShipmentId);
+
+                lstShipment.Add(shipment);
+            }
+
+            return lstShipment;
+        }
+        private PlpSigepWeb ObterNovaPLP()
+        {
+            var plp = new PlpSigepWeb();
+
+            plp.CreatedOnUtc = DateTime.UtcNow;
+            plp.CustomerId = _workContext.CurrentCustomer.Id;
+            plp.Deleted = false;
+            plp.PlpStatusId = (int)PlpSigepWebStatus.Aberta;
+            plp.XmlPLP = string.Empty;
+
+            return plp;
+        }
+
 
         private Dictionary<string, int> ObterServicoQuantidade(IList<Order> lstPedidos)
         {

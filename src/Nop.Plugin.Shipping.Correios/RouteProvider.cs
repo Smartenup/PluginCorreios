@@ -46,9 +46,20 @@ namespace Nop.Plugin.Shipping.Correios
                             new[] { "Nop.Plugin.Shipping.Correios.Controllers.Admin" });
 
 
-            routes.MapRoute("Plugin.Shipping.Correios.Fechada",
+            routes.MapRoute("Plugin.Shipping.Correios.PLPFechadaList",
+                            "admin/Plugins/Shipping/ShippingCorreios/PLPFechadaList",
+                            new { controller = "ShippingCorreiosPluginAdmin", action = "PLPFechadaList" },
+                            new[] { "Nop.Plugin.Shipping.Correios.Controllers.Admin" });
+
+
+            routes.MapRoute("Plugin.Shipping.Correios.PLPFechada",
                             "admin/Plugins/Shipping/ShippingCorreios/PLPFechada",
                             new { controller = "ShippingCorreiosPluginAdmin", action = "PLPFechada" },
+                            new[] { "Nop.Plugin.Shipping.Correios.Controllers.Admin" });
+
+            routes.MapRoute("Plugin.Shipping.Correios.PdfFechamento",
+                            "admin/Plugins/Shipping/ShippingCorreios/PdfFechamento",
+                            new { controller = "ShippingCorreiosPluginAdmin", action = "PdfFechamento" },
                             new[] { "Nop.Plugin.Shipping.Correios.Controllers.Admin" });
 
 

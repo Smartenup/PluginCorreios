@@ -494,22 +494,16 @@ namespace Nop.Plugin.Shipping.Correios
             siteMapNodePlpAberta.SystemName = "PlpAberta";
             siteMapNodePlpAberta.Title = _localizationService.GetResource("Plugins.Shippings.Correios.PLPAberta");
             siteMapNodePlpAberta.IconClass = "fa-dot-circle-o";
-            //siteMapNodePlpAberta.ControllerName = "ShippingCorreiosPluginAdmin";
-            //siteMapNodePlpAberta.ActionName = "PLPAberta";
-            //siteMapNodePlpAberta.RouteValues = new RouteValueDictionary { { "area", "Admin" } };
             siteMapNodePlpAberta.Visible = true;
             siteMapNodePlpAberta.Url = "/admin/Plugins/Shipping/ShippingCorreios/PLPAberta";
 
             var siteMapNodePlpFechada = new SiteMapNode();
 
-            siteMapNodePlpFechada.SystemName = "PlpAberta";
+            siteMapNodePlpFechada.SystemName = "PLPFechada";
             siteMapNodePlpFechada.Title = _localizationService.GetResource("Plugins.Shippings.Correios.PLPFechada");
             siteMapNodePlpFechada.IconClass = "fa-dot-circle-o";
-            siteMapNodePlpFechada.ControllerName = "ShippingCorreiosPluginAdmin";
-            siteMapNodePlpFechada.ActionName = "PLPAberta";
-            siteMapNodePlpFechada.RouteValues = new RouteValueDictionary { { "area", "Admin" } };
             siteMapNodePlpFechada.Visible = true;
-            siteMapNodePlpFechada.Url = "/admin/Plugins/Shipping/ShippingCorreios/PLPAberta";
+            siteMapNodePlpFechada.Url = "/admin/Plugins/Shipping/ShippingCorreios/PLPFechada";
 
             siteMapNodeRoot.ChildNodes.Add(siteMapNodePlpAberta);
             siteMapNodeRoot.ChildNodes.Add(siteMapNodePlpFechada);

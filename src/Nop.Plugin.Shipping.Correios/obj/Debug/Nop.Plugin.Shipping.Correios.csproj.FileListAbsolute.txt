@@ -62,9 +62,9 @@ C:\Users\uiska\Documents\Visual Studio 2015\Projects\nop_3.8_20161128\Presentati
 C:\Users\uiska\Documents\Visual Studio 2015\Projects\nop_3.8_20161128\Presentation\Nop.Web\Plugins\Shipping.Correios\Nop.Plugin.Shipping.Correios.dll.config
 C:\Users\uiska\Documents\Visual Studio 2015\Projects\nop_3.8_20161128\Presentation\Nop.Web\Plugins\Shipping.Correios\Nop.Plugin.Shipping.Correios.dll
 C:\Users\uiska\Documents\Visual Studio 2015\Projects\nop_3.8_20161128\Presentation\Nop.Web\Plugins\Shipping.Correios\Nop.Plugin.Shipping.Correios.pdb
-C:\Users\uiska\Documents\Visual Studio 2015\Projects\PluginCorreios\src\Nop.Plugin.Shipping.Correios\obj\Debug\Nop.Plugin.Shipping.Correios.csprojResolveAssemblyReference.cache
 C:\Users\uiska\Source\Repos\NopCommerceSmartenup_3_80\src\Presentation\Nop.Web\Plugins\Shipping.Correios\Notes.txt
 C:\Users\uiska\Source\Repos\NopCommerceSmartenup_3_80\src\Presentation\Nop.Web\Plugins\Shipping.Correios\Content\Images\logo.png
+C:\Users\uiska\Source\Repos\NopCommerceSmartenup_3_80\src\Presentation\Nop.Web\Plugins\Shipping.Correios\Content\Images\logo_correios_fechamento.PNG
 C:\Users\uiska\Source\Repos\NopCommerceSmartenup_3_80\src\Presentation\Nop.Web\Plugins\Shipping.Correios\Content\Images\PAC Grandes Volumes.PNG
 C:\Users\uiska\Source\Repos\NopCommerceSmartenup_3_80\src\Presentation\Nop.Web\Plugins\Shipping.Correios\Content\Images\pac.png
 C:\Users\uiska\Source\Repos\NopCommerceSmartenup_3_80\src\Presentation\Nop.Web\Plugins\Shipping.Correios\Content\Images\sedex 10.png
@@ -75,9 +75,11 @@ C:\Users\uiska\Source\Repos\NopCommerceSmartenup_3_80\src\Presentation\Nop.Web\P
 C:\Users\uiska\Source\Repos\NopCommerceSmartenup_3_80\src\Presentation\Nop.Web\Plugins\Shipping.Correios\Views\ShippingCorreios\PLPAberta.cshtml
 C:\Users\uiska\Source\Repos\NopCommerceSmartenup_3_80\src\Presentation\Nop.Web\Plugins\Shipping.Correios\sitemap.config
 C:\Users\uiska\Source\Repos\NopCommerceSmartenup_3_80\src\Presentation\Nop.Web\Plugins\Shipping.Correios\Description.txt
+C:\Users\uiska\Source\Repos\NopCommerceSmartenup_3_80\src\Presentation\Nop.Web\Plugins\Shipping.Correios\Views\ShippingCorreios\PLPFechada.cshtml
 C:\Users\uiska\Source\Repos\NopCommerceSmartenup_3_80\src\Presentation\Nop.Web\Plugins\Shipping.Correios\web.config
 C:\Users\uiska\Source\Repos\NopCommerceSmartenup_3_80\src\Presentation\Nop.Web\Plugins\Shipping.Correios\Nop.Plugin.Shipping.Correios.dll.config
 C:\Users\uiska\Source\Repos\NopCommerceSmartenup_3_80\src\Presentation\Nop.Web\Plugins\Shipping.Correios\Nop.Plugin.Shipping.Correios.dll
 C:\Users\uiska\Source\Repos\NopCommerceSmartenup_3_80\src\Presentation\Nop.Web\Plugins\Shipping.Correios\Nop.Plugin.Shipping.Correios.pdb
+C:\Users\uiska\Documents\Visual Studio 2015\Projects\PluginCorreios\src\Nop.Plugin.Shipping.Correios\obj\Debug\Nop.Plugin.Shipping.Correios.csprojResolveAssemblyReference.cache
 C:\Users\uiska\Documents\Visual Studio 2015\Projects\PluginCorreios\src\Nop.Plugin.Shipping.Correios\obj\Debug\Nop.Plugin.Shipping.Correios.dll
 C:\Users\uiska\Documents\Visual Studio 2015\Projects\PluginCorreios\src\Nop.Plugin.Shipping.Correios\obj\Debug\Nop.Plugin.Shipping.Correios.pdb

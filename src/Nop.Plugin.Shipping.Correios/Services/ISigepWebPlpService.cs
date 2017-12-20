@@ -1,6 +1,8 @@
-﻿using Nop.Core.Domain.Orders;
+﻿using Nop.Core;
+using Nop.Core.Domain.Orders;
 using Nop.Core.Domain.Shipping;
 using Nop.Plugin.Shipping.Correios.Domain;
+using System;
 using System.Collections.Generic;
 
 namespace Nop.Plugin.Shipping.Correios.Services
@@ -24,6 +26,8 @@ namespace Nop.Plugin.Shipping.Correios.Services
         PlpSigepWeb FecharPlp();
 
         PlpSigepWeb ObterPlp(int Id);
-        
+
+
+
     }
 }

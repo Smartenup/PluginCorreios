@@ -1,5 +1,8 @@
-﻿using Nop.Core.Data;
+﻿using Nop.Core;
+using Nop.Core.Data;
+using Nop.Core.Domain.Shipping;
 using Nop.Plugin.Shipping.Correios.Domain;
+using Nop.Services.Shipping;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,16 +15,20 @@ namespace Nop.Plugin.Shipping.Correios.Services
         private readonly IRepository<PlpSigepWeb> _plpRepository;
         private readonly IRepository<PlpSigepWebShipment> _plpShipmentRepository;
         private readonly IRepository<PlpSigepWebEtiqueta> _plpSigepWebEtiquetaRepository;
-        
+        private readonly IShipmentService _shipmentService;
+
+
 
         public SigepWebService(IRepository<PlpSigepWeb> plpRepository, 
             IRepository<PlpSigepWebShipment> plpShipmentRepository,
-            IRepository<PlpSigepWebEtiqueta> plpSigepWebEtiquetaRepository
+            IRepository<PlpSigepWebEtiqueta> plpSigepWebEtiquetaRepository,
+            IShipmentService shipmentService
             )
         {
             _plpRepository = plpRepository;
             _plpShipmentRepository = plpShipmentRepository;
             _plpSigepWebEtiquetaRepository = plpSigepWebEtiquetaRepository;
+            _shipmentService = shipmentService;
 
         }
 
@@ -85,7 +92,7 @@ namespace Nop.Plugin.Shipping.Correios.Services
 
         }
 
-        public void UpdateEtiquetaCorreios(PlpSigepWebEtiqueta etiqueta)
+        public void UpdateEtiqueta(PlpSigepWebEtiqueta etiqueta)
         {
             if (etiqueta == null)
                 throw new ArgumentNullException("etiqueta");
@@ -94,7 +101,7 @@ namespace Nop.Plugin.Shipping.Correios.Services
 
         }
 
-        public void InsertEtiquetaCorreios(PlpSigepWebEtiqueta etiqueta)
+        public void InsertEtiqueta(PlpSigepWebEtiqueta etiqueta)
         {
             if (etiqueta == null)
                 throw new ArgumentNullException("etiqueta");
@@ -142,7 +149,32 @@ namespace Nop.Plugin.Shipping.Correios.Services
             return _plpShipmentRepository.GetById(Id);
         }
 
-        
+        public IPagedList<PlpSigepWeb> ProcurarPlp(PlpSigepWebStatus status, DateTime? dataFechamentoInicial = null,
+            DateTime? dataFechamentoFinal = null, int pedidoId = 0,
+            int pageIndex = 0, int pageSize = int.MaxValue)
+        {
+            var query = _plpRepository.Table;
+            query = query.Where(o => o.PlpStatusId == (int)status);
+
+            if (dataFechamentoInicial.HasValue)
+                query = query.Where(o => dataFechamentoInicial.Value <= o.FechamentoOnUtc);
+
+            if (dataFechamentoFinal.HasValue)
+                query = query.Where(o => dataFechamentoFinal.Value >= o.FechamentoOnUtc);
+
+            if (pedidoId > 0)
+            {
+                query = query
+                    .Where(o => o.PlpSigepWebShipments
+                    .Any(shipmentplp => _shipmentService.GetShipmentById(shipmentplp.ShipmentId).OrderId == pedidoId)
+                    );
+            }
+
+            query = query.Where(o => !o.Deleted);
+            query = query.OrderByDescending(o => o.Id);
+
+            return new PagedList<PlpSigepWeb>(query, pageIndex, pageSize);
+        }
 
     }
 }

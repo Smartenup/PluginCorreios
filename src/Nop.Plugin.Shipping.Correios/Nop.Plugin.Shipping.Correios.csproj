@@ -136,6 +136,8 @@
     <Compile Include="Models\CorreiosShippingModel.cs" />
     <Compile Include="Models\PLPAbertaSearchModel.cs" />
     <Compile Include="Models\PLPAbertaResultModel.cs" />
+    <Compile Include="Models\PLPFechadaResultModel.cs" />
+    <Compile Include="Models\PLPFechadaSearchModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -184,7 +186,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\logo_correios.PNG" />
-    <Content Include="Content\Images\logo_correios_fechamento.PNG" />
+    <Content Include="Content\Images\logo_correios_fechamento.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Images\PAC Grandes Volumes.PNG">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -371,6 +375,9 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Views\ShippingCorreios\PLPFechada.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Web References\CalcPrecoPrazoWebReference\CalcPrecoPrazo.wsdl" />
     <None Include="Web References\CalcPrecoPrazoWebReference\cResultado.datasource">
       <DependentUpon>Reference.map</DependentUpon>

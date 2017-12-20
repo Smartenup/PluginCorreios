@@ -24,8 +24,6 @@ namespace Nop.Plugin.Shipping.Correios.Domain
 
         public long? PlpSigepWebCorreiosId { get; set; }
 
-        public virtual Customer Custumer { get; set; }
-
         /// <summary>
         /// Gets or sets shipments
         /// </summary>
