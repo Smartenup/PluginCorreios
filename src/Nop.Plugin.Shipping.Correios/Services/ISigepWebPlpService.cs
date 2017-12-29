@@ -27,7 +27,6 @@ namespace Nop.Plugin.Shipping.Correios.Services
 
         PlpSigepWeb ObterPlp(int Id);
 
-
-
+        PlpSigepWebEtiqueta ObterProximaEtiquetaDisponivel(string nomeServicoPublico);        
     }
 }

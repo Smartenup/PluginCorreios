@@ -134,8 +134,11 @@
     <Compile Include="Domain\Serialization\InspectorBehavior.cs" />
     <Compile Include="Domain\Serialization\MyMessageInspector.cs" />
     <Compile Include="Models\CorreiosShippingModel.cs" />
+    <Compile Include="Models\PLPAbertarResultErrorModel.cs" />
     <Compile Include="Models\PLPAbertaSearchModel.cs" />
     <Compile Include="Models\PLPAbertaResultModel.cs" />
+    <Compile Include="Models\PLPFechadaDetalheModel.cs" />
+    <Compile Include="Models\PLPFechadaDetalheItemModel.cs" />
     <Compile Include="Models\PLPFechadaResultModel.cs" />
     <Compile Include="Models\PLPFechadaSearchModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -155,6 +158,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Services\ShipmentDeletedEventConsumer.cs" />
+    <Compile Include="Services\ShipmentInsertedEventConsumer.cs" />
+    <Compile Include="Services\ShipmentUpdatedEventConsumer.cs" />
     <Compile Include="Services\SigepWebPlpService.cs" />
     <Compile Include="Services\ISigepWebPlpService.cs" />
     <Compile Include="Services\IPdfSigepWebService.cs" />
@@ -211,7 +217,10 @@
     <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.assuntoPIMaster.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.atualizaPLPResponse.datasource">
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.atualizaPagamentoNaEntregaResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.atualizaRemessaAgrupadaResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.bloquearObjetoResponse.datasource">
@@ -226,7 +235,22 @@
     <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.buscaPagamentoEntregaResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.buscaServicosAdicionaisAtivosResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.buscaServicosResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.buscaServicosValorDeclaradoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.buscaServicosXServicosAdicionaisResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.buscaTarifaValeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.calculaTarifaServicoResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.cancelarObjetoResponse.datasource">
@@ -301,7 +325,10 @@
     <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.retorno.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.retornoCancelamentoTO.datasource">
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.retornoCancelamento.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.servicoAdicionalXML.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.servicoERP.datasource">
@@ -325,6 +352,9 @@
     <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.statusPlp.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.valePostal.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.validaEtiquetaPLPResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -338,6 +368,9 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.verificaDisponibilidadeServicoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.VerificaSeTodosObjetosCanceladosResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\wsRastro\configuration91.svcinfo" />
@@ -375,6 +408,9 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Views\ShippingCorreios\PLPFechadaDetalhe.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Views\ShippingCorreios\PLPFechada.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -442,6 +478,11 @@
     <ProjectReference Include="..\..\..\..\..\..\Source\Repos\NopCommerceSmartenup_3_80\src\Presentation\Nop.Web.Framework\Nop.Web.Framework.csproj">
       <Project>{75fd4163-333c-4dd5-854d-2ef294e45d94}</Project>
       <Name>Nop.Web.Framework</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\Source\Repos\NopCommerceSmartenup_3_80\src\Presentation\Nop.Web\Administration\Nop.Admin.csproj">
+      <Project>{152c761a-dd2e-4c1f-af89-dfb2547a3bca}</Project>
+      <Name>Nop.Admin</Name>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>

@@ -2,22 +2,21 @@
     Layout = "_AdminLayout";
 }
 
-@model Nop.Plugin.Shipping.Correios.Models.PLPAbertaSearchModel
+@model Nop.Plugin.Shipping.Correios.Models.PLPFechadaDetalheModel
 
 @using Nop.Web.Framework;
 @using Nop.Services;
 @using Nop.Core.Infrastructure;
 @using Nop.Web.Framework.UI;
+@{ 
 
-@{
     var defaultGridPageSize = EngineContext.Current.Resolve<Nop.Core.Domain.Common.AdminAreaSettings>().DefaultGridPageSize;
     var gridPageSizes = EngineContext.Current.Resolve<Nop.Core.Domain.Common.AdminAreaSettings>().GridPageSizes;
 
-    ViewBag.Title = T("Plugins.Shippings.Correios.Aberta").Text;
+    ViewBag.Title = T("Plugins.Shippings.Correios.PLPFechadaDetalhe").Text;
 
-    Html.SetActiveMenuItemSystemName("PlpAberta");
+    Html.SetActiveMenuItemSystemName("PLPFechada");
 }
-
 
 @using (Html.BeginForm())
 {
@@ -25,7 +24,8 @@
 
     <div class="content-header clearfix">
         <h1 class="pull-left">
-            @T("Plugins.Shippings.Correios.PLPAberta")
+            @T("Plugins.Shippings.Correios.PLPFechadaDetalhe")
+            <small><i class="fa fa-arrow-circle-left"></i> <a href="/admin/Plugins/Shipping/ShippingCorreios/PLPFechada"> @T("Plugins.Shippings.Correios.PLPFechadaLista")</a></small>
         </h1>
         <div class="pull-right">
             <div class="btn-group">
@@ -49,10 +49,6 @@
                         </button>
                     </li>
                 </ul>
-                <button type="submit" name="pfp-fechar" class="btn bg-olive">
-                    <i class="fa fa-upload"></i>
-                    @T("Plugins.Shippings.Correios.FecharPLP")
-                </button>
             </div>
         </div>
     </div>
@@ -61,53 +57,69 @@
     <div class="content">
         <div class="form-horizontal">
             <div class="panel-group">
-                <div class="panel panel-default panel-search">
+                <div class="panel panel-default">
                     <div class="panel-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <div class="col-md-4">
-                                        @Html.NopLabelFor(model => model.OrdersIs)
-                                    </div>
-                                    <div class="col-md-8">
-                                        @Html.NopEditorFor(model => model.OrdersIs)
-                                    </div>
-                                </div>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                @Html.NopLabelFor(model => model.Id)
+                            </div>
+                            <div class="col-md-9">
+                                @Html.NopDisplayFor(model => model.Id)
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-7 col-md-offset-5">
-                                <button type="button" id="adicionar-plp" class="btn bg-blue">
-                                    <i class="fa fa-plus-square"></i>
-                                    @T("Plugins.Shippings.Correios.Adicionar")
-                                </button>
-                                
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                @Html.NopLabelFor(model => model.CorreiosId)
+                            </div>
+                            <div class="col-md-9">
+                                @Html.NopDisplayFor(model => model.CorreiosId)
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                @Html.NopLabelFor(model => model.DataFechamento)
+                            </div>
+                            <div class="col-md-9">
+                                @Html.NopDisplayFor(model => model.DataFechamento)
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                @Html.NopLabelFor(model => model.QuantidadeObjetos)
+                            </div>
+                            <div class="col-md-9">
+                                @Html.NopDisplayFor(model => model.QuantidadeObjetos)
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                @Html.NopLabelFor(model => model.UsuarioFechamento)
+                            </div>
+                            <div class="col-md-9">
+                                @Html.NopDisplayFor(model => model.UsuarioFechamento)
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <div id="plpaberta-grid"></div>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div id="plpfechadadetalhe-grid"></div>
 
-                        <script>
-                            $(document).ready(function () {
-                                $("#plpaberta-grid").kendoGrid({
+                    <script>
+                        $(document).ready(function () {
+                                var urlRead = "/admin/Plugins/Shipping/ShippingCorreios/PLPFechadaDetalheSelect?id=" + @Model.Id;
+                                $("#plpfechadadetalhe-grid").kendoGrid({
                                     dataSource: {
                                         type: "json",
                                         transport: {
                                             read: {
-                                                url: "/admin/Plugins/Shipping/ShippingCorreios/PLPAbertaListSelect",
-                                                type: "POST",
-                                                dataType: "json",
-                                                data: additionalData
-                                            },
-                                            destroy: {
-                                                url: "/admin/Plugins/Shipping/ShippingCorreios/PLPAbertaItemDelete",
+                                                url: urlRead,
                                                 type: "POST",
                                                 dataType: "json",
                                                 data: addAntiForgeryToken
+
                                             }
                                         },
                                         schema: {
@@ -117,23 +129,7 @@
                                             model: {
                                                 id: "Id",
                                                 fields: {
-                                                    TrackingNumber: { editable: false, type: "string" },
-                                                    OrderId: { editable: false, type: "number" },
-                                                    NomeDestinatario: { editable: false, type: "string" },
-                                                    CepDestinatario: { editable: false, type: "string" },
-                                                    Peso: { editable: false, type: "number" },
-                                                    ValorDeclarado: { editable: false, type: "number" },
-                                                    ValorFrete: { editable: false, type: "number" },
                                                     Id: { editable: false, type: "number" }
-                                                }
-                                            }
-                                        },
-                                        requestEnd: function (e) {
-                                            if (e.type == "read") {
-                                                var response = e.response;
-                                                if (response) {
-                                                    //store extra data
-                                                    errorList = e.response["ExtraData"];
                                                 }
                                             }
                                         },
@@ -150,11 +146,6 @@
                                     pageable: {
                                         refresh: true,
                                         pageSizes: [@(gridPageSizes)]
-                                    },
-                                    //details grid
-                                    editable: {
-                                        confirmation: "@T("Admin.Common.DeleteConfirmation")",
-                                        mode: "inline"
                                     },
                                     scrollable: false,
                                     dataBound: onDataBound,
@@ -190,6 +181,10 @@
                                         field: "Peso",
                                         title: "@T("Plugins.Shippings.Correios.PLPPeso")",
                                         width: 100
+                                    },{
+                                        field: "PesoEfetivo",
+                                        title: "@T("Plugins.Shippings.Correios.PesoEfetivo")",
+                                        width: 100
                                     }, {
                                         field: "ValorDeclarado",
                                         title: "@T("Plugins.Shippings.Correios.PLPValorDeclarado")",
@@ -199,40 +194,25 @@
                                         title: "@T("Plugins.Shippings.Correios.PLPValorFrete")",
                                         width: 100
                                     }, {
-                                    command: { name: "destroy", text: "@T("Admin.Common.Delete")" },
-                                    title: "@T("Admin.Common.Delete")",
+                                        field: "ValorFreteEfetivado",
+                                        title: "@T("Plugins.Shippings.Correios.ValorFreteEfetivado")",
                                         width: 100
                                     }
                                     ]
                                 });
                             });
 
-                        </script>
+                    </script>
 
-                    </div>
                 </div>
+            </div>
 
-
-                <script>
+            <script>
 
                     var selectedIds = [];
-                    var errorList = "";
 
                     $(document).ready(function () {
 
-
-
-                        $('#adicionar-plp').click(function () {
-                            //search
-                            var grid = $('#plpaberta-grid').data('kendoGrid');
-                            grid.dataSource.page(1); //new search. Set page size to 1
-                            //grid.dataSource.read(); we already loaded the grid above using "page" function
-                            //clear selected checkboxes
-                            $('.checkboxGroups').attr('checked', false).change();
-                            selectedIds = [];
-                            $('#@Html.FieldIdFor(model => model.OrdersIs)').val("");
-                            return false;
-                        });
 
 
                         $('#mastercheckbox').click(function () {
@@ -240,7 +220,7 @@
                         });
 
                         //wire up checkboxes.
-                        $('#plpaberta-grid').on('change', 'input[type=checkbox][id!=mastercheckbox]', function (e) {
+                        $('#plpfechadadetalhe-grid').on('change', 'input[type=checkbox][id!=mastercheckbox]', function (e) {
                             var $check = $(this);
                             if ($check.is(":checked") == true) {
                                 var checked = jQuery.inArray($check.val(), selectedIds);
@@ -261,17 +241,10 @@
                         });
 
                     });
-
-                    function additionalData(){
-                                var data = {
-                                    OrdersIs: $('#@Html.FieldIdFor(model => model.OrdersIs)').val(),
-                                };
-                                addAntiForgeryToken(data);
-                                return data;
-                    }
+                    
 
                     function onDataBound(e) {
-                        $('#plpaberta-grid input[type=checkbox][id!=mastercheckbox]').each(function () {
+                        $('#plpfechadadetalhe-grid input[type=checkbox][id!=mastercheckbox]').each(function () {
                             var currentId = $(this).val();
                             var checked = jQuery.inArray(currentId, selectedIds);
                             //set checked based on if current checkbox's value is in selectedIds.
@@ -280,29 +253,16 @@
 
                         updateMasterCheckbox();
 
-                        if (errorList != "" && errorList != null) {
-
-                            var mensagemErro = "";
-
-                            for (i = 0; i < errorList.length; i++) {
-                                mensagemErro = mensagemErro + errorList[i].CodigoPedidoErro + "-" + errorList[i].MensagemErro + "\n";
-                            }
-
-                            if (mensagemErro != "")
-                                alert(mensagemErro);
-                        }
                     }
 
 
                     function updateMasterCheckbox() {
-                         var numChkBoxes = $('#plpaberta-grid input[type=checkbox][id!=mastercheckbox]').length;
-                         var numChkBoxesChecked = $('#plpaberta-grid input[type=checkbox][id!=mastercheckbox]:checked').length;
+                        var numChkBoxes = $('#plpfechadadetalhe-grid input[type=checkbox][id!=mastercheckbox]').length;
+                        var numChkBoxesChecked = $('#plpfechadadetalhe-grid input[type=checkbox][id!=mastercheckbox]:checked').length;
                          $('#mastercheckbox').attr('checked', numChkBoxes == numChkBoxesChecked && numChkBoxes > 0);
                     }
 
-                </script>
-
-            </div>
+            </script>
         </div>
     </div>
 }
@@ -325,3 +285,4 @@
                         });
                     });
 </script>
+

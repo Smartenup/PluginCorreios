@@ -2,7 +2,6 @@
 using Nop.Core.Domain.Shipping;
 using Nop.Services.Common;
 using Nop.Services.Shipping;
-using System;
 using System.Xml.Linq;
 
 namespace Nop.Plugin.Shipping.Correios.Domain.SigepWeb.Xml
@@ -16,7 +15,7 @@ namespace Nop.Plugin.Shipping.Correios.Domain.SigepWeb.Xml
         {
             var principal = new XDocument();
 
-            principal.Declaration = new XDeclaration("1.0", "ISO-8859-1", String.Empty);
+            principal.Declaration = new XDeclaration("1.0", "ISO-8859-1", null);
 
             var root = new XElement("correioslog");
 

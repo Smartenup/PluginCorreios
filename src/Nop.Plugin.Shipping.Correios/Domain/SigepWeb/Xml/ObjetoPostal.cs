@@ -166,24 +166,43 @@ namespace Nop.Plugin.Shipping.Correios.Domain.SigepWeb.Xml
     {
         public XElement ObterServicoAdicional(CorreiosSettings correiosSettings, decimal valorDeclarado)
         {
-            var servicoNacional = new XElement("servico_adicional");
+            var servicoAdicional = new XElement("servico_adicional");
 
             var codigoServicoNacional = new XElement("codigo_servico_adicional");
             codigoServicoNacional.Value = "025";
 
-            servicoNacional.Add(codigoServicoNacional);
+            servicoAdicional.Add(codigoServicoNacional);
 
             if (correiosSettings.IncluirValorDeclarado)
             {
+                var codigoServicoValorDeclarado = new XElement("codigo_servico_adicional");
+                codigoServicoValorDeclarado.Value = "019";
+                servicoAdicional.Add(codigoServicoValorDeclarado);
+
                 var valorDeclaradoTag = new XElement("valor_declarado");
-                //valorDeclaradoTag.Value = "150,00";
                 valorDeclaradoTag.Value = valorDeclarado.ToString("N2", CultureInfo.CreateSpecificCulture("pt-BR"));
 
-                servicoNacional.Add(valorDeclaradoTag);
+                servicoAdicional.Add(valorDeclaradoTag);
             }
-            
 
-            return servicoNacional;
+
+            if (correiosSettings.IncluirAvisoRecebimento)
+            {
+                var codigoServicoAvisoRecebimento = new XElement("codigo_servico_adicional");
+                codigoServicoAvisoRecebimento.Value = "001";
+
+                servicoAdicional.Add(codigoServicoAvisoRecebimento);
+            }
+
+            if (correiosSettings.IncluirMaoPropria)
+            {
+                var codigoServicoMaoPropria = new XElement("codigo_servico_adicional");
+                codigoServicoMaoPropria.Value = "002";
+
+                servicoAdicional.Add(codigoServicoMaoPropria);
+            }
+
+            return servicoAdicional;
         }
 
     }

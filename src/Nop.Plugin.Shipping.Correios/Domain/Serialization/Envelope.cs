@@ -269,7 +269,7 @@ namespace Nop.Plugin.Shipping.Correios.Domain.Serialization
 
         private string ufField;
 
-        private returnObjetoEventoDestino destinoField;
+        private returnObjetoEventoEndereco enderecoField;
 
         /// <remarks/>
         public string tipo
@@ -402,70 +402,92 @@ namespace Nop.Plugin.Shipping.Correios.Domain.Serialization
         }
 
         /// <remarks/>
-        public returnObjetoEventoDestino destino
+        public returnObjetoEventoEndereco endereco
         {
             get
             {
-                return this.destinoField;
+                return this.enderecoField;
             }
             set
             {
-                this.destinoField = value;
+                this.enderecoField = value;
             }
         }
     }
 
     /// <remarks/>
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-    public partial class returnObjetoEventoDestino
+    public partial class returnObjetoEventoEndereco
     {
-
-        private string localField;
-
         private uint codigoField;
 
-        private string cidadeField;
+        private string cepField;
+
+        private string logradouroField;
+
+        private string numeroField;
+
+        private string localidadeField;
 
         private string bairroField;
 
         private string ufField;
 
-        /// <remarks/>
-        public string local
-        {
-            get
-            {
-                return this.localField;
-            }
-            set
-            {
-                this.localField = value;
-            }
-        }
-
-        /// <remarks/>
         public uint codigo
         {
             get
             {
-                return this.codigoField;
+                return codigoField;
             }
             set
             {
-                this.codigoField = value;
+                codigoField = value;
+            }
+        }
+
+        private string cep
+        {
+            get { return this.cepField; }
+            set { cepField = value; }
+
+        }
+
+        /// <remarks/>
+        public string logradouro
+        {
+            get
+            {
+                return logradouroField;
+            }
+            set
+            {
+                logradouroField = value;
             }
         }
 
         /// <remarks/>
-        public string cidade
+        public string numero
         {
             get
             {
-                return this.cidadeField;
+                return numeroField;
             }
             set
             {
-                this.cidadeField = value;
+                numeroField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string localidade
+        {
+            get
+            {
+                return localidadeField;
+            }
+            set
+            {
+                localidadeField = value;
             }
         }
 
@@ -474,11 +496,11 @@ namespace Nop.Plugin.Shipping.Correios.Domain.Serialization
         {
             get
             {
-                return this.bairroField;
+                return bairroField;
             }
             set
             {
-                this.bairroField = value;
+                bairroField = value;
             }
         }
 
@@ -487,11 +509,11 @@ namespace Nop.Plugin.Shipping.Correios.Domain.Serialization
         {
             get
             {
-                return this.ufField;
+                return ufField;
             }
             set
             {
-                this.ufField = value;
+                ufField = value;
             }
         }
     }

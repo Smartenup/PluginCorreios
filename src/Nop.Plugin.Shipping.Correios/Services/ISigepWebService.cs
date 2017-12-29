@@ -1,4 +1,5 @@
 ﻿using Nop.Core;
+using Nop.Core.Domain.Shipping;
 using Nop.Plugin.Shipping.Correios.Domain;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,8 @@ namespace Nop.Plugin.Shipping.Correios.Services
         void InsertPlpShipment(PlpSigepWebShipment plpSigepWebShipment);
 
         PlpSigepWebShipment GetPlpShipment(int Id);
+
+        PlpSigepWebShipment GetPlpShipment(Shipment shipment);
 
         PlpSigepWeb GetPlp(PlpSigepWebStatus status);
 

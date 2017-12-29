@@ -11,6 +11,8 @@ namespace Nop.Plugin.Shipping.Correios.Domain
 
         public int ShipmentId { get; set; }        
 
+        public int OrderId { get; set; }
+
         public bool Deleted { get; set; }
 
         public decimal ValorDeclarado { get; set; }

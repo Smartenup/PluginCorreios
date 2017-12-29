@@ -130,7 +130,7 @@ namespace Nop.Plugin.Shipping.Correios
         }
         #endregion
 
-        #region Methods/// <summary>
+        #region Methods
         ///  Gets available shipping options
         /// </summary>
         /// <param name="getShippingOptionRequest">A request for getting shipping options</param>
@@ -686,8 +686,8 @@ namespace Nop.Plugin.Shipping.Correios
 
             if (_correiosSettings.IncluirValorDeclarado)
             {
-                if (subtotalBase < CorreiosServices.CONST_VALOR_DECLARADO_MINIMO)
-                    valorDeclarado = CorreiosServices.CONST_VALOR_DECLARADO_MINIMO;
+                if (subtotalBase < CorreiosServices.CONST_VALOR_DECLARADO_MINIMO_PAC)
+                    valorDeclarado = CorreiosServices.CONST_VALOR_DECLARADO_MINIMO_PAC;
                 else
                     valorDeclarado = subtotalBase;
             }

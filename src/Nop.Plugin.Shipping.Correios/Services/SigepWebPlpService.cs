@@ -14,7 +14,7 @@ using System.ServiceModel;
 
 namespace Nop.Plugin.Shipping.Correios.Services
 {
-    public class SigepWebPlpService: ISigepWebPlpService
+    public class SigepWebPlpService : ISigepWebPlpService
     {
         private const long MAX_RECEIVED_MESSAGE_SIZE = 2147483647;
         private const int MAX_BUFFER_SIZE = 2147483647;
@@ -69,7 +69,7 @@ namespace Nop.Plugin.Shipping.Correios.Services
 
             long? idPlpCorreios = null;
 
-            string xmlString = xmlPlp.ToString(System.Xml.Linq.SaveOptions.DisableFormatting);
+            string xmlString = string.Concat(xmlPlp.Declaration.ToString(), xmlPlp.ToString(System.Xml.Linq.SaveOptions.DisableFormatting));
 
             FecharPlpCorreios(xmlString, plpSigebWeb.Id, lstTrackingNumber.ToArray(), out idPlpCorreios);
 
@@ -219,20 +219,28 @@ namespace Nop.Plugin.Shipping.Correios.Services
 
         public Shipment CriarShipmentNop(Order order, string trackingNumber)
         {
+            ///Verificar se existe um Shipment ainda não enviado e excluir
 
-            Shipment shipment = null;
+            var listExcluir = new List<int>();
 
-            ///Verificar se existe um Shipment ainda não enviado e retorna
             foreach (var envio in order.Shipments)
             {
                 if (string.IsNullOrWhiteSpace(envio.TrackingNumber) || envio.ShippedDateUtc is null)
                 {
-                    shipment = envio;
-                    foreach (var item in shipment.ShipmentItems)
-                        _shipmentService.DeleteShipmentItem(item);
-                    break;
+                    listExcluir.Add(envio.Id);
                 }
             }
+
+            if (listExcluir.Count > 0)
+            {
+                foreach (var item in listExcluir)
+                {
+                    Shipment shipmentDirty = _shipmentService.GetShipmentById(item);
+                    _shipmentService.DeleteShipment(shipmentDirty);
+                }
+            }
+
+            Shipment shipment = null;
 
             ///Cria o shipment para o pedido
             var orderItems = order.OrderItems;
@@ -460,7 +468,7 @@ namespace Nop.Plugin.Shipping.Correios.Services
             return listaEnvio;
         }
 
-        
+
 
 
         private string ObterServicosAdicionais()
@@ -503,5 +511,73 @@ namespace Nop.Plugin.Shipping.Correios.Services
         }
 
 
+        public PlpSigepWebEtiqueta ObterProximaEtiquetaDisponivel(string nomeServicoPublico)
+        {
+            var binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
+            binding.MaxReceivedMessageSize = 2147483647;
+            binding.MaxBufferSize = 2147483647;
+
+            var address = new EndpointAddress(ObterEndPointAtendeCliente());
+
+            wsAtendeClienteService.AtendeClienteClient ws = new wsAtendeClienteService.AtendeClienteClient(binding, address);
+
+
+            string codigoEnvio = CorreiosServices.ObterCodigoEnvio(nomeServicoPublico, _correiosSettings.CarrierServicesOffered);
+
+            wsAtendeClienteService.clienteERP clienteERP = ObterClienteSigepWEB();
+
+
+            try
+            {
+                foreach (wsAtendeClienteService.contratoERP contrato in clienteERP.contratos)
+                {
+                    foreach (wsAtendeClienteService.cartaoPostagemERP cartaoPostagem in contrato.cartoesPostagem)
+                    {
+                        foreach (wsAtendeClienteService.servicoERP servico in cartaoPostagem.servicos)
+                        {
+
+                            if (servico.codigo.Trim().Equals(codigoEnvio, StringComparison.InvariantCultureIgnoreCase))
+                            {
+                                string faixaEtiquetas = ws.solicitaEtiquetas("C", _correiosSettings.NumeroCNPJ, servico.id, 1,
+                                                        _correiosSettings.UsuarioSIGEP, _correiosSettings.SenhaSIGEP);
+
+
+                                string digitoInicioEtiqueta = faixaEtiquetas.Substring(0, 2);
+
+                                string digitoFinalEtiqueta = faixaEtiquetas.Substring(faixaEtiquetas.LastIndexOf(",") - 2, 2);
+
+                                string primeiraEtiqueta = faixaEtiquetas.Substring(2, faixaEtiquetas.LastIndexOf(",") - 4);
+
+                                var etiqueta = new PlpSigepWebEtiqueta();
+
+                                etiqueta.CodigoEtiquetaSemVerificador = digitoInicioEtiqueta +
+                                    (int.Parse(primeiraEtiqueta) + 0).ToString() + " " +
+                                    digitoFinalEtiqueta;
+
+                                etiqueta.CodigoEtiquetaComVerificador = digitoInicioEtiqueta +
+                                    CorreiosHelper.CalculaNumeroEtiquetaComVerificador((int.Parse(primeiraEtiqueta) + 0).ToString()) +
+                                    digitoFinalEtiqueta;
+
+                                etiqueta.CodigoServico = servico.codigo.Trim();
+
+                                etiqueta.CodigoUtilizado = true;
+
+                                _sigepWebService.InsertEtiqueta(etiqueta);
+
+                                return etiqueta;
+                            }
+                        }
+                    }
+                }
+
+            }
+            finally
+            {
+                ws.Close();
+            }
+
+            return null;
+
+        }
     }
 }

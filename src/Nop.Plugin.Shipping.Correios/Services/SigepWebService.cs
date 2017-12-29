@@ -1,7 +1,9 @@
 ﻿using Nop.Core;
 using Nop.Core.Data;
+using Nop.Core.Domain.Orders;
 using Nop.Core.Domain.Shipping;
 using Nop.Plugin.Shipping.Correios.Domain;
+using Nop.Services.Orders;
 using Nop.Services.Shipping;
 using System;
 using System.Collections.Generic;
@@ -15,20 +17,28 @@ namespace Nop.Plugin.Shipping.Correios.Services
         private readonly IRepository<PlpSigepWeb> _plpRepository;
         private readonly IRepository<PlpSigepWebShipment> _plpShipmentRepository;
         private readonly IRepository<PlpSigepWebEtiqueta> _plpSigepWebEtiquetaRepository;
-        private readonly IShipmentService _shipmentService;
-
+        private readonly IShipmentService _shipmentService;        
+        private readonly IOrderService _orderService;
+        private readonly IRepository<Order> _orderRepository;
+        private readonly IRepository<Shipment> _shipmentRepository;
 
 
         public SigepWebService(IRepository<PlpSigepWeb> plpRepository, 
             IRepository<PlpSigepWebShipment> plpShipmentRepository,
             IRepository<PlpSigepWebEtiqueta> plpSigepWebEtiquetaRepository,
-            IShipmentService shipmentService
+            IShipmentService shipmentService,
+            IOrderService orderService,
+            IRepository<Order> orderRepository,
+            IRepository<Shipment> shipmentRepository
             )
         {
             _plpRepository = plpRepository;
             _plpShipmentRepository = plpShipmentRepository;
             _plpSigepWebEtiquetaRepository = plpSigepWebEtiquetaRepository;
             _shipmentService = shipmentService;
+            _orderService = orderService;
+            _orderRepository = orderRepository;
+            _shipmentRepository = shipmentRepository;
 
         }
 
@@ -149,11 +159,28 @@ namespace Nop.Plugin.Shipping.Correios.Services
             return _plpShipmentRepository.GetById(Id);
         }
 
+
+        public PlpSigepWebShipment GetPlpShipment(Shipment shipment)
+        {
+
+            var query = _plpShipmentRepository.Table;
+
+            query = query.Where(o => o.ShipmentId == shipment.Id);
+            query = query.Where(o => !o.Deleted);
+
+            if (query.Count() != 0)
+                return query.FirstOrDefault();
+
+            return null;
+        }
+
         public IPagedList<PlpSigepWeb> ProcurarPlp(PlpSigepWebStatus status, DateTime? dataFechamentoInicial = null,
             DateTime? dataFechamentoFinal = null, int pedidoId = 0,
             int pageIndex = 0, int pageSize = int.MaxValue)
         {
+
             var query = _plpRepository.Table;
+
             query = query.Where(o => o.PlpStatusId == (int)status);
 
             if (dataFechamentoInicial.HasValue)
@@ -163,17 +190,38 @@ namespace Nop.Plugin.Shipping.Correios.Services
                 query = query.Where(o => dataFechamentoFinal.Value >= o.FechamentoOnUtc);
 
             if (pedidoId > 0)
-            {
-                query = query
-                    .Where(o => o.PlpSigepWebShipments
-                    .Any(shipmentplp => _shipmentService.GetShipmentById(shipmentplp.ShipmentId).OrderId == pedidoId)
-                    );
-            }
+                query = query.Where(o => o.PlpSigepWebShipments.Any(ship => ship.OrderId == pedidoId));
 
             query = query.Where(o => !o.Deleted);
             query = query.OrderByDescending(o => o.Id);
 
-            return new PagedList<PlpSigepWeb>(query, pageIndex, pageSize);
+            var pagedList = new PagedList<PlpSigepWeb>(query, pageIndex, pageSize);
+
+            /*
+            if (pedidoId > 0)
+            {
+                Order order = _orderService.GetOrderById(pedidoId);
+
+                foreach (var item in pagedList)
+                {
+                    foreach (var plpShipments in item.PlpSigepWebShipments)
+                    {
+                        foreach (var shipment in order.Shipments)
+                        {
+                            if (shipment.Id == plpShipments.ShipmentId)
+                            {
+                                var listOne = new List<PlpSigepWeb>();
+                                listOne.Add(item);
+
+                                return new PagedList<PlpSigepWeb>(listOne, 0, 1);
+                            }
+
+                        }
+                    }
+                }
+            }*/
+
+            return pagedList;
         }
 
     }

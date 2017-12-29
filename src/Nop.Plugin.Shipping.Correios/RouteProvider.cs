@@ -62,7 +62,15 @@ namespace Nop.Plugin.Shipping.Correios
                             new { controller = "ShippingCorreiosPluginAdmin", action = "PdfFechamento" },
                             new[] { "Nop.Plugin.Shipping.Correios.Controllers.Admin" });
 
+            routes.MapRoute("Plugin.Shipping.Correios.PLPFechadaDetalhe",
+                            "admin/Plugins/Shipping/ShippingCorreios/PLPFechadaDetalhe",
+                            new { controller = "ShippingCorreiosPluginAdmin", action = "PLPFechadaDetalhe" },
+                            new[] { "Nop.Plugin.Shipping.Correios.Controllers.Admin" });
 
+            routes.MapRoute("Plugin.Shipping.Correios.PLPFechadaDetalheSelect",
+                            "admin/Plugins/Shipping/ShippingCorreios/PLPFechadaDetalheSelect",
+                            new { controller = "ShippingCorreiosPluginAdmin", action = "PLPFechadaDetalheSelect" },
+                            new[] { "Nop.Plugin.Shipping.Correios.Controllers.Admin" });
 
         }
         public int Priority

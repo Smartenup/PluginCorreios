@@ -1,4 +1,5 @@
-﻿using Nop.Core;
+﻿using Nop.Admin.Controllers;
+using Nop.Core;
 using Nop.Core.Domain.Customers;
 using Nop.Core.Domain.Orders;
 using Nop.Core.Domain.Shipping;
@@ -22,7 +23,7 @@ using System.Web.Mvc;
 
 namespace Nop.Plugin.Shipping.Correios.Controllers.Admin
 {
-    public class ShippingCorreiosPluginAdminController : Controller
+    public class ShippingCorreiosPluginAdminController : BaseAdminController
     {
 
 
@@ -53,6 +54,77 @@ namespace Nop.Plugin.Shipping.Correios.Controllers.Admin
             _customerService = customerService;
         }
 
+
+        public ActionResult PLPFechadaDetalhe(int id)
+        {
+            var model = new PLPFechadaDetalheModel();
+
+            var plp = _sigepWebService.GetPlp(id);
+
+            Customer customer = _customerService.GetCustomerById(plp.CustomerId);
+
+            model.Id = plp.Id;
+            model.CorreiosId = plp.PlpSigepWebCorreiosId.Value;
+            model.DataFechamento = plp.FechamentoOnUtc.Value;
+            model.QuantidadeObjetos = plp.PlpSigepWebShipments.Count;
+            model.UsuarioFechamento = customer.GetFullName();
+
+            return View("~/Plugins/Shipping.Correios/Views/ShippingCorreios/PLPFechadaDetalhe.cshtml", model);
+
+        }
+
+        
+        public ActionResult PLPFechadaDetalheSelect(int id, DataSourceRequest command)
+        {
+            PlpSigepWeb plpFechada = _sigepWebService.GetPlp(id);
+
+            if (plpFechada == null)
+            {
+                return new JsonResult();
+            }
+
+            //Apresenta o resultado na tela
+            var gridModel = new DataSourceResult
+            {
+                Total = plpFechada.PlpSigepWebShipments.Count()
+            };
+
+            var lstPlpFechadaDetalheItemModel = new List<PLPFechadaDetalheItemModel>();
+
+            foreach (var item in plpFechada.PlpSigepWebShipments)
+            {
+                var detalheItemModel = new PLPFechadaDetalheItemModel();
+
+                Shipment shipment = _shipmentService.GetShipmentById(item.ShipmentId);
+
+                detalheItemModel.Id = item.Id;                
+                detalheItemModel.ValorDeclarado = item.ValorDeclarado;
+                detalheItemModel.OrderId = item.OrderId;
+                detalheItemModel.TrackingNumber = item.Etiqueta.CodigoEtiquetaComVerificador;
+
+                if (shipment !=  null)
+                {
+                    
+                    detalheItemModel.NomeDestinatario = string.Format("{0} {1}", shipment.Order.ShippingAddress.FirstName, shipment.Order.ShippingAddress.LastName);
+                    detalheItemModel.CepDestinatario = shipment.Order.ShippingAddress.ZipPostalCode;
+                }
+
+                detalheItemModel.Peso = item.PesoEstimado;
+                detalheItemModel.PesoEfetivo = item.PesoEfetivado;
+                detalheItemModel.ValorFrete = item.ValorEnvioEstimado;
+                detalheItemModel.ValorFreteEfetivado = item.ValorEnvioEfetivado;
+
+                lstPlpFechadaDetalheItemModel.Add(detalheItemModel);
+            }
+
+            gridModel.Data = lstPlpFechadaDetalheItemModel;
+
+
+            return new JsonResult
+            {
+                Data = gridModel
+            };
+        }
 
 
         public ActionResult PLPFechada()
@@ -135,15 +207,17 @@ namespace Nop.Plugin.Shipping.Correios.Controllers.Admin
                 throw new ArgumentException("Nenhum item de plp encontrado com o id especificado");
 
             ///Liberar a etiqueta
+            shipmentPlp.Etiqueta.CodigoUtilizado = false;
+
             _sigepWebService.UpdateEtiqueta(shipmentPlp.Etiqueta);
 
-            Shipment shipment = _shipmentService.GetShipmentById(shipmentPlp.ShipmentId);
+            ///Deletar o envio plp
+            _sigepWebService.DeletePlpShipment(shipmentPlp);
 
             ///Excluir o shipment da order
+            Shipment shipment = _shipmentService.GetShipmentById(shipmentPlp.ShipmentId);
+            
             _shipmentService.DeleteShipment(shipment);
-
-            ///Deletar o envio
-            _sigepWebService.DeletePlpShipment(shipmentPlp);
 
             return new NullJsonResult();
         }
@@ -155,6 +229,21 @@ namespace Nop.Plugin.Shipping.Correios.Controllers.Admin
         public ActionResult PdfEtiquetaAll(PLPAbertaSearchModel model)
         {
             PlpSigepWeb plpSigebWeb = _sigepWebPlpService.ObterPlpEmAberto();
+
+            byte[] bytes;
+            using (var stream = new MemoryStream())
+            {
+                _pdfSigepWebService.PrintEtiquetasToPdf(stream, plpSigebWeb.PlpSigepWebShipments.ToList());
+                bytes = stream.ToArray();
+            }
+            return File(bytes, MimeTypes.ApplicationPdf, string.Format("etiquetas{0}.pdf", DateTime.Now.ToFileTime()));
+        }
+
+        [HttpPost, ActionName("PLPFechadaDetalhe")]
+        [FormValueRequired("pdf-etiqueta-all")]
+        public ActionResult PdfEtiquetaFechadaAll(PLPFechadaDetalheModel model)
+        {
+            PlpSigepWeb plpSigebWeb = _sigepWebPlpService.ObterPlp(model.Id);
 
             byte[] bytes;
             using (var stream = new MemoryStream())
@@ -204,7 +293,7 @@ namespace Nop.Plugin.Shipping.Correios.Controllers.Admin
             PlpSigepWeb plpSigebWeb = _sigepWebPlpService.ObterPlpEmAberto();
 
             IList<Order> lstPedidos = ObterListaPedidos(model);
-            IList<Order> lstPedidosProblema = new List<Order>();
+            var lstPedidosProblema = new List<Order>();
 
             if (lstPedidos.Count > 0)
             {
@@ -231,10 +320,10 @@ namespace Nop.Plugin.Shipping.Correios.Controllers.Admin
                     plpSigepWebShipment.EtiquetaId = etiqueta.Id;
                     plpSigepWebShipment.PlpSigepWebId = plpSigebWeb.Id;
                     plpSigepWebShipment.ShipmentId = shipment.Id;
+                    plpSigepWebShipment.OrderId = shipment.OrderId;
                     plpSigepWebShipment.PesoEstimado = shipment.TotalWeight.HasValue ? shipment.TotalWeight.Value : 0;
                     plpSigepWebShipment.ValorEnvioEstimado = pedido.OrderShippingInclTax;
-                    plpSigepWebShipment.ValorDeclarado = pedido.OrderTotal > CorreiosServices.CONST_VALOR_DECLARADO_MINIMO
-                        ? pedido.OrderTotal : CorreiosServices.CONST_VALOR_DECLARADO_MINIMO;
+                    plpSigepWebShipment.ValorDeclarado = CorreiosServices.ObterValorDeclarado(pedido.OrderSubtotalInclTax, etiqueta.CodigoServico) ;
 
                     plpSigebWeb.PlpSigepWebShipments.Add(plpSigepWebShipment);
                 }
@@ -278,13 +367,29 @@ namespace Nop.Plugin.Shipping.Correios.Controllers.Admin
             gridModel.Data = lstPlpAbertaResultModel;
 
             ///Verificar uma forma de apresentar a mensagem de pedidos que não se conseguiu gerar etiqueta
+            if (lstPedidosProblema.Count > 0)
+            {
+                var errorListModel = new List<PLPAbertaResultErrorModel>();
 
+                foreach (var item in lstPedidosProblema)
+                {
+                    errorListModel.Add(
+                        new PLPAbertaResultErrorModel(){ CodigoPedidoErro = item.Id,
+                            MensagemErro = string.Format("Serviço selecionado no pedido não encontrado no contrato correios {0}", item.ShippingMethod)
+                        }); 
+                }
+
+                gridModel.ExtraData = errorListModel;
+            }
 
             return new JsonResult
             {
                 Data = gridModel
             };
         }
+
+
+
 
         [HttpPost, ActionName("PLPAberta")]
         [FormValueRequired("pfp-fechar")]
@@ -302,6 +407,8 @@ namespace Nop.Plugin.Shipping.Correios.Controllers.Admin
 
 
 
+
+        [NonAction]
         private IList<Order> ObterListaPedidos(PLPAbertaSearchModel model)
         {
             var pedidos = new List<int>();
