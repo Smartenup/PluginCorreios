@@ -30,40 +30,45 @@ namespace Nop.Plugin.Shipping.Correios.Util
 
         public static string CalculaNumeroEtiquetaComVerificador(string NumeroEtiquetaCorreios)
         {
+            if (string.IsNullOrWhiteSpace(NumeroEtiquetaCorreios) ||
+                (NumeroEtiquetaCorreios.Length > 8))
+            {
+                NumeroEtiquetaCorreios = "Error";
+                return NumeroEtiquetaCorreios;
+            }
 
             int[] multiplicadores = { 8, 6, 4, 2, 3, 5, 9, 7 };
             int soma = 0;
             String dv;
 
-            if (NumeroEtiquetaCorreios.Length != 8)
+            if (NumeroEtiquetaCorreios.Length < 8)
             {
-                NumeroEtiquetaCorreios = "Error";
+                NumeroEtiquetaCorreios = NumberHelper.Formatar(NumeroEtiquetaCorreios, 8, enumZeroComplete.Esquerda); 
+            }
+
+
+            for (int i = 0; i < 8; i++)
+            {
+                soma += int.Parse(NumeroEtiquetaCorreios.Substring(i, 1)) * multiplicadores[i];
+            }
+
+            int resto = soma % 11;
+
+            if (resto == 0)
+            {
+                dv = "5";
+            }
+            else if (resto == 1)
+            {
+                dv = "0";
             }
             else
             {
-
-                for (int i = 0; i < 8; i++)
-                {
-                    soma += int.Parse(NumeroEtiquetaCorreios.Substring(i, 1)) * multiplicadores[i];
-                }
-
-                int resto = soma % 11;
-
-                if (resto == 0)
-                {
-                    dv = "5";
-                }
-                else if (resto == 1)
-                {
-                    dv = "0";
-                }
-                else
-                {
-                    dv = (11 - resto).ToString();
-                }
-
-                NumeroEtiquetaCorreios += dv;
+                dv = (11 - resto).ToString();
             }
+
+            NumeroEtiquetaCorreios += dv;
+
 
             return NumeroEtiquetaCorreios;
 
