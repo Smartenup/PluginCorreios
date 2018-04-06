@@ -1,5 +1,4 @@
-﻿using Nop.Core.Domain.Directory;
-using Nop.Plugin.Shipping.Correios.Domain;
+﻿using Nop.Plugin.Shipping.Correios.Domain;
 using Nop.Plugin.Shipping.Correios.Models;
 using Nop.Plugin.Shipping.Correios.Services;
 using Nop.Services.Configuration;
@@ -13,7 +12,6 @@ using Nop.Web.Framework;
 using Nop.Web.Framework.Controllers;
 using Nop.Web.Framework.Security;
 using System;
-using System.ServiceModel;
 using System.Text;
 using System.Web.Mvc;
 
@@ -24,14 +22,8 @@ namespace Nop.Plugin.Shipping.Correios.Controllers
     {
         private readonly CorreiosSettings _correiosSettings;
         private readonly ISettingService _settingService;
-        private readonly ILocalizationService _localizationService;
         private readonly ICustomerService _customerService;
-        private readonly ILogger _logger;
-        private readonly IStateProvinceService _stateProvinceService;
-        private readonly ICountryService _countryService;
-        private readonly IOrderService _orderService;
-        private readonly IShipmentService _shipmentService;
-        private readonly ISigepWebService _sigepWebService;
+        private readonly ISigepWebPlpService _sigepWebPlpService;
 
         public ShippingCorreiosController(CorreiosSettings correiosSettings,
             ISettingService settingService,
@@ -42,20 +34,15 @@ namespace Nop.Plugin.Shipping.Correios.Controllers
             ICountryService countryService,
             IOrderService orderService,
             IShipmentService shipmentService,
-            ISigepWebService sigepWebService
+            ISigepWebService sigepWebService,
+            ISigepWebPlpService sigepWebPlpService
             )
         {
             _customerService = customerService;
             _correiosSettings = correiosSettings;
             _settingService = settingService;
-            _localizationService = localizationService;
-            _logger = logger;
-            _stateProvinceService = stateProvinceService;
-            _countryService = countryService;
-            _orderService = orderService;
-            _shipmentService = shipmentService;
-            _sigepWebService = sigepWebService;
-    }
+            _sigepWebPlpService = sigepWebPlpService;
+        }
 
 
         [ChildActionOnly]
@@ -156,6 +143,9 @@ namespace Nop.Plugin.Shipping.Correios.Controllers
             model.NomeRemetenteSIGEP = _correiosSettings.NomeRemetenteSIGEP;
             model.Diretoria = _correiosSettings.NumeroDiretoria;
             model.TelefoneRemetenteSIGEP = _correiosSettings.TelefoneRemetenteSIGEP;
+            model.UtilizaValidacaoCEPEtiquetaSIGEP = _correiosSettings.UtilizaValidacaoCEPEtiquetaSIGEP;
+            model.ValidacaoServicoDisponivelCEPEtiquetaSIGEP = _correiosSettings.ValidacaoServicoDisponivelCEPEtiquetaSIGEP;
+
 
 
             return View("~/Plugins/Shipping.Correios/Views/ShippingCorreios/Configure.cshtml", model);
@@ -248,6 +238,8 @@ namespace Nop.Plugin.Shipping.Correios.Controllers
             _correiosSettings.NomeRemetenteSIGEP = model.NomeRemetenteSIGEP;
             _correiosSettings.NumeroDiretoria = model.Diretoria;
             _correiosSettings.TelefoneRemetenteSIGEP = model.TelefoneRemetenteSIGEP;
+            _correiosSettings.UtilizaValidacaoCEPEtiquetaSIGEP = model.UtilizaValidacaoCEPEtiquetaSIGEP;
+            _correiosSettings.ValidacaoServicoDisponivelCEPEtiquetaSIGEP = model.ValidacaoServicoDisponivelCEPEtiquetaSIGEP;
 
             _settingService.SaveSetting(_correiosSettings);
 
@@ -269,49 +261,9 @@ namespace Nop.Plugin.Shipping.Correios.Controllers
             if (cep.Trim().Length != 8)
                 throw new ArgumentNullException("cep");
 
-            var binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
-
-            var address = new EndpointAddress("https://apps.correios.com.br/SigepMasterJPA/AtendeClienteService/AtendeCliente?wsdl");
-
-            wsAtendeClienteService.AtendeClienteClient ws = new wsAtendeClienteService.AtendeClienteClient(binding, address);
-
-            wsAtendeClienteService.enderecoERP dados = new wsAtendeClienteService.enderecoERP();
-
-            try
-            {
-                dados = ws.consultaCEP(cep);
-
-
-            }
-            catch (Exception ex)
-            {
-                _logger.Error("Plugin.Shipping.Correios: Erro busca cep " + cep, ex);
-                throw ex;
-            }
-            finally
-            {
-                ws.Close();
-            }
-
-
-            if (!string.IsNullOrWhiteSpace(dados.uf))
-            {
-                Country country = _countryService.GetCountryByTwoLetterIsoCode("BR");
-
-                if (country != null && country.Id > 0)
-                {
-                    StateProvince stateProvince = _stateProvinceService.GetStateProvinceByAbbreviation(country.Id, dados.uf);
-
-                    if (stateProvince != null)
-                    {
-                        dados.uf = stateProvince.Id.ToString();
-                    }
-                }
-            }
+            wsAtendeClienteService.enderecoERP dados = _sigepWebPlpService.BuscarEndereco(cep);
 
             return Json(dados, JsonRequestBehavior.AllowGet);
-
-
         }
         
        

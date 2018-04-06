@@ -38,7 +38,6 @@ namespace Nop.Plugin.Shipping.Correios
 
 		public IList<ShipmentStatusEvent> GetShipmentEvents(string trackingNumber)
 		{
-            //TODO
             var lstShipmentEvents = new List<ShipmentStatusEvent>();
             wsRastro.ServiceClient _wsRastro = null;
 

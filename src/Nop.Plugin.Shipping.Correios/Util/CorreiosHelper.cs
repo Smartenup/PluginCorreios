@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SmartenUP.Core.Util.Helper;
+using System;
 
 namespace Nop.Plugin.Shipping.Correios.Util
 {

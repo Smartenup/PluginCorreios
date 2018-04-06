@@ -10,6 +10,7 @@ using Nop.Services.Configuration;
 using Nop.Services.Localization;
 using Nop.Services.Media;
 using Nop.Services.Shipping;
+using SmartenUP.Core.Util.Helper;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -670,8 +671,8 @@ namespace Nop.Plugin.Shipping.Correios.Services
 
             remetenteTable.SetWidths(new[] { 0.0252f, 0.9748f });
 
-            var arial10Bold = FontFactory.GetFont("Arial", 10, Font.BOLD);
-            var arial10 = FontFactory.GetFont("Arial", 10, Font.NORMAL);
+            var arial9Bold = FontFactory.GetFont("Arial", 9, Font.BOLD);
+            var arial9 = FontFactory.GetFont("Arial", 9, Font.NORMAL);
 
             var cellVazia = new PdfPCell();
             cellVazia.Border = Rectangle.NO_BORDER;
@@ -680,10 +681,10 @@ namespace Nop.Plugin.Shipping.Correios.Services
 
 
             
-            var cellRemetenteNome = new PdfPCell(new Phrase("Remetente: ", arial10Bold));
+            var cellRemetenteNome = new PdfPCell(new Phrase("Remetente: ", arial9Bold));
 
             string remetente = StringHelper.Formatar(_correiosSettings.NomeRemetenteSIGEP, 50);
-            cellRemetenteNome.Phrase.Add(new Phrase(remetente, arial10));
+            cellRemetenteNome.Phrase.Add(new Phrase(remetente, arial9));
             cellRemetenteNome.Border = Rectangle.NO_BORDER;
             cellRemetenteNome.HorizontalAlignment = Element.ALIGN_LEFT;
             remetenteTable.AddCell(cellRemetenteNome);
@@ -693,7 +694,7 @@ namespace Nop.Plugin.Shipping.Correios.Services
             string enderecoNumero = StringHelper.Formatar(_correiosSettings.LogradouroRemetenteSIGEP, 50);
             enderecoNumero = string.Concat(enderecoNumero, ",", _correiosSettings.NumeroRemetenteSIGEP);
 
-            var cellRuaNumero = new PdfPCell(new Phrase(enderecoNumero, arial10));
+            var cellRuaNumero = new PdfPCell(new Phrase(enderecoNumero, arial9));
             cellRuaNumero.Border = Rectangle.NO_BORDER;
             cellRuaNumero.HorizontalAlignment = Element.ALIGN_LEFT;
             remetenteTable.AddCell(cellRuaNumero);
@@ -702,7 +703,7 @@ namespace Nop.Plugin.Shipping.Correios.Services
             remetenteTable.AddCell(cellVazia);
 
             string bairroRemetente = StringHelper.Formatar(_correiosSettings.BairroRemetenteSIGEP, 50);
-            var cellComplementoBairro = new PdfPCell(new Phrase(bairroRemetente, arial10));
+            var cellComplementoBairro = new PdfPCell(new Phrase(bairroRemetente, arial9));
             cellComplementoBairro.Border = Rectangle.NO_BORDER;
             cellComplementoBairro.HorizontalAlignment = Element.ALIGN_LEFT;
             remetenteTable.AddCell(cellComplementoBairro);
@@ -710,12 +711,12 @@ namespace Nop.Plugin.Shipping.Correios.Services
 
             remetenteTable.AddCell(cellVazia);
 
-            var cellCEPCidadeEstado = new PdfPCell(new Phrase(AddressHelper.FormatarCEPHiffen(cepOrigem), arial10Bold));
+            var cellCEPCidadeEstado = new PdfPCell(new Phrase(AddressHelper.FormatarCEPHiffen(cepOrigem), arial9Bold));
 
             string cidadeRemetente = StringHelper.Formatar(cidadeOrigem, 50);
             string estadoRemetente = StringHelper.Formatar(estadoOrigem, 2);
             
-            cellCEPCidadeEstado.Phrase.Add(new Phrase(string.Concat(" ", cidadeRemetente, "-", estadoRemetente), arial10));
+            cellCEPCidadeEstado.Phrase.Add(new Phrase(string.Concat(" ", cidadeRemetente, "-", estadoRemetente), arial9));
             cellCEPCidadeEstado.Border = Rectangle.NO_BORDER;
             cellCEPCidadeEstado.HorizontalAlignment = Element.ALIGN_LEFT;
             remetenteTable.AddCell(cellCEPCidadeEstado);

@@ -1,5 +1,5 @@
 ﻿using Nop.Core;
-using Nop.Core.Domain.Shipping;
+using System;
 
 namespace Nop.Plugin.Shipping.Correios.Domain
 {
@@ -24,6 +24,20 @@ namespace Nop.Plugin.Shipping.Correios.Domain
         public decimal ValorEnvioEstimado { get; set; }
 
         public decimal ValorEnvioEfetivado { get; set; }
+
+        public DateTime? DataPostagemSara { get; set; }
+
+        public DateTime? DataCaptacaoSara { get; set; }
+
+        public int? StatusProcessamentoSara { get; set; }
+
+        public long? NumeroComprovantePostagem { get; set; }
+
+        public int? QuantidadeDiasUteis { get; set; }
+
+        public DateTime? DataPrevistaEntrega { get; set; }
+
+        public int? ControleEnvioStatusId { get; set; }
 
         public virtual PlpSigepWeb PlpSigepWeb { get; set; }
 

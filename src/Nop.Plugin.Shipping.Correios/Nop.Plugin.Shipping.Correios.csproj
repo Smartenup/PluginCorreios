@@ -18,7 +18,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\..\..\Source\Repos\NopCommerceSmartenup_3_80\src\Presentation\Nop.Web\Plugins\Shipping.Correios\</OutputPath>
+    <OutputPath>..\..\..\NopCommerceSmartenup_3_80\src\Presentation\Nop.Web\Plugins\Shipping.Correios\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -27,7 +27,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\..\..\..\Source\Repos\NopCommerceSmartenup_3_80\src\Presentation\Nop.Web\Plugins\Shipping.Correios\</OutputPath>
+    <OutputPath>..\..\..\NopCommerceSmartenup_3_80\src\Presentation\Nop.Web\Plugins\Shipping.Correios\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -35,28 +35,28 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac">
-      <HintPath>..\..\..\..\..\..\Source\Repos\NopCommerceSmartenup_3_80\src\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
+      <HintPath>..\..\..\NopCommerceSmartenup_3_80\src\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="EntityFramework">
-      <HintPath>..\..\..\..\..\..\Source\Repos\NopCommerceSmartenup_3_80\src\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\..\..\NopCommerceSmartenup_3_80\src\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\..\..\..\..\..\Source\Repos\NopCommerceSmartenup_3_80\src\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\..\..\NopCommerceSmartenup_3_80\src\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="itextsharp">
-      <HintPath>..\..\..\..\..\..\Source\Repos\NopCommerceSmartenup_3_80\src\packages\iTextSharp.5.5.9\lib\itextsharp.dll</HintPath>
+      <HintPath>..\..\..\NopCommerceSmartenup_3_80\src\packages\iTextSharp.5.5.9\lib\itextsharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Source\Repos\NopCommerceSmartenup_3_80\src\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+      <HintPath>..\..\..\NopCommerceSmartenup_3_80\src\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\..\Source\Repos\NopCommerceSmartenup_3_80\src\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\NopCommerceSmartenup_3_80\src\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
@@ -71,38 +71,38 @@
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Source\Repos\NopCommerceSmartenup_3_80\src\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+      <HintPath>..\..\..\NopCommerceSmartenup_3_80\src\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Source\Repos\NopCommerceSmartenup_3_80\src\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+      <HintPath>..\..\..\NopCommerceSmartenup_3_80\src\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Web.Optimization">
-      <HintPath>..\..\..\..\..\..\Source\Repos\NopCommerceSmartenup_3_80\src\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+      <HintPath>..\..\..\NopCommerceSmartenup_3_80\src\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Source\Repos\NopCommerceSmartenup_3_80\src\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+      <HintPath>..\..\..\NopCommerceSmartenup_3_80\src\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Source\Repos\NopCommerceSmartenup_3_80\src\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+      <HintPath>..\..\..\NopCommerceSmartenup_3_80\src\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Source\Repos\NopCommerceSmartenup_3_80\src\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+      <HintPath>..\..\..\NopCommerceSmartenup_3_80\src\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Source\Repos\NopCommerceSmartenup_3_80\src\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+      <HintPath>..\..\..\NopCommerceSmartenup_3_80\src\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Xml.Linq" />
@@ -114,6 +114,7 @@
   <ItemGroup>
     <Compile Include="Controllers\Admin\ShippingCorreiosPluginAdminController.cs" />
     <Compile Include="Controllers\ShippingCorreiosController.cs" />
+    <Compile Include="CorreioControleSigepWebTask.cs" />
     <Compile Include="CorreiosBatchCalculation.cs" />
     <Compile Include="CorreiosComputationMethod.cs" />
     <Compile Include="CorreioShippingUpdateTask.cs" />
@@ -126,7 +127,9 @@
     <Compile Include="Data\PlpSigepWebShipmentMap.cs" />
     <Compile Include="DependencyRegistrar.cs" />
     <Compile Include="Domain\CorreiosServices.cs" />
+    <Compile Include="Domain\ErrosProcessamento.cs" />
     <Compile Include="Domain\PlpSigepWeb.cs" />
+    <Compile Include="Domain\PlpSigepWebControleEnvioStatus.cs" />
     <Compile Include="Domain\PlpSigepWebEtiqueta.cs" />
     <Compile Include="Domain\PlpSigepWebShipment.cs" />
     <Compile Include="Domain\PlpSigepWebStatus.cs" />
@@ -170,11 +173,8 @@
     <Compile Include="Domain\SigepWeb\Xml\ObjetoPostal.cs" />
     <Compile Include="Domain\SigepWeb\Xml\Principal.cs" />
     <Compile Include="Domain\SigepWeb\Xml\Remetente.cs" />
-    <Compile Include="Util\AddressHelper.cs" />
     <Compile Include="Util\CorreiosHelper.cs" />
     <Compile Include="Util\ImageHelper.cs" />
-    <Compile Include="Util\NumberHelper.cs" />
-    <Compile Include="Util\StringHelper.cs" />
     <Compile Include="Web References\CalcPrecoPrazoWebReference\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -191,7 +191,9 @@
     <Content Include="Content\Images\logo.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Images\logo_correios.PNG" />
+    <Content Include="Content\Images\logo_correios.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Images\logo_correios_fechamento.PNG">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -460,30 +462,34 @@
     <WCFMetadataStorage Include="Service References\wsRastro\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\Source\Repos\NopCommerceSmartenup_3_80\src\Libraries\Nop.Core\Nop.Core.csproj">
+    <ProjectReference Include="..\..\..\NopCommerceSmartenup_3_80\src\Libraries\Nop.Core\Nop.Core.csproj">
       <Project>{6bda8332-939f-45b7-a25e-7a797260ae59}</Project>
       <Name>Nop.Core</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\Source\Repos\NopCommerceSmartenup_3_80\src\Libraries\Nop.Data\Nop.Data.csproj">
+    <ProjectReference Include="..\..\..\NopCommerceSmartenup_3_80\src\Libraries\Nop.Data\Nop.Data.csproj">
       <Project>{ccd7f2c9-6a2c-4cf0-8e89-076b8fc0f144}</Project>
       <Name>Nop.Data</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\Source\Repos\NopCommerceSmartenup_3_80\src\Libraries\Nop.Services\Nop.Services.csproj">
+    <ProjectReference Include="..\..\..\NopCommerceSmartenup_3_80\src\Libraries\Nop.Services\Nop.Services.csproj">
       <Project>{210541ad-f659-47da-8763-16f36c5cd2f4}</Project>
       <Name>Nop.Services</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\Source\Repos\NopCommerceSmartenup_3_80\src\Presentation\Nop.Web.Framework\Nop.Web.Framework.csproj">
+    <ProjectReference Include="..\..\..\NopCommerceSmartenup_3_80\src\Presentation\Nop.Web.Framework\Nop.Web.Framework.csproj">
       <Project>{75fd4163-333c-4dd5-854d-2ef294e45d94}</Project>
       <Name>Nop.Web.Framework</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\Source\Repos\NopCommerceSmartenup_3_80\src\Presentation\Nop.Web\Administration\Nop.Admin.csproj">
+    <ProjectReference Include="..\..\..\NopCommerceSmartenup_3_80\src\Presentation\Nop.Web\Administration\Nop.Admin.csproj">
       <Project>{152c761a-dd2e-4c1f-af89-dfb2547a3bca}</Project>
       <Name>Nop.Admin</Name>
       <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\SmartenUPCore\src\SmartenUP.Nop.Core\SmartenUP.Core.csproj">
+      <Project>{41643a41-62c4-4292-9f52-eed3e5e07a07}</Project>
+      <Name>SmartenUP.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,8 +1,6 @@
 ﻿using Nop.Core;
-using Nop.Core.Domain.Customers;
 using System;
 using System.Collections.Generic;
-using System.Xml.Linq;
 
 namespace Nop.Plugin.Shipping.Correios.Domain
 {
@@ -23,6 +21,8 @@ namespace Nop.Plugin.Shipping.Correios.Domain
         public int CustomerId { get; set; }
 
         public long? PlpSigepWebCorreiosId { get; set; }
+
+        public int? PlpSigepWebControleEnvioStatusId { get; set; }
 
         /// <summary>
         /// Gets or sets shipments

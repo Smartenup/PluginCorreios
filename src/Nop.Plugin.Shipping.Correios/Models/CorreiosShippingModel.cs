@@ -153,6 +153,13 @@ namespace Nop.Plugin.Shipping.Correios.Models
 
         [DisplayName("Telefone Remetente")]
         public string TelefoneRemetenteSIGEP { get; set; }
+
+        [DisplayName("Utiliza validação de CEP ao gerar etiqueta")]
+        public bool UtilizaValidacaoCEPEtiquetaSIGEP { get; set; }
+
+        [DisplayName("Utiliza validação de serviço disponível ao CEP ao gerar etiqueta")]
+        public bool ValidacaoServicoDisponivelCEPEtiquetaSIGEP { get; set; }
+
         #endregion
 
     }

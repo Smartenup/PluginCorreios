@@ -154,7 +154,7 @@ namespace Nop.Plugin.Shipping.Correios
                 return response;
             }
 
-            if (getShippingOptionRequest.ShippingAddress.ZipPostalCode == null)
+            if (string.IsNullOrWhiteSpace(getShippingOptionRequest.ShippingAddress.ZipPostalCode))
             {
                 response.AddError("CEP de envio em branco");
                 return response;
@@ -197,7 +197,12 @@ namespace Nop.Plugin.Shipping.Correios
 
                             if (
                                 (!group.Contains(name) && !getShippingOptionRequest.IsOrderBasead) ||
-                                (getShippingOptionRequest.IsOrderBasead && getShippingOptionRequest.ShippingMethod.Equals(name))
+                                (
+                                    getShippingOptionRequest.IsOrderBasead && 
+                                    (
+                                        getShippingOptionRequest.ShippingMethod.Equals(name) || 
+                                        getShippingOptionRequest.ShippingMethod.Equals(name + " [Frete Grátis]", StringComparison.InvariantCultureIgnoreCase))
+                                    )
                                 )
                             {
                                 var option = new ShippingOption();
@@ -459,6 +464,23 @@ namespace Nop.Plugin.Shipping.Correios
 
                 _scheduleTaskService.InsertTask(taskByType);
             }
+
+
+            ScheduleTask taskByTypeSigep = _scheduleTaskService.GetTaskByType("Nop.Plugin.Shipping.Correios.CorreioControleSigepWebTask, Nop.Plugin.Shipping.Correios");
+
+            if (taskByTypeSigep == null)
+            {
+                taskByTypeSigep = new ScheduleTask()
+                {
+                    Enabled = false,
+                    Name = "CorreioControleSigepWebTask",
+                    Seconds = 600,
+                    StopOnError = false,
+                    Type = "Nop.Plugin.Shipping.Correios.CorreioControleSigepWebTask, Nop.Plugin.Shipping.Correios"
+                };
+
+                _scheduleTaskService.InsertTask(taskByTypeSigep);
+            }
         }
 
         public override void Uninstall()
@@ -471,16 +493,17 @@ namespace Nop.Plugin.Shipping.Correios
             {
                 _scheduleTaskService.DeleteTask(taskByType);
             }
+
+            ScheduleTask taskByTypeSigep = _scheduleTaskService.GetTaskByType("Nop.Plugin.Shipping.Correios.CorreioControleSigepWebTask, Nop.Plugin.Shipping.Correios");
+
+            if (taskByTypeSigep != null)
+            {
+                _scheduleTaskService.DeleteTask(taskByTypeSigep);
+            }
         }
 
         public void ManageSiteMap(SiteMapNode rootNode)
         {
-            /**/
-            var siteMap = new XmlSiteMap();
-            siteMap.LoadFrom("~/Plugins/Shipping.Correios/sitemap.config");
-
-            //rootNode.ChildNodes.Add(siteMap.RootNode);
-
             var siteMapNodeRoot = new SiteMapNode();
 
             siteMapNodeRoot.SystemName = "SigepWeb";
@@ -1152,13 +1175,7 @@ namespace Nop.Plugin.Shipping.Correios
 
                     if (getShippingOptionRequest.IsOrderBasead)
                     {
-                        orderSubTotalDiscountAmount = getShippingOptionRequest.Order.OrderSubTotalDiscountInclTax;
-
-                        if (getShippingOptionRequest.Order.DiscountUsageHistory.SingleOrDefault() != null)
-                            orderSubTotalAppliedDiscount.Add(getShippingOptionRequest.Order.DiscountUsageHistory.SingleOrDefault().Discount);
-
-                        subTotalWithoutDiscountBase = getShippingOptionRequest.Order.OrderSubtotalInclTax;
-                        subTotalWithDiscountBase = getShippingOptionRequest.Order.OrderSubTotalDiscountExclTax;
+                        subTotalWithDiscountBase = getShippingOptionRequest.Order.OrderSubtotalInclTax;
                     }
                     else
                     {

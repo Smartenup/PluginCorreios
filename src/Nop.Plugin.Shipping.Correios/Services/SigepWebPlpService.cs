@@ -1,12 +1,16 @@
 ﻿using Nop.Core;
+using Nop.Core.Domain.Directory;
 using Nop.Core.Domain.Orders;
 using Nop.Core.Domain.Shipping;
 using Nop.Plugin.Shipping.Correios.Domain;
 using Nop.Plugin.Shipping.Correios.Domain.SigepWeb.Xml;
 using Nop.Plugin.Shipping.Correios.Util;
 using Nop.Services.Common;
+using Nop.Services.Directory;
+using Nop.Services.Logging;
 using Nop.Services.Orders;
 using Nop.Services.Shipping;
+using SmartenUP.Core.Util.Helper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,14 +26,17 @@ namespace Nop.Plugin.Shipping.Correios.Services
         private readonly CorreiosSettings _correiosSettings;
         private readonly IOrderService _orderService;
         private readonly IShipmentService _shipmentService;
+        private readonly IShippingService _shippingService;
         private readonly ISigepWebService _sigepWebService;
         private readonly IWorkContext _workContext;
         private readonly IAddressAttributeParser _addressAttributeParser;
-        private readonly ShippingSettings _shippingSettings;
+        private readonly ShippingSettings _shippingSettings;        
         private readonly IAddressService _addressService;
         private readonly IPdfSigepWebService _pdfSigepWebService;
         private readonly IOrderProcessingService _orderProcessingService;
-
+        private readonly ILogger _logger;
+        private readonly IStateProvinceService _stateProvinceService;
+        private readonly ICountryService _countryService;
 
 
 
@@ -42,7 +49,11 @@ namespace Nop.Plugin.Shipping.Correios.Services
             ShippingSettings shippingSettings,
             IAddressService addressService,
             IPdfSigepWebService pdfSigepWebService,
-            IOrderProcessingService orderProcessingService
+            IOrderProcessingService orderProcessingService,
+            ILogger logger,
+            IStateProvinceService stateProvinceService,
+            ICountryService countryService,
+            IShippingService shippingService
             )
         {
             _correiosSettings = correiosSettings;
@@ -55,6 +66,10 @@ namespace Nop.Plugin.Shipping.Correios.Services
             _addressService = addressService;
             _pdfSigepWebService = pdfSigepWebService;
             _orderProcessingService = orderProcessingService;
+            _logger = logger;
+            _stateProvinceService = stateProvinceService;
+            _countryService = countryService;
+            _shippingService = shippingService;
         }
 
         public PlpSigepWeb FecharPlp()
@@ -81,6 +96,8 @@ namespace Nop.Plugin.Shipping.Correios.Services
 
             plpSigebWeb.FechamentoOnUtc = DateTime.UtcNow;
 
+            plpSigebWeb.CustomerId = _workContext.CurrentCustomer.Id;
+
             _sigepWebService.UpdatePlp(plpSigebWeb);
 
             ///Marcar os itens como enviados
@@ -101,8 +118,6 @@ namespace Nop.Plugin.Shipping.Correios.Services
             return plpSigebWeb;
         }
 
-
-
         public PlpSigepWeb ObterPlpEmAberto()
         {
             PlpSigepWeb plpSigebWeb = _sigepWebService.GetPlp(PlpSigepWebStatus.Aberta);
@@ -114,21 +129,13 @@ namespace Nop.Plugin.Shipping.Correios.Services
             }
 
             return plpSigebWeb;
-        }
-
+        }        
 
 
 
         public wsAtendeClienteService.clienteERP ObterClienteSigepWEB()
         {
-            var binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
-
-            binding.MaxReceivedMessageSize = MAX_RECEIVED_MESSAGE_SIZE;
-            binding.MaxBufferSize = MAX_BUFFER_SIZE;
-
-            var address = new EndpointAddress(ObterEndPointAtendeCliente());
-
-            wsAtendeClienteService.AtendeClienteClient ws = new wsAtendeClienteService.AtendeClienteClient(binding, address);
+            wsAtendeClienteService.AtendeClienteClient ws = GetAtendeClienteClient();
 
             wsAtendeClienteService.clienteERP clienteSigepWEB = null;
 
@@ -147,11 +154,7 @@ namespace Nop.Plugin.Shipping.Correios.Services
         public void VerificarStatusCartaoPostegem()
         {
 
-            var binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
-
-            var address = new EndpointAddress(ObterEndPointAtendeCliente());
-
-            wsAtendeClienteService.AtendeClienteClient ws = new wsAtendeClienteService.AtendeClienteClient(binding, address);
+            wsAtendeClienteService.AtendeClienteClient ws = GetAtendeClienteClient();
 
             try
             {
@@ -159,7 +162,6 @@ namespace Nop.Plugin.Shipping.Correios.Services
 
                 if (status != wsAtendeClienteService.statusCartao.Normal)
                     throw new Exception("Cartão não esta em status normal, postagem no SIGEPWEB não esta habilitada");
-
             }
             finally
             {
@@ -170,17 +172,12 @@ namespace Nop.Plugin.Shipping.Correios.Services
 
         public void FecharPlpCorreios(string xmlPlp, long idPlpNop, string[] listaEtiquetas, out long? numeroPlpCorreios)
         {
-
-            var binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
-
-            var address = new EndpointAddress(ObterEndPointAtendeCliente());
-
-            wsAtendeClienteService.AtendeClienteClient ws = new wsAtendeClienteService.AtendeClienteClient(binding, address);
+            wsAtendeClienteService.AtendeClienteClient ws = GetAtendeClienteClient();
 
             try
             {
                 numeroPlpCorreios = ws.fechaPlpVariosServicos(xmlPlp, idPlpNop, _correiosSettings.CartaoPostagemSIGEP, listaEtiquetas, _correiosSettings.UsuarioSIGEP, _correiosSettings.SenhaSIGEP);
-            }
+            }            
             finally
             {
                 ws.Close();
@@ -195,7 +192,6 @@ namespace Nop.Plugin.Shipping.Correios.Services
                 return "https://apps.correios.com.br/SigepMasterJPA/AtendeClienteService/AtendeCliente?wsdl";
 
         }
-
 
         public PlpSigepWebEtiqueta ObterProximaEtiquetaDisponivel(List<PlpSigepWebEtiqueta> lstEtiquetas, string shippingMethod)
         {
@@ -321,16 +317,9 @@ namespace Nop.Plugin.Shipping.Correios.Services
             return shipment;
         }
 
-
         public List<PlpSigepWebEtiqueta> SolicitaEtiquetas(IList<Order> lstPedidos, wsAtendeClienteService.clienteERP cliente)
         {
-            var binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
-            binding.MaxReceivedMessageSize = 2147483647;
-            binding.MaxBufferSize = 2147483647;
-
-            var address = new EndpointAddress(ObterEndPointAtendeCliente());
-
-            wsAtendeClienteService.AtendeClienteClient ws = new wsAtendeClienteService.AtendeClienteClient(binding, address);
+            wsAtendeClienteService.AtendeClienteClient ws = GetAtendeClienteClient();
 
             Dictionary<string, int> ltsCodigoQuantidade = ObterServicoQuantidade(lstPedidos);
 
@@ -369,12 +358,15 @@ namespace Nop.Plugin.Shipping.Correios.Services
                                     {
                                         var etiqueta = new PlpSigepWebEtiqueta();
 
-                                        etiqueta.CodigoEtiquetaSemVerificador = digitoInicioEtiqueta +
-                                            (int.Parse(primeiraEtiqueta) + i).ToString() + " " +
+                                        string numeroEtiqueta = (int.Parse(primeiraEtiqueta) + i).ToString();
+
+                                        numeroEtiqueta = NumberHelper.Formatar(numeroEtiqueta, 8, enumZeroComplete.Esquerda);
+
+                                        etiqueta.CodigoEtiquetaSemVerificador = digitoInicioEtiqueta + numeroEtiqueta + " " +
                                             digitoFinalEtiqueta;
 
                                         etiqueta.CodigoEtiquetaComVerificador = digitoInicioEtiqueta +
-                                            CorreiosHelper.CalculaNumeroEtiquetaComVerificador((int.Parse(primeiraEtiqueta) + i).ToString()) +
+                                            CorreiosHelper.CalculaNumeroEtiquetaComVerificador(numeroEtiqueta) +
                                             digitoFinalEtiqueta;
 
                                         etiqueta.CodigoServico = servico.codigo.Trim();
@@ -401,7 +393,225 @@ namespace Nop.Plugin.Shipping.Correios.Services
             return lstEtiquetas;
         }
 
+        public PlpSigepWebEtiqueta ObterProximaEtiquetaDisponivel(string nomeServicoPublico)
+        {
 
+            wsAtendeClienteService.AtendeClienteClient ws = GetAtendeClienteClient();
+
+            string codigoEnvio = CorreiosServices.ObterCodigoEnvio(nomeServicoPublico, _correiosSettings.CarrierServicesOffered);
+
+            wsAtendeClienteService.clienteERP clienteERP = ObterClienteSigepWEB();
+
+            try
+            {
+                foreach (wsAtendeClienteService.contratoERP contrato in clienteERP.contratos)
+                {
+                    foreach (wsAtendeClienteService.cartaoPostagemERP cartaoPostagem in contrato.cartoesPostagem)
+                    {
+                        foreach (wsAtendeClienteService.servicoERP servico in cartaoPostagem.servicos)
+                        {
+
+                            if (servico.codigo.Trim().Equals(codigoEnvio, StringComparison.InvariantCultureIgnoreCase))
+                            {
+                                string faixaEtiquetas = ws.solicitaEtiquetas("C", _correiosSettings.NumeroCNPJ, servico.id, 1,
+                                                        _correiosSettings.UsuarioSIGEP, _correiosSettings.SenhaSIGEP);
+
+
+                                string digitoInicioEtiqueta = faixaEtiquetas.Substring(0, 2);
+
+                                string digitoFinalEtiqueta = faixaEtiquetas.Substring(faixaEtiquetas.LastIndexOf(",") - 2, 2);
+
+                                string primeiraEtiqueta = faixaEtiquetas.Substring(2, faixaEtiquetas.LastIndexOf(",") - 4);
+
+                                var etiqueta = new PlpSigepWebEtiqueta();
+
+                                string numeroEtiqueta = (int.Parse(primeiraEtiqueta) + 0).ToString();
+
+                                numeroEtiqueta = NumberHelper.Formatar(numeroEtiqueta, 8, enumZeroComplete.Esquerda);
+
+                                etiqueta.CodigoEtiquetaSemVerificador = digitoInicioEtiqueta + numeroEtiqueta + " " +
+                                    digitoFinalEtiqueta;
+
+                                etiqueta.CodigoEtiquetaComVerificador = digitoInicioEtiqueta +
+                                    CorreiosHelper.CalculaNumeroEtiquetaComVerificador(numeroEtiqueta) +
+                                    digitoFinalEtiqueta;
+
+                                etiqueta.CodigoServico = servico.codigo.Trim();
+
+                                etiqueta.CodigoUtilizado = true;
+
+                                _sigepWebService.InsertEtiqueta(etiqueta);
+
+                                return etiqueta;
+                            }
+                        }
+                    }
+                }
+
+            }
+            finally
+            {
+                ws.Close();
+            }
+
+            return null;
+
+        }
+
+        public bool ValidarPedidosEtiqueta(IList<Order> lstPedidos, out List<KeyValuePair<Order, int>> lstProblemas)
+        {
+            lstProblemas = new List<KeyValuePair<Order, int>>();
+
+            if (!_correiosSettings.UtilizaValidacaoCEPEtiquetaSIGEP && !_correiosSettings.ValidacaoServicoDisponivelCEPEtiquetaSIGEP)
+                return true;
+
+            foreach (var pedido in lstPedidos)
+            {
+                if (_correiosSettings.UtilizaValidacaoCEPEtiquetaSIGEP)
+                {
+                    if (!ValidarCep(pedido.ShippingAddress.ZipPostalCode))
+                    {
+                        lstProblemas.Add(new KeyValuePair<Order, int>(pedido, MensagemErroProcessamentoEtiqueta.CEP_INVALIDO));
+                    }
+                }
+
+                if (_correiosSettings.ValidacaoServicoDisponivelCEPEtiquetaSIGEP)
+                {
+                    if (!ValidarServicoCepDestino(pedido))
+                    {
+                        lstProblemas.Add(new KeyValuePair<Order, int>(pedido, MensagemErroProcessamentoEtiqueta.SERVICO_CORREIOS_INVALIDO_CEP));
+                    }
+                }
+            }
+
+            ///Remover pedidos com problemas de validação da lista
+            foreach (var item in lstProblemas)
+            {
+                if (lstPedidos.Contains(item.Key))
+                    lstPedidos.Remove(item.Key);
+            }
+
+
+            return (lstProblemas.Count == 0);
+        }
+
+
+        public string SolicitaXmlPlp(long plpIdCorreios)
+        {
+            string retorno = string.Empty;
+
+            wsAtendeClienteService.AtendeClienteClient ws = GetAtendeClienteClient();
+
+            try
+            {
+                retorno = ws.solicitaXmlPlp(plpIdCorreios, _correiosSettings.UsuarioSIGEP, _correiosSettings.SenhaSIGEP);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Plugin.Shipping.Correios: Erro busca xml plp " + plpIdCorreios.ToString(), ex);
+                throw ex;
+            }
+            finally
+            {
+                ws.Close();
+                ws = null;
+            }
+
+
+            return retorno;
+        }
+
+
+        public wsAtendeClienteService.enderecoERP BuscarEndereco(string cep)
+        {
+            if (String.IsNullOrEmpty(cep))
+                throw new ArgumentNullException("cep");
+
+            if (cep.Trim().Length != 8)
+                throw new ArgumentNullException("cep");
+
+            wsAtendeClienteService.AtendeClienteClient ws = GetAtendeClienteClient();
+
+            wsAtendeClienteService.enderecoERP dados = new wsAtendeClienteService.enderecoERP();
+
+            try
+            {
+                dados = ws.consultaCEP(cep);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Plugin.Shipping.Correios: Erro busca cep " + cep, ex);
+                throw ex;
+            }
+            finally
+            {
+                ws.Close();
+            }
+
+
+            if (!string.IsNullOrWhiteSpace(dados.uf))
+            {
+                Country country = _countryService.GetCountryByTwoLetterIsoCode("BR");
+
+                if (country != null && country.Id > 0)
+                {
+                    StateProvince stateProvince = _stateProvinceService.GetStateProvinceByAbbreviation(country.Id, dados.uf);
+
+                    if (stateProvince != null)
+                    {
+                        dados.uf = stateProvince.Id.ToString();
+                    }
+                }
+            }
+
+
+            return dados;
+        }
+
+        private bool ValidarCep(string cep)
+        {
+            bool retorno = false;
+
+            try
+            {
+                var cepApenasNumeros = NumberHelper.ObterApenasNumeros(cep);
+
+                var endereco = BuscarEndereco(cepApenasNumeros);
+
+                var cepRetorno = NumberHelper.ObterApenasNumeros(endereco.cep);
+
+
+                if ( cepRetorno.Equals(cepApenasNumeros, StringComparison.InvariantCultureIgnoreCase))
+                    retorno = true;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Plugin.Shipping.Correios: Erro ao validar o cep " + cep, ex);
+                retorno = false;
+            }
+
+            return retorno;
+        }
+
+        private bool ValidarServicoCepDestino(Order pedido)
+        {
+
+            bool retorno = false;
+            try
+            {
+                var shippingOption = _shippingService.GetShippingOption(pedido);
+
+                if (shippingOption.Name.Equals(pedido.ShippingMethod, StringComparison.InvariantCultureIgnoreCase))
+                    retorno = true;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(string.Format("Plugin.Shipping.Correios: Erro ao serviço {0} disponivel para o cep {1} pedido {2}", pedido.ShippingMethod , pedido.ShippingAddress.ZipPostalCode, pedido.Id), ex);
+                retorno = false;
+            }
+
+            return retorno;
+        }
 
         private IList<Shipment> ObterPedidos(PlpSigepWeb plpSigepWeb)
         {
@@ -417,6 +627,7 @@ namespace Nop.Plugin.Shipping.Correios.Services
 
             return lstShipment;
         }
+
         private PlpSigepWeb ObterNovaPLP()
         {
             var plp = new PlpSigepWeb();
@@ -429,7 +640,6 @@ namespace Nop.Plugin.Shipping.Correios.Services
 
             return plp;
         }
-
 
         private Dictionary<string, int> ObterServicoQuantidade(IList<Order> lstPedidos)
         {
@@ -455,7 +665,6 @@ namespace Nop.Plugin.Shipping.Correios.Services
             return list;
         }
 
-
         private List<string> ObterListaEnvioSemCodigoVerificador(ICollection<PlpSigepWebShipment> plpSigepWebShipments)
         {
             var listaEnvio = new List<string>();
@@ -467,9 +676,6 @@ namespace Nop.Plugin.Shipping.Correios.Services
 
             return listaEnvio;
         }
-
-
-
 
         private string ObterServicosAdicionais()
         {
@@ -510,8 +716,7 @@ namespace Nop.Plugin.Shipping.Correios.Services
             return retorno;
         }
 
-
-        public PlpSigepWebEtiqueta ObterProximaEtiquetaDisponivel(string nomeServicoPublico)
+        private wsAtendeClienteService.AtendeClienteClient GetAtendeClienteClient()
         {
             var binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
             binding.MaxReceivedMessageSize = 2147483647;
@@ -521,63 +726,9 @@ namespace Nop.Plugin.Shipping.Correios.Services
 
             wsAtendeClienteService.AtendeClienteClient ws = new wsAtendeClienteService.AtendeClienteClient(binding, address);
 
-
-            string codigoEnvio = CorreiosServices.ObterCodigoEnvio(nomeServicoPublico, _correiosSettings.CarrierServicesOffered);
-
-            wsAtendeClienteService.clienteERP clienteERP = ObterClienteSigepWEB();
-
-
-            try
-            {
-                foreach (wsAtendeClienteService.contratoERP contrato in clienteERP.contratos)
-                {
-                    foreach (wsAtendeClienteService.cartaoPostagemERP cartaoPostagem in contrato.cartoesPostagem)
-                    {
-                        foreach (wsAtendeClienteService.servicoERP servico in cartaoPostagem.servicos)
-                        {
-
-                            if (servico.codigo.Trim().Equals(codigoEnvio, StringComparison.InvariantCultureIgnoreCase))
-                            {
-                                string faixaEtiquetas = ws.solicitaEtiquetas("C", _correiosSettings.NumeroCNPJ, servico.id, 1,
-                                                        _correiosSettings.UsuarioSIGEP, _correiosSettings.SenhaSIGEP);
-
-
-                                string digitoInicioEtiqueta = faixaEtiquetas.Substring(0, 2);
-
-                                string digitoFinalEtiqueta = faixaEtiquetas.Substring(faixaEtiquetas.LastIndexOf(",") - 2, 2);
-
-                                string primeiraEtiqueta = faixaEtiquetas.Substring(2, faixaEtiquetas.LastIndexOf(",") - 4);
-
-                                var etiqueta = new PlpSigepWebEtiqueta();
-
-                                etiqueta.CodigoEtiquetaSemVerificador = digitoInicioEtiqueta +
-                                    (int.Parse(primeiraEtiqueta) + 0).ToString() + " " +
-                                    digitoFinalEtiqueta;
-
-                                etiqueta.CodigoEtiquetaComVerificador = digitoInicioEtiqueta +
-                                    CorreiosHelper.CalculaNumeroEtiquetaComVerificador((int.Parse(primeiraEtiqueta) + 0).ToString()) +
-                                    digitoFinalEtiqueta;
-
-                                etiqueta.CodigoServico = servico.codigo.Trim();
-
-                                etiqueta.CodigoUtilizado = true;
-
-                                _sigepWebService.InsertEtiqueta(etiqueta);
-
-                                return etiqueta;
-                            }
-                        }
-                    }
-                }
-
-            }
-            finally
-            {
-                ws.Close();
-            }
-
-            return null;
-
+            return ws;
         }
+
+
     }
 }

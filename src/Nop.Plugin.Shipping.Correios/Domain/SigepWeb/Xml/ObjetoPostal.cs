@@ -1,9 +1,9 @@
 ﻿using Nop.Core;
 using Nop.Core.Domain.Common;
 using Nop.Core.Domain.Shipping;
-using Nop.Plugin.Shipping.Correios.Util;
 using Nop.Services.Common;
 using Nop.Services.Shipping;
+using SmartenUP.Core.Util.Helper;
 using System.Globalization;
 using System.Xml.Linq;
 

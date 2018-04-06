@@ -22,7 +22,7 @@ namespace Nop.Plugin.Shipping.Correios.Services
 
         PlpSigepWebShipment GetPlpShipment(Shipment shipment);
 
-        PlpSigepWeb GetPlp(PlpSigepWebStatus status);
+        PlpSigepWeb GetPlp(PlpSigepWebStatus status);        
 
         PlpSigepWeb GetPlp(int Id);
 
@@ -34,7 +34,7 @@ namespace Nop.Plugin.Shipping.Correios.Services
 
         IPagedList<PlpSigepWeb> ProcurarPlp(PlpSigepWebStatus status, DateTime? dataFechamentoInicial = null, 
             DateTime? dataFechamentoFinal = null, int pedidoId = 0,
-            int pageIndex = 0, int pageSize = int.MaxValue);
+            int pageIndex = 0, int pageSize = int.MaxValue, PlpSigepWebControleEnvioStatus? controleEnvioStatus = null);
 
     }
 }

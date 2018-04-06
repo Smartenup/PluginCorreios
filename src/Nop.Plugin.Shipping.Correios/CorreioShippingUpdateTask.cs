@@ -5,9 +5,11 @@ using Nop.Plugin.Shipping.Correios.Domain.Serialization;
 using Nop.Services.Logging;
 using Nop.Services.Messages;
 using Nop.Services.Orders;
+using Nop.Services.Shipping;
 using Nop.Services.Tasks;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.ServiceModel;
@@ -26,6 +28,7 @@ namespace Nop.Plugin.Shipping.Correios
         private CorreiosSettings _correiosSettings;
         private readonly IWorkflowMessageService _workflowMessageService;
         private readonly IWorkContext _workContext;
+        private readonly IShipmentService _shipmentService;
 
 
         public CorreioShippingUpdateTask(IOrderService orderService,
@@ -33,7 +36,8 @@ namespace Nop.Plugin.Shipping.Correios
             ILogger logger,
             CorreiosSettings correiosSettings,
             IWorkflowMessageService workflowMessageService,
-            IWorkContext workContext)
+            IWorkContext workContext,
+            IShipmentService shipmentService)
         {
             _orderService = orderService;
             _orderProcessingService = orderProcessingService;
@@ -41,6 +45,7 @@ namespace Nop.Plugin.Shipping.Correios
             _correiosSettings = correiosSettings;
             _workflowMessageService = workflowMessageService;
             _workContext = workContext;
+            _shipmentService = shipmentService;
         }
 
         public void Execute()
@@ -128,6 +133,8 @@ namespace Nop.Plugin.Shipping.Correios
                     VerificarPedidoEntregue(shipment, evento);
 
                     VerificarPedidoAguardandoRetirada(shipment, evento);
+
+                    VerificarPedidoRoubado(shipment, evento);
                 }
             }
             catch (Exception ex)
@@ -139,6 +146,31 @@ namespace Nop.Plugin.Shipping.Correios
                 _logger.Error(logError, ex, shipment.Order.Customer);
             }
             
+        }
+
+        private void VerificarPedidoRoubado(Shipment shipment, returnObjetoEvento evento)
+        {
+            if (evento.tipo.Equals("BDE", StringComparison.InvariantCultureIgnoreCase) ||
+                evento.tipo.Equals("BDI", StringComparison.InvariantCultureIgnoreCase) ||
+                evento.tipo.Equals("BDR", StringComparison.InvariantCultureIgnoreCase))
+            {
+                if (evento.status == 50 || evento.status == 51 || evento.status == 52 )
+                {
+
+                    var notaLinhaDigitavel = shipment.Order.OrderNotes.Where(note => note.Note.Contains(evento.descricao));
+
+                    ///Caso não tenha anotação da descrição de retirada no local
+                    if (notaLinhaDigitavel.Count() == 0)
+                    {
+                        AddOrderNote(ObterDescricaoObjetoRoubado(evento), true, shipment.Order, true);
+
+                        string logObjetoRoubado = string.Format("Plugin.Shipping.Correios: {0} {1} - Ordem {2}",
+                        evento.descricao, shipment.TrackingNumber, shipment.OrderId);
+
+                        _logger.Information(logObjetoRoubado);
+                    }
+                }
+            }
         }
 
         private void VerificarPedidoAguardandoRetirada(Shipment shipment, returnObjetoEvento evento)
@@ -179,7 +211,16 @@ namespace Nop.Plugin.Shipping.Correios
 
                     _logger.Information(logDelivered);
 
-                    
+                    var shipmentDate = _shipmentService.GetShipmentById(shipment.Id);
+
+                    IFormatProvider culture = new CultureInfo("pt-BR", true);
+                    DateTime dataAtualizacaoCorreios = DateTime.ParseExact(evento.data + " " + evento.hora, "dd/MM/yyyy HH:mm", culture);
+                    var brasiliaTimeZone = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
+
+                    shipmentDate.DeliveryDateUtc = TimeZoneInfo.ConvertTimeToUtc(dataAtualizacaoCorreios, brasiliaTimeZone);
+
+                    _shipmentService.UpdateShipment(shipmentDate);
+
                 }
             }
         }
@@ -202,6 +243,19 @@ namespace Nop.Plugin.Shipping.Correios
                 _workflowMessageService.SendNewOrderNoteAddedCustomerNotification(
                     orderNote, _workContext.WorkingLanguage.Id);
             }
+        }
+
+
+        private string ObterDescricaoObjetoRoubado(returnObjetoEvento evento)
+        {
+            var str = new StringBuilder();
+
+            str.AppendLine(evento.descricao);
+            str.AppendLine(evento.local);
+            str.AppendLine(evento.cidade);
+            str.AppendLine(evento.data + " " + evento.hora);
+
+            return str.ToString();
         }
 
 

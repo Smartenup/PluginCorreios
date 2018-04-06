@@ -91,8 +91,11 @@ namespace Nop.Plugin.Shipping.Correios
 
         public string NomeRemetenteSIGEP { get; set; }
 
-
         public string TelefoneRemetenteSIGEP { get; set; }
+
+        public bool UtilizaValidacaoCEPEtiquetaSIGEP { get; set; }
+
+        public bool ValidacaoServicoDisponivelCEPEtiquetaSIGEP { get; set; }
 
         #endregion
     }

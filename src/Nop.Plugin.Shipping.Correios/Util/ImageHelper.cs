@@ -38,13 +38,17 @@ namespace Nop.Plugin.Shipping.Correios.Util
 
             var barcode = new Barcode128();
 
+            barcode.BarHeight = Utilities.MillimetersToPoints(17f);
+
             barcode.ChecksumText = true;
             barcode.GenerateChecksum = true;
             barcode.StartStopText = true;
-            barcode.BarHeight = Utilities.MillimetersToPoints(18f);
+
             barcode.CodeSet = Barcode128.Barcode128CodeSet.AUTO;
             barcode.CodeType = Barcode.CODE128_RAW;
-            barcode.Code = Barcode128.GetRawText(code, true, Barcode128.Barcode128CodeSet.AUTO);
+            //barcode.Code = Barcode128.GetRawText(code, true, Barcode128.Barcode128CodeSet.AUTO);
+            barcode.Code = Barcode128.GetRawText(code, false, Barcode128.Barcode128CodeSet.AUTO);
+
             barcode.X = x;
             barcode.Font = null;
 

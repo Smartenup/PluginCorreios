@@ -17,13 +17,13 @@ namespace Nop.Plugin.Shipping.Correios.Services
         private readonly IRepository<PlpSigepWeb> _plpRepository;
         private readonly IRepository<PlpSigepWebShipment> _plpShipmentRepository;
         private readonly IRepository<PlpSigepWebEtiqueta> _plpSigepWebEtiquetaRepository;
-        private readonly IShipmentService _shipmentService;        
+        private readonly IShipmentService _shipmentService;
         private readonly IOrderService _orderService;
         private readonly IRepository<Order> _orderRepository;
         private readonly IRepository<Shipment> _shipmentRepository;
 
 
-        public SigepWebService(IRepository<PlpSigepWeb> plpRepository, 
+        public SigepWebService(IRepository<PlpSigepWeb> plpRepository,
             IRepository<PlpSigepWebShipment> plpShipmentRepository,
             IRepository<PlpSigepWebEtiqueta> plpSigepWebEtiquetaRepository,
             IShipmentService shipmentService,
@@ -63,7 +63,7 @@ namespace Nop.Plugin.Shipping.Correios.Services
         {
             var query = _plpRepository.Table;
 
-            query = query.Where(o => o.PlpStatusId == (int)status );
+            query = query.Where(o => o.PlpStatusId == (int)status);
             query = query.Where(o => !o.Deleted);
 
             if (query.Count() != 0)
@@ -118,7 +118,7 @@ namespace Nop.Plugin.Shipping.Correios.Services
 
             _plpSigepWebEtiquetaRepository.Insert(etiqueta);
         }
-        
+
 
         public void UpdatePlp(PlpSigepWeb plpSigepWeb)
         {
@@ -176,7 +176,7 @@ namespace Nop.Plugin.Shipping.Correios.Services
 
         public IPagedList<PlpSigepWeb> ProcurarPlp(PlpSigepWebStatus status, DateTime? dataFechamentoInicial = null,
             DateTime? dataFechamentoFinal = null, int pedidoId = 0,
-            int pageIndex = 0, int pageSize = int.MaxValue)
+            int pageIndex = 0, int pageSize = int.MaxValue, PlpSigepWebControleEnvioStatus? controleEnvioStatus = null)
         {
 
             var query = _plpRepository.Table;
@@ -192,34 +192,14 @@ namespace Nop.Plugin.Shipping.Correios.Services
             if (pedidoId > 0)
                 query = query.Where(o => o.PlpSigepWebShipments.Any(ship => ship.OrderId == pedidoId));
 
+            if (controleEnvioStatus != null)
+                query = query.Where(o => o.PlpSigepWebControleEnvioStatusId.Value == (int)controleEnvioStatus || o.PlpSigepWebControleEnvioStatusId.HasValue == false);
+
+
             query = query.Where(o => !o.Deleted);
             query = query.OrderByDescending(o => o.Id);
 
             var pagedList = new PagedList<PlpSigepWeb>(query, pageIndex, pageSize);
-
-            /*
-            if (pedidoId > 0)
-            {
-                Order order = _orderService.GetOrderById(pedidoId);
-
-                foreach (var item in pagedList)
-                {
-                    foreach (var plpShipments in item.PlpSigepWebShipments)
-                    {
-                        foreach (var shipment in order.Shipments)
-                        {
-                            if (shipment.Id == plpShipments.ShipmentId)
-                            {
-                                var listOne = new List<PlpSigepWeb>();
-                                listOne.Add(item);
-
-                                return new PagedList<PlpSigepWeb>(listOne, 0, 1);
-                            }
-
-                        }
-                    }
-                }
-            }*/
 
             return pagedList;
         }

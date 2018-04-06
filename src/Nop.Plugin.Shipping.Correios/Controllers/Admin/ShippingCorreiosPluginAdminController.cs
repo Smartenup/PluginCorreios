@@ -8,6 +8,7 @@ using Nop.Plugin.Shipping.Correios.Models;
 using Nop.Plugin.Shipping.Correios.Services;
 using Nop.Services.Customers;
 using Nop.Services.Helpers;
+using Nop.Services.Localization;
 using Nop.Services.Orders;
 using Nop.Services.Shipping;
 using Nop.Web.Framework.Controllers;
@@ -34,6 +35,7 @@ namespace Nop.Plugin.Shipping.Correios.Controllers.Admin
         private readonly ISigepWebPlpService _sigepWebPlpService;
         private readonly IDateTimeHelper _dateTimeHelper;
         private readonly ICustomerService _customerService;
+        private readonly ILocalizationService _localizationService;
 
 
         public ShippingCorreiosPluginAdminController(
@@ -43,7 +45,8 @@ namespace Nop.Plugin.Shipping.Correios.Controllers.Admin
             IPdfSigepWebService pdfSigepWebService,
             ISigepWebPlpService sigepWebPlpService,
             IDateTimeHelper dateTimeHelper,
-            ICustomerService customerService)
+            ICustomerService customerService,
+            ILocalizationService localizationService)
         {
             _orderService = orderService;
             _shipmentService = shipmentService;
@@ -52,6 +55,7 @@ namespace Nop.Plugin.Shipping.Correios.Controllers.Admin
             _sigepWebPlpService = sigepWebPlpService;
             _dateTimeHelper = dateTimeHelper;
             _customerService = customerService;
+            _localizationService = localizationService;
         }
 
 
@@ -236,6 +240,7 @@ namespace Nop.Plugin.Shipping.Correios.Controllers.Admin
                 _pdfSigepWebService.PrintEtiquetasToPdf(stream, plpSigebWeb.PlpSigepWebShipments.ToList());
                 bytes = stream.ToArray();
             }
+
             return File(bytes, MimeTypes.ApplicationPdf, string.Format("etiquetas{0}.pdf", DateTime.Now.ToFileTime()));
         }
 
@@ -251,6 +256,7 @@ namespace Nop.Plugin.Shipping.Correios.Controllers.Admin
                 _pdfSigepWebService.PrintEtiquetasToPdf(stream, plpSigebWeb.PlpSigepWebShipments.ToList());
                 bytes = stream.ToArray();
             }
+
             return File(bytes, MimeTypes.ApplicationPdf, string.Format("etiquetas{0}.pdf", DateTime.Now.ToFileTime()));
         }
 
@@ -259,7 +265,7 @@ namespace Nop.Plugin.Shipping.Correios.Controllers.Admin
         public ActionResult PdfEtiquetaSelected(string selectedIds)
         {
             var sigepWebShipments = new List<PlpSigepWebShipment>();
-            if (selectedIds != null)
+            if (!string.IsNullOrWhiteSpace(selectedIds))
             {
                 var ids = selectedIds
                     .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
@@ -293,20 +299,31 @@ namespace Nop.Plugin.Shipping.Correios.Controllers.Admin
             PlpSigepWeb plpSigebWeb = _sigepWebPlpService.ObterPlpEmAberto();
 
             IList<Order> lstPedidos = ObterListaPedidos(model);
-            var lstPedidosProblema = new List<Order>();
+
+            var lstPedidosProblema = new List<KeyValuePair<Order, int>>();
 
             if (lstPedidos.Count > 0)
             {
+                var lstProblema = new List<KeyValuePair<Order, int>>();
+
+                _sigepWebPlpService.ValidarPedidosEtiqueta(lstPedidos, out lstProblema);
+
+                lstPedidosProblema.AddRange(lstProblema);
+
                 //Solicita as etiquetas
-                List<PlpSigepWebEtiqueta> lstEtiquetas = _sigepWebPlpService.SolicitaEtiquetas(lstPedidos, cliente);
+                var lstEtiquetas = new List<PlpSigepWebEtiqueta>();  
+
+                if(lstPedidos.Count > 0)
+                    lstEtiquetas = _sigepWebPlpService.SolicitaEtiquetas(lstPedidos, cliente);
 
                 foreach (var pedido in lstPedidos)
                 {
                     PlpSigepWebEtiqueta etiqueta = _sigepWebPlpService.ObterProximaEtiquetaDisponivel(lstEtiquetas, pedido.ShippingMethod);
 
+                    ///Adiciona etiqueta não encontrada para pedido com erro
                     if (etiqueta == null)
                     {
-                        lstPedidosProblema.Add(pedido);
+                        lstPedidosProblema.Add(new KeyValuePair<Order, int>(pedido, MensagemErroProcessamentoEtiqueta.ETIQUETA_NAO_ENCONTRADA));
                         continue;
                     }
 
@@ -366,17 +383,18 @@ namespace Nop.Plugin.Shipping.Correios.Controllers.Admin
 
             gridModel.Data = lstPlpAbertaResultModel;
 
-            ///Verificar uma forma de apresentar a mensagem de pedidos que não se conseguiu gerar etiqueta
             if (lstPedidosProblema.Count > 0)
             {
                 var errorListModel = new List<PLPAbertaResultErrorModel>();
 
+                var erroProcessamento = new MensagemErroProcessamentoEtiqueta(_localizationService);
+
                 foreach (var item in lstPedidosProblema)
                 {
-                    errorListModel.Add(
-                        new PLPAbertaResultErrorModel(){ CodigoPedidoErro = item.Id,
-                            MensagemErro = string.Format("Serviço selecionado no pedido não encontrado no contrato correios {0}", item.ShippingMethod)
-                        }); 
+                    errorListModel.Add(new PLPAbertaResultErrorModel()  {
+                        CodigoPedidoErro = item.Value,
+                        MensagemErro = string.Format(erroProcessamento.MensagemErro(item.Value), item.Key.ShippingMethod, item.Key.ShippingAddress.ZipPostalCode, item.Key.Id)
+                    }); 
                 }
 
                 gridModel.ExtraData = errorListModel;
@@ -387,9 +405,6 @@ namespace Nop.Plugin.Shipping.Correios.Controllers.Admin
                 Data = gridModel
             };
         }
-
-
-
 
         [HttpPost, ActionName("PLPAberta")]
         [FormValueRequired("pfp-fechar")]
@@ -405,9 +420,6 @@ namespace Nop.Plugin.Shipping.Correios.Controllers.Admin
             return PLPAberta();            
         }
 
-
-
-
         [NonAction]
         private IList<Order> ObterListaPedidos(PLPAbertaSearchModel model)
         {
@@ -417,9 +429,7 @@ namespace Nop.Plugin.Shipping.Correios.Controllers.Admin
             if (!string.IsNullOrWhiteSpace(model.OrdersIs))
             {
                 foreach (var item in model.OrdersIs.Split(','))
-                {
                     pedidos.Add(int.Parse(item));
-                }
             }
 
             var orders = _orderService.GetOrdersByIds(pedidos.ToArray());
