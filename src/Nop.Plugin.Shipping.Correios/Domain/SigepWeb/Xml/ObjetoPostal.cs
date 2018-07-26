@@ -60,7 +60,7 @@ namespace Nop.Plugin.Shipping.Correios.Domain.SigepWeb.Xml
             obtetoPostal.Add(rt2);
             obtetoPostal.Add(new Destinatario().ObterDestinatario(addressAttributeParser, workContext, shipment.Order.ShippingAddress));
             obtetoPostal.Add(new Nacional().ObterNacional(shipment.Order.ShippingAddress));
-            obtetoPostal.Add(new ServicoAdicional().ObterServicoAdicional(correiosSettings, plpShipment.ValorDeclarado));
+            obtetoPostal.Add(new ServicoAdicional().ObterServicoAdicional(correiosSettings, plpShipment.ValorDeclarado ));
             obtetoPostal.Add(new DimensaoObjeto().ObterDimensaoObjeto());
             obtetoPostal.Add(dataPostagemSara);
             obtetoPostal.Add(statusProcessamento);
@@ -101,7 +101,7 @@ namespace Nop.Plugin.Shipping.Correios.Domain.SigepWeb.Xml
             string logradouroDestinatarioFormatado = StringHelper.Formatar(address.Address1, 50);
             var logradouroDestinatario = new XElement("logradouro_destinatario", new XCData(logradouroDestinatarioFormatado));
 
-            string complementoDestinatarioFormatado = StringHelper.Formatar(complement, 50);
+            string complementoDestinatarioFormatado = StringHelper.Formatar(complement, 30);
             var complementoDestinatario = new XElement("complemento_destinatario", new XCData(complementoDestinatarioFormatado));
 
             string numeroFormatado = StringHelper.Formatar(number, 5);

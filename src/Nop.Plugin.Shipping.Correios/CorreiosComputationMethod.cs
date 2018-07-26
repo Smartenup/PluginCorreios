@@ -160,6 +160,12 @@ namespace Nop.Plugin.Shipping.Correios
                 return response;
             }
 
+            if (getShippingOptionRequest.ShippingAddress.ZipPostalCode.Length != 8)
+            {
+                response.AddError("CEP de envio deve ter 8 posições");
+                return response;
+            }
+
             var result = ProcessShipping(getShippingOptionRequest);
 
             if (result == null)
