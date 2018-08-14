@@ -93,9 +93,10 @@ C:\Users\Pedro Usinskas\source\repos\NopCommerceSmartenup_3_80\src\Presentation\
 C:\Users\Pedro Usinskas\source\repos\NopCommerceSmartenup_3_80\src\Presentation\Nop.Web\Plugins\Shipping.Correios\Nop.Plugin.Shipping.Correios.dll
 C:\Users\Pedro Usinskas\source\repos\NopCommerceSmartenup_3_80\src\Presentation\Nop.Web\Plugins\Shipping.Correios\Nop.Plugin.Shipping.Correios.XmlSerializers.dll
 C:\Users\Pedro Usinskas\source\repos\NopCommerceSmartenup_3_80\src\Presentation\Nop.Web\Plugins\Shipping.Correios\Nop.Plugin.Shipping.Correios.pdb
-C:\Users\Pedro Usinskas\source\repos\PluginCorreios\src\Nop.Plugin.Shipping.Correios\obj\Release\Nop.Plugin.Shipping.Correios.csprojResolveAssemblyReference.cache
 C:\Users\Pedro Usinskas\source\repos\PluginCorreios\src\Nop.Plugin.Shipping.Correios\obj\Release\Nop.Plugin.Shipping.Correios.csproj.CoreCompileInputs.cache
 C:\Users\Pedro Usinskas\source\repos\PluginCorreios\src\Nop.Plugin.Shipping.Correios\obj\Release\Nop.Plugin.Shipping.Correios.dll
 C:\Users\Pedro Usinskas\source\repos\PluginCorreios\src\Nop.Plugin.Shipping.Correios\obj\Release\Nop.Plugin.Shipping.Correios.pdb
 C:\Users\Pedro Usinskas\source\repos\PluginCorreios\src\Nop.Plugin.Shipping.Correios\obj\Release\Nop.Plugin.Shipping.Correios.XmlSerializers.dll
 C:\Users\Pedro Usinskas\source\repos\NopCommerceSmartenup_3_80\src\Presentation\Nop.Web\Plugins\Shipping.Correios\Content\Images\logo_correios.PNG
+C:\Users\Pedro Usinskas\source\repos\PluginCorreios\src\Nop.Plugin.Shipping.Correios\obj\Release\Nop.Plugin.Shipping.Correios.csprojAssemblyReference.cache
+C:\Users\Pedro Usinskas\source\repos\PluginCorreios\src\Nop.Plugin.Shipping.Correios\obj\Release\Nop.Plugin.Shipping.Correios.csproj.CopyComplete
