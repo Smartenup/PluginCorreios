@@ -32,33 +32,6 @@ namespace Nop.Plugin.Shipping.Correios.wsRastro {
         
         [System.ServiceModel.OperationContractAttribute(Action="buscaEventosLista", ReplyAction="http://resource.webservice.correios.com.br/Service/buscaEventosListaResponse")]
         System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsRastro.buscaEventosListaResponse> buscaEventosListaAsync(Nop.Plugin.Shipping.Correios.wsRastro.buscaEventosListaRequest request);
-        
-        // CODEGEN: Parameter 'return' requires additional schema information that cannot be captured using the parameter mode. The specific attribute is 'System.Xml.Serialization.XmlElementAttribute'.
-        [System.ServiceModel.OperationContractAttribute(Action="RastroJson", ReplyAction="http://resource.webservice.correios.com.br/Service/RastroJsonResponse")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        [return: System.ServiceModel.MessageParameterAttribute(Name="return")]
-        Nop.Plugin.Shipping.Correios.wsRastro.RastroJsonResponse RastroJson(Nop.Plugin.Shipping.Correios.wsRastro.RastroJsonRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="RastroJson", ReplyAction="http://resource.webservice.correios.com.br/Service/RastroJsonResponse")]
-        System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsRastro.RastroJsonResponse> RastroJsonAsync(Nop.Plugin.Shipping.Correios.wsRastro.RastroJsonRequest request);
-        
-        // CODEGEN: Parameter 'return' requires additional schema information that cannot be captured using the parameter mode. The specific attribute is 'System.Xml.Serialization.XmlElementAttribute'.
-        [System.ServiceModel.OperationContractAttribute(Action="ListaEntregaExterna", ReplyAction="http://resource.webservice.correios.com.br/Service/ListaEntregaExternaResponse")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        [return: System.ServiceModel.MessageParameterAttribute(Name="return")]
-        Nop.Plugin.Shipping.Correios.wsRastro.ListaEntregaExternaResponse ListaEntregaExterna(Nop.Plugin.Shipping.Correios.wsRastro.ListaEntregaExternaRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="ListaEntregaExterna", ReplyAction="http://resource.webservice.correios.com.br/Service/ListaEntregaExternaResponse")]
-        System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsRastro.ListaEntregaExternaResponse> ListaEntregaExternaAsync(Nop.Plugin.Shipping.Correios.wsRastro.ListaEntregaExternaRequest request);
-        
-        // CODEGEN: Parameter 'return' requires additional schema information that cannot be captured using the parameter mode. The specific attribute is 'System.Xml.Serialization.XmlElementAttribute'.
-        [System.ServiceModel.OperationContractAttribute(Action="UnidadesSRO", ReplyAction="http://resource.webservice.correios.com.br/Service/UnidadesSROResponse")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        [return: System.ServiceModel.MessageParameterAttribute(Name="return")]
-        Nop.Plugin.Shipping.Correios.wsRastro.UnidadesSROResponse UnidadesSRO(Nop.Plugin.Shipping.Correios.wsRastro.UnidadesSRORequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="UnidadesSRO", ReplyAction="http://resource.webservice.correios.com.br/Service/UnidadesSROResponse")]
-        System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsRastro.UnidadesSROResponse> UnidadesSROAsync(Nop.Plugin.Shipping.Correios.wsRastro.UnidadesSRORequest request);
     }
     
     /// <remarks/>
@@ -83,11 +56,11 @@ namespace Nop.Plugin.Shipping.Correios.wsRastro {
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
         public string versao {
             get {
-                return versaoField;
+                return this.versaoField;
             }
             set {
-                versaoField = value;
-                RaisePropertyChanged("versao");
+                this.versaoField = value;
+                this.RaisePropertyChanged("versao");
             }
         }
         
@@ -95,11 +68,11 @@ namespace Nop.Plugin.Shipping.Correios.wsRastro {
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
         public string qtd {
             get {
-                return qtdField;
+                return this.qtdField;
             }
             set {
-                qtdField = value;
-                RaisePropertyChanged("qtd");
+                this.qtdField = value;
+                this.RaisePropertyChanged("qtd");
             }
         }
         
@@ -107,11 +80,11 @@ namespace Nop.Plugin.Shipping.Correios.wsRastro {
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
         public string TipoPesquisa {
             get {
-                return tipoPesquisaField;
+                return this.tipoPesquisaField;
             }
             set {
-                tipoPesquisaField = value;
-                RaisePropertyChanged("TipoPesquisa");
+                this.tipoPesquisaField = value;
+                this.RaisePropertyChanged("TipoPesquisa");
             }
         }
         
@@ -119,11 +92,11 @@ namespace Nop.Plugin.Shipping.Correios.wsRastro {
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
         public string TipoResultado {
             get {
-                return tipoResultadoField;
+                return this.tipoResultadoField;
             }
             set {
-                tipoResultadoField = value;
-                RaisePropertyChanged("TipoResultado");
+                this.tipoResultadoField = value;
+                this.RaisePropertyChanged("TipoResultado");
             }
         }
         
@@ -131,18 +104,18 @@ namespace Nop.Plugin.Shipping.Correios.wsRastro {
         [System.Xml.Serialization.XmlElementAttribute("objeto", Order=4)]
         public objeto[] objeto {
             get {
-                return objetoField;
+                return this.objetoField;
             }
             set {
-                objetoField = value;
-                RaisePropertyChanged("objeto");
+                this.objetoField = value;
+                this.RaisePropertyChanged("objeto");
             }
         }
         
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
         
         protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = PropertyChanged;
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
             if ((propertyChanged != null)) {
                 propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
             }
@@ -173,11 +146,11 @@ namespace Nop.Plugin.Shipping.Correios.wsRastro {
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
         public string numero {
             get {
-                return numeroField;
+                return this.numeroField;
             }
             set {
-                numeroField = value;
-                RaisePropertyChanged("numero");
+                this.numeroField = value;
+                this.RaisePropertyChanged("numero");
             }
         }
         
@@ -185,11 +158,11 @@ namespace Nop.Plugin.Shipping.Correios.wsRastro {
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
         public string sigla {
             get {
-                return siglaField;
+                return this.siglaField;
             }
             set {
-                siglaField = value;
-                RaisePropertyChanged("sigla");
+                this.siglaField = value;
+                this.RaisePropertyChanged("sigla");
             }
         }
         
@@ -197,11 +170,11 @@ namespace Nop.Plugin.Shipping.Correios.wsRastro {
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
         public string nome {
             get {
-                return nomeField;
+                return this.nomeField;
             }
             set {
-                nomeField = value;
-                RaisePropertyChanged("nome");
+                this.nomeField = value;
+                this.RaisePropertyChanged("nome");
             }
         }
         
@@ -209,11 +182,11 @@ namespace Nop.Plugin.Shipping.Correios.wsRastro {
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
         public string categoria {
             get {
-                return categoriaField;
+                return this.categoriaField;
             }
             set {
-                categoriaField = value;
-                RaisePropertyChanged("categoria");
+                this.categoriaField = value;
+                this.RaisePropertyChanged("categoria");
             }
         }
         
@@ -221,11 +194,11 @@ namespace Nop.Plugin.Shipping.Correios.wsRastro {
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
         public string erro {
             get {
-                return erroField;
+                return this.erroField;
             }
             set {
-                erroField = value;
-                RaisePropertyChanged("erro");
+                this.erroField = value;
+                this.RaisePropertyChanged("erro");
             }
         }
         
@@ -233,18 +206,18 @@ namespace Nop.Plugin.Shipping.Correios.wsRastro {
         [System.Xml.Serialization.XmlElementAttribute("evento", Order=5)]
         public eventos[] evento {
             get {
-                return eventoField;
+                return this.eventoField;
             }
             set {
-                eventoField = value;
-                RaisePropertyChanged("evento");
+                this.eventoField = value;
+                this.RaisePropertyChanged("evento");
             }
         }
         
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
         
         protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = PropertyChanged;
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
             if ((propertyChanged != null)) {
                 propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
             }
@@ -299,11 +272,11 @@ namespace Nop.Plugin.Shipping.Correios.wsRastro {
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
         public string tipo {
             get {
-                return tipoField;
+                return this.tipoField;
             }
             set {
-                tipoField = value;
-                RaisePropertyChanged("tipo");
+                this.tipoField = value;
+                this.RaisePropertyChanged("tipo");
             }
         }
         
@@ -311,11 +284,11 @@ namespace Nop.Plugin.Shipping.Correios.wsRastro {
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
         public string status {
             get {
-                return statusField;
+                return this.statusField;
             }
             set {
-                statusField = value;
-                RaisePropertyChanged("status");
+                this.statusField = value;
+                this.RaisePropertyChanged("status");
             }
         }
         
@@ -323,11 +296,11 @@ namespace Nop.Plugin.Shipping.Correios.wsRastro {
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
         public string data {
             get {
-                return dataField;
+                return this.dataField;
             }
             set {
-                dataField = value;
-                RaisePropertyChanged("data");
+                this.dataField = value;
+                this.RaisePropertyChanged("data");
             }
         }
         
@@ -335,11 +308,11 @@ namespace Nop.Plugin.Shipping.Correios.wsRastro {
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
         public string hora {
             get {
-                return horaField;
+                return this.horaField;
             }
             set {
-                horaField = value;
-                RaisePropertyChanged("hora");
+                this.horaField = value;
+                this.RaisePropertyChanged("hora");
             }
         }
         
@@ -347,11 +320,11 @@ namespace Nop.Plugin.Shipping.Correios.wsRastro {
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
         public string descricao {
             get {
-                return descricaoField;
+                return this.descricaoField;
             }
             set {
-                descricaoField = value;
-                RaisePropertyChanged("descricao");
+                this.descricaoField = value;
+                this.RaisePropertyChanged("descricao");
             }
         }
         
@@ -359,11 +332,11 @@ namespace Nop.Plugin.Shipping.Correios.wsRastro {
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
         public string detalhe {
             get {
-                return detalheField;
+                return this.detalheField;
             }
             set {
-                detalheField = value;
-                RaisePropertyChanged("detalhe");
+                this.detalheField = value;
+                this.RaisePropertyChanged("detalhe");
             }
         }
         
@@ -371,11 +344,11 @@ namespace Nop.Plugin.Shipping.Correios.wsRastro {
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
         public string recebedor {
             get {
-                return recebedorField;
+                return this.recebedorField;
             }
             set {
-                recebedorField = value;
-                RaisePropertyChanged("recebedor");
+                this.recebedorField = value;
+                this.RaisePropertyChanged("recebedor");
             }
         }
         
@@ -383,11 +356,11 @@ namespace Nop.Plugin.Shipping.Correios.wsRastro {
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
         public string documento {
             get {
-                return documentoField;
+                return this.documentoField;
             }
             set {
-                documentoField = value;
-                RaisePropertyChanged("documento");
+                this.documentoField = value;
+                this.RaisePropertyChanged("documento");
             }
         }
         
@@ -395,11 +368,11 @@ namespace Nop.Plugin.Shipping.Correios.wsRastro {
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
         public string comentario {
             get {
-                return comentarioField;
+                return this.comentarioField;
             }
             set {
-                comentarioField = value;
-                RaisePropertyChanged("comentario");
+                this.comentarioField = value;
+                this.RaisePropertyChanged("comentario");
             }
         }
         
@@ -407,11 +380,11 @@ namespace Nop.Plugin.Shipping.Correios.wsRastro {
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=9)]
         public string local {
             get {
-                return localField;
+                return this.localField;
             }
             set {
-                localField = value;
-                RaisePropertyChanged("local");
+                this.localField = value;
+                this.RaisePropertyChanged("local");
             }
         }
         
@@ -419,11 +392,11 @@ namespace Nop.Plugin.Shipping.Correios.wsRastro {
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=10)]
         public string codigo {
             get {
-                return codigoField;
+                return this.codigoField;
             }
             set {
-                codigoField = value;
-                RaisePropertyChanged("codigo");
+                this.codigoField = value;
+                this.RaisePropertyChanged("codigo");
             }
         }
         
@@ -431,11 +404,11 @@ namespace Nop.Plugin.Shipping.Correios.wsRastro {
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=11)]
         public string cidade {
             get {
-                return cidadeField;
+                return this.cidadeField;
             }
             set {
-                cidadeField = value;
-                RaisePropertyChanged("cidade");
+                this.cidadeField = value;
+                this.RaisePropertyChanged("cidade");
             }
         }
         
@@ -443,11 +416,11 @@ namespace Nop.Plugin.Shipping.Correios.wsRastro {
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=12)]
         public string uf {
             get {
-                return ufField;
+                return this.ufField;
             }
             set {
-                ufField = value;
-                RaisePropertyChanged("uf");
+                this.ufField = value;
+                this.RaisePropertyChanged("uf");
             }
         }
         
@@ -455,11 +428,11 @@ namespace Nop.Plugin.Shipping.Correios.wsRastro {
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=13)]
         public string sto {
             get {
-                return stoField;
+                return this.stoField;
             }
             set {
-                stoField = value;
-                RaisePropertyChanged("sto");
+                this.stoField = value;
+                this.RaisePropertyChanged("sto");
             }
         }
         
@@ -467,11 +440,11 @@ namespace Nop.Plugin.Shipping.Correios.wsRastro {
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=14)]
         public string amazoncode {
             get {
-                return amazoncodeField;
+                return this.amazoncodeField;
             }
             set {
-                amazoncodeField = value;
-                RaisePropertyChanged("amazoncode");
+                this.amazoncodeField = value;
+                this.RaisePropertyChanged("amazoncode");
             }
         }
         
@@ -479,11 +452,11 @@ namespace Nop.Plugin.Shipping.Correios.wsRastro {
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=15)]
         public string amazontimezone {
             get {
-                return amazontimezoneField;
+                return this.amazontimezoneField;
             }
             set {
-                amazontimezoneField = value;
-                RaisePropertyChanged("amazontimezone");
+                this.amazontimezoneField = value;
+                this.RaisePropertyChanged("amazontimezone");
             }
         }
         
@@ -491,11 +464,11 @@ namespace Nop.Plugin.Shipping.Correios.wsRastro {
         [System.Xml.Serialization.XmlElementAttribute("destino", Order=16)]
         public destinos[] destino {
             get {
-                return destinoField;
+                return this.destinoField;
             }
             set {
-                destinoField = value;
-                RaisePropertyChanged("destino");
+                this.destinoField = value;
+                this.RaisePropertyChanged("destino");
             }
         }
         
@@ -503,18 +476,18 @@ namespace Nop.Plugin.Shipping.Correios.wsRastro {
         [System.Xml.Serialization.XmlElementAttribute(Order=17)]
         public enderecoMobile endereco {
             get {
-                return enderecoField;
+                return this.enderecoField;
             }
             set {
-                enderecoField = value;
-                RaisePropertyChanged("endereco");
+                this.enderecoField = value;
+                this.RaisePropertyChanged("endereco");
             }
         }
         
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
         
         protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = PropertyChanged;
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
             if ((propertyChanged != null)) {
                 propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
             }
@@ -543,11 +516,11 @@ namespace Nop.Plugin.Shipping.Correios.wsRastro {
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
         public string local {
             get {
-                return localField;
+                return this.localField;
             }
             set {
-                localField = value;
-                RaisePropertyChanged("local");
+                this.localField = value;
+                this.RaisePropertyChanged("local");
             }
         }
         
@@ -555,11 +528,11 @@ namespace Nop.Plugin.Shipping.Correios.wsRastro {
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
         public string codigo {
             get {
-                return codigoField;
+                return this.codigoField;
             }
             set {
-                codigoField = value;
-                RaisePropertyChanged("codigo");
+                this.codigoField = value;
+                this.RaisePropertyChanged("codigo");
             }
         }
         
@@ -567,11 +540,11 @@ namespace Nop.Plugin.Shipping.Correios.wsRastro {
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
         public string cidade {
             get {
-                return cidadeField;
+                return this.cidadeField;
             }
             set {
-                cidadeField = value;
-                RaisePropertyChanged("cidade");
+                this.cidadeField = value;
+                this.RaisePropertyChanged("cidade");
             }
         }
         
@@ -579,11 +552,11 @@ namespace Nop.Plugin.Shipping.Correios.wsRastro {
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
         public string bairro {
             get {
-                return bairroField;
+                return this.bairroField;
             }
             set {
-                bairroField = value;
-                RaisePropertyChanged("bairro");
+                this.bairroField = value;
+                this.RaisePropertyChanged("bairro");
             }
         }
         
@@ -591,408 +564,18 @@ namespace Nop.Plugin.Shipping.Correios.wsRastro {
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
         public string uf {
             get {
-                return ufField;
+                return this.ufField;
             }
             set {
-                ufField = value;
-                RaisePropertyChanged("uf");
+                this.ufField = value;
+                this.RaisePropertyChanged("uf");
             }
         }
         
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
         
         protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://resource.webservice.correios.com.br/")]
-    public partial class registroUnidades : object, System.ComponentModel.INotifyPropertyChanged {
-        
-        private string codigoDRField;
-        
-        private string codigoMCUField;
-        
-        private string codigoSROField;
-        
-        private string nomeUnidadeField;
-        
-        private string siglaDRField;
-        
-        private string siglaTipoUnidadeField;
-        
-        private string tipoUnidadeField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
-        public string codigoDR {
-            get {
-                return codigoDRField;
-            }
-            set {
-                codigoDRField = value;
-                RaisePropertyChanged("codigoDR");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
-        public string codigoMCU {
-            get {
-                return codigoMCUField;
-            }
-            set {
-                codigoMCUField = value;
-                RaisePropertyChanged("codigoMCU");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
-        public string codigoSRO {
-            get {
-                return codigoSROField;
-            }
-            set {
-                codigoSROField = value;
-                RaisePropertyChanged("codigoSRO");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
-        public string nomeUnidade {
-            get {
-                return nomeUnidadeField;
-            }
-            set {
-                nomeUnidadeField = value;
-                RaisePropertyChanged("nomeUnidade");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
-        public string siglaDR {
-            get {
-                return siglaDRField;
-            }
-            set {
-                siglaDRField = value;
-                RaisePropertyChanged("siglaDR");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
-        public string siglaTipoUnidade {
-            get {
-                return siglaTipoUnidadeField;
-            }
-            set {
-                siglaTipoUnidadeField = value;
-                RaisePropertyChanged("siglaTipoUnidade");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
-        public string tipoUnidade {
-            get {
-                return tipoUnidadeField;
-            }
-            set {
-                tipoUnidadeField = value;
-                RaisePropertyChanged("tipoUnidade");
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://resource.webservice.correios.com.br/")]
-    public partial class objetoPostal : object, System.ComponentModel.INotifyPropertyChanged {
-        
-        private string agrupamentoField;
-        
-        private string avisoRecebimentoField;
-        
-        private string devolucaoDocumentoField;
-        
-        private string devolucaoObjetoField;
-        
-        private string maoPropriaField;
-        
-        private string numeroObjetoField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
-        public string agrupamento {
-            get {
-                return agrupamentoField;
-            }
-            set {
-                agrupamentoField = value;
-                RaisePropertyChanged("agrupamento");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
-        public string avisoRecebimento {
-            get {
-                return avisoRecebimentoField;
-            }
-            set {
-                avisoRecebimentoField = value;
-                RaisePropertyChanged("avisoRecebimento");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
-        public string devolucaoDocumento {
-            get {
-                return devolucaoDocumentoField;
-            }
-            set {
-                devolucaoDocumentoField = value;
-                RaisePropertyChanged("devolucaoDocumento");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
-        public string devolucaoObjeto {
-            get {
-                return devolucaoObjetoField;
-            }
-            set {
-                devolucaoObjetoField = value;
-                RaisePropertyChanged("devolucaoObjeto");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
-        public string maoPropria {
-            get {
-                return maoPropriaField;
-            }
-            set {
-                maoPropriaField = value;
-                RaisePropertyChanged("maoPropria");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
-        public string numeroObjeto {
-            get {
-                return numeroObjetoField;
-            }
-            set {
-                numeroObjetoField = value;
-                RaisePropertyChanged("numeroObjeto");
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://resource.webservice.correios.com.br/")]
-    public partial class listaEntregaExterna : object, System.ComponentModel.INotifyPropertyChanged {
-        
-        private string carteiroField;
-        
-        private System.DateTime dataField;
-        
-        private bool dataFieldSpecified;
-        
-        private string distritoField;
-        
-        private string estacaoField;
-        
-        private string idField;
-        
-        private string loecField;
-        
-        private string nomeCarteiroField;
-        
-        private string nomeUnidadeField;
-        
-        private objetoPostal[] objetosField;
-        
-        private string unidadeField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
-        public string carteiro {
-            get {
-                return carteiroField;
-            }
-            set {
-                carteiroField = value;
-                RaisePropertyChanged("carteiro");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
-        public System.DateTime data {
-            get {
-                return dataField;
-            }
-            set {
-                dataField = value;
-                RaisePropertyChanged("data");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool dataSpecified {
-            get {
-                return dataFieldSpecified;
-            }
-            set {
-                dataFieldSpecified = value;
-                RaisePropertyChanged("dataSpecified");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
-        public string distrito {
-            get {
-                return distritoField;
-            }
-            set {
-                distritoField = value;
-                RaisePropertyChanged("distrito");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
-        public string estacao {
-            get {
-                return estacaoField;
-            }
-            set {
-                estacaoField = value;
-                RaisePropertyChanged("estacao");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
-        public string id {
-            get {
-                return idField;
-            }
-            set {
-                idField = value;
-                RaisePropertyChanged("id");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
-        public string loec {
-            get {
-                return loecField;
-            }
-            set {
-                loecField = value;
-                RaisePropertyChanged("loec");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
-        public string nomeCarteiro {
-            get {
-                return nomeCarteiroField;
-            }
-            set {
-                nomeCarteiroField = value;
-                RaisePropertyChanged("nomeCarteiro");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
-        public string nomeUnidade {
-            get {
-                return nomeUnidadeField;
-            }
-            set {
-                nomeUnidadeField = value;
-                RaisePropertyChanged("nomeUnidade");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("objetos", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=8)]
-        public objetoPostal[] objetos {
-            get {
-                return objetosField;
-            }
-            set {
-                objetosField = value;
-                RaisePropertyChanged("objetos");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=9)]
-        public string unidade {
-            get {
-                return unidadeField;
-            }
-            set {
-                unidadeField = value;
-                RaisePropertyChanged("unidade");
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = PropertyChanged;
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
             if ((propertyChanged != null)) {
                 propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
             }
@@ -1033,11 +616,11 @@ namespace Nop.Plugin.Shipping.Correios.wsRastro {
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
         public string codigo {
             get {
-                return codigoField;
+                return this.codigoField;
             }
             set {
-                codigoField = value;
-                RaisePropertyChanged("codigo");
+                this.codigoField = value;
+                this.RaisePropertyChanged("codigo");
             }
         }
         
@@ -1045,11 +628,11 @@ namespace Nop.Plugin.Shipping.Correios.wsRastro {
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
         public string cep {
             get {
-                return cepField;
+                return this.cepField;
             }
             set {
-                cepField = value;
-                RaisePropertyChanged("cep");
+                this.cepField = value;
+                this.RaisePropertyChanged("cep");
             }
         }
         
@@ -1057,11 +640,11 @@ namespace Nop.Plugin.Shipping.Correios.wsRastro {
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
         public string logradouro {
             get {
-                return logradouroField;
+                return this.logradouroField;
             }
             set {
-                logradouroField = value;
-                RaisePropertyChanged("logradouro");
+                this.logradouroField = value;
+                this.RaisePropertyChanged("logradouro");
             }
         }
         
@@ -1069,11 +652,11 @@ namespace Nop.Plugin.Shipping.Correios.wsRastro {
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
         public string complemento {
             get {
-                return complementoField;
+                return this.complementoField;
             }
             set {
-                complementoField = value;
-                RaisePropertyChanged("complemento");
+                this.complementoField = value;
+                this.RaisePropertyChanged("complemento");
             }
         }
         
@@ -1081,11 +664,11 @@ namespace Nop.Plugin.Shipping.Correios.wsRastro {
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
         public string numero {
             get {
-                return numeroField;
+                return this.numeroField;
             }
             set {
-                numeroField = value;
-                RaisePropertyChanged("numero");
+                this.numeroField = value;
+                this.RaisePropertyChanged("numero");
             }
         }
         
@@ -1093,11 +676,11 @@ namespace Nop.Plugin.Shipping.Correios.wsRastro {
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
         public string localidade {
             get {
-                return localidadeField;
+                return this.localidadeField;
             }
             set {
-                localidadeField = value;
-                RaisePropertyChanged("localidade");
+                this.localidadeField = value;
+                this.RaisePropertyChanged("localidade");
             }
         }
         
@@ -1105,11 +688,11 @@ namespace Nop.Plugin.Shipping.Correios.wsRastro {
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
         public string uf {
             get {
-                return ufField;
+                return this.ufField;
             }
             set {
-                ufField = value;
-                RaisePropertyChanged("uf");
+                this.ufField = value;
+                this.RaisePropertyChanged("uf");
             }
         }
         
@@ -1117,11 +700,11 @@ namespace Nop.Plugin.Shipping.Correios.wsRastro {
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
         public string bairro {
             get {
-                return bairroField;
+                return this.bairroField;
             }
             set {
-                bairroField = value;
-                RaisePropertyChanged("bairro");
+                this.bairroField = value;
+                this.RaisePropertyChanged("bairro");
             }
         }
         
@@ -1129,11 +712,11 @@ namespace Nop.Plugin.Shipping.Correios.wsRastro {
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
         public string latitude {
             get {
-                return latitudeField;
+                return this.latitudeField;
             }
             set {
-                latitudeField = value;
-                RaisePropertyChanged("latitude");
+                this.latitudeField = value;
+                this.RaisePropertyChanged("latitude");
             }
         }
         
@@ -1141,11 +724,11 @@ namespace Nop.Plugin.Shipping.Correios.wsRastro {
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=9)]
         public string longitude {
             get {
-                return longitudeField;
+                return this.longitudeField;
             }
             set {
-                longitudeField = value;
-                RaisePropertyChanged("longitude");
+                this.longitudeField = value;
+                this.RaisePropertyChanged("longitude");
             }
         }
         
@@ -1153,18 +736,18 @@ namespace Nop.Plugin.Shipping.Correios.wsRastro {
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=10)]
         public string celular {
             get {
-                return celularField;
+                return this.celularField;
             }
             set {
-                celularField = value;
-                RaisePropertyChanged("celular");
+                this.celularField = value;
+                this.RaisePropertyChanged("celular");
             }
         }
         
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
         
         protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = PropertyChanged;
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
             if ((propertyChanged != null)) {
                 propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
             }
@@ -1293,139 +876,6 @@ namespace Nop.Plugin.Shipping.Correios.wsRastro {
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="RastroJson", WrapperNamespace="http://resource.webservice.correios.com.br/", IsWrapped=true)]
-    public partial class RastroJsonRequest {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://resource.webservice.correios.com.br/", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string usuario;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://resource.webservice.correios.com.br/", Order=1)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string senha;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://resource.webservice.correios.com.br/", Order=2)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string tipo;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://resource.webservice.correios.com.br/", Order=3)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string resultado;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://resource.webservice.correios.com.br/", Order=4)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string lingua;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://resource.webservice.correios.com.br/", Order=5)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string objetos;
-        
-        public RastroJsonRequest() {
-        }
-        
-        public RastroJsonRequest(string usuario, string senha, string tipo, string resultado, string lingua, string objetos) {
-            this.usuario = usuario;
-            this.senha = senha;
-            this.tipo = tipo;
-            this.resultado = resultado;
-            this.lingua = lingua;
-            this.objetos = objetos;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="RastroJsonResponse", WrapperNamespace="http://resource.webservice.correios.com.br/", IsWrapped=true)]
-    public partial class RastroJsonResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://resource.webservice.correios.com.br/", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string @return;
-        
-        public RastroJsonResponse() {
-        }
-        
-        public RastroJsonResponse(string @return) {
-            this.@return = @return;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="ListaEntregaExterna", WrapperNamespace="http://resource.webservice.correios.com.br/", IsWrapped=true)]
-    public partial class ListaEntregaExternaRequest {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://resource.webservice.correios.com.br/", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string loec;
-        
-        public ListaEntregaExternaRequest() {
-        }
-        
-        public ListaEntregaExternaRequest(string loec) {
-            this.loec = loec;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="ListaEntregaExternaResponse", WrapperNamespace="http://resource.webservice.correios.com.br/", IsWrapped=true)]
-    public partial class ListaEntregaExternaResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://resource.webservice.correios.com.br/", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public Nop.Plugin.Shipping.Correios.wsRastro.listaEntregaExterna @return;
-        
-        public ListaEntregaExternaResponse() {
-        }
-        
-        public ListaEntregaExternaResponse(Nop.Plugin.Shipping.Correios.wsRastro.listaEntregaExterna @return) {
-            this.@return = @return;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="UnidadesSRO", WrapperNamespace="http://resource.webservice.correios.com.br/", IsWrapped=true)]
-    public partial class UnidadesSRORequest {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://resource.webservice.correios.com.br/", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string codigoSRO;
-        
-        public UnidadesSRORequest() {
-        }
-        
-        public UnidadesSRORequest(string codigoSRO) {
-            this.codigoSRO = codigoSRO;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="UnidadesSROResponse", WrapperNamespace="http://resource.webservice.correios.com.br/", IsWrapped=true)]
-    public partial class UnidadesSROResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://resource.webservice.correios.com.br/", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute("return", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public Nop.Plugin.Shipping.Correios.wsRastro.registroUnidades[] @return;
-        
-        public UnidadesSROResponse() {
-        }
-        
-        public UnidadesSROResponse(Nop.Plugin.Shipping.Correios.wsRastro.registroUnidades[] @return) {
-            this.@return = @return;
-        }
-    }
-    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     public interface ServiceChannel : Nop.Plugin.Shipping.Correios.wsRastro.Service, System.ServiceModel.IClientChannel {
     }
@@ -1517,85 +967,6 @@ namespace Nop.Plugin.Shipping.Correios.wsRastro {
             inValue.lingua = lingua;
             inValue.objetos = objetos;
             return ((Nop.Plugin.Shipping.Correios.wsRastro.Service)(this)).buscaEventosListaAsync(inValue);
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        Nop.Plugin.Shipping.Correios.wsRastro.RastroJsonResponse Nop.Plugin.Shipping.Correios.wsRastro.Service.RastroJson(Nop.Plugin.Shipping.Correios.wsRastro.RastroJsonRequest request) {
-            return base.Channel.RastroJson(request);
-        }
-        
-        public string RastroJson(string usuario, string senha, string tipo, string resultado, string lingua, string objetos) {
-            Nop.Plugin.Shipping.Correios.wsRastro.RastroJsonRequest inValue = new Nop.Plugin.Shipping.Correios.wsRastro.RastroJsonRequest();
-            inValue.usuario = usuario;
-            inValue.senha = senha;
-            inValue.tipo = tipo;
-            inValue.resultado = resultado;
-            inValue.lingua = lingua;
-            inValue.objetos = objetos;
-            Nop.Plugin.Shipping.Correios.wsRastro.RastroJsonResponse retVal = ((Nop.Plugin.Shipping.Correios.wsRastro.Service)(this)).RastroJson(inValue);
-            return retVal.@return;
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsRastro.RastroJsonResponse> Nop.Plugin.Shipping.Correios.wsRastro.Service.RastroJsonAsync(Nop.Plugin.Shipping.Correios.wsRastro.RastroJsonRequest request) {
-            return base.Channel.RastroJsonAsync(request);
-        }
-        
-        public System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsRastro.RastroJsonResponse> RastroJsonAsync(string usuario, string senha, string tipo, string resultado, string lingua, string objetos) {
-            Nop.Plugin.Shipping.Correios.wsRastro.RastroJsonRequest inValue = new Nop.Plugin.Shipping.Correios.wsRastro.RastroJsonRequest();
-            inValue.usuario = usuario;
-            inValue.senha = senha;
-            inValue.tipo = tipo;
-            inValue.resultado = resultado;
-            inValue.lingua = lingua;
-            inValue.objetos = objetos;
-            return ((Nop.Plugin.Shipping.Correios.wsRastro.Service)(this)).RastroJsonAsync(inValue);
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        Nop.Plugin.Shipping.Correios.wsRastro.ListaEntregaExternaResponse Nop.Plugin.Shipping.Correios.wsRastro.Service.ListaEntregaExterna(Nop.Plugin.Shipping.Correios.wsRastro.ListaEntregaExternaRequest request) {
-            return base.Channel.ListaEntregaExterna(request);
-        }
-        
-        public Nop.Plugin.Shipping.Correios.wsRastro.listaEntregaExterna ListaEntregaExterna(string loec) {
-            Nop.Plugin.Shipping.Correios.wsRastro.ListaEntregaExternaRequest inValue = new Nop.Plugin.Shipping.Correios.wsRastro.ListaEntregaExternaRequest();
-            inValue.loec = loec;
-            Nop.Plugin.Shipping.Correios.wsRastro.ListaEntregaExternaResponse retVal = ((Nop.Plugin.Shipping.Correios.wsRastro.Service)(this)).ListaEntregaExterna(inValue);
-            return retVal.@return;
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsRastro.ListaEntregaExternaResponse> Nop.Plugin.Shipping.Correios.wsRastro.Service.ListaEntregaExternaAsync(Nop.Plugin.Shipping.Correios.wsRastro.ListaEntregaExternaRequest request) {
-            return base.Channel.ListaEntregaExternaAsync(request);
-        }
-        
-        public System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsRastro.ListaEntregaExternaResponse> ListaEntregaExternaAsync(string loec) {
-            Nop.Plugin.Shipping.Correios.wsRastro.ListaEntregaExternaRequest inValue = new Nop.Plugin.Shipping.Correios.wsRastro.ListaEntregaExternaRequest();
-            inValue.loec = loec;
-            return ((Nop.Plugin.Shipping.Correios.wsRastro.Service)(this)).ListaEntregaExternaAsync(inValue);
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        Nop.Plugin.Shipping.Correios.wsRastro.UnidadesSROResponse Nop.Plugin.Shipping.Correios.wsRastro.Service.UnidadesSRO(Nop.Plugin.Shipping.Correios.wsRastro.UnidadesSRORequest request) {
-            return base.Channel.UnidadesSRO(request);
-        }
-        
-        public Nop.Plugin.Shipping.Correios.wsRastro.registroUnidades[] UnidadesSRO(string codigoSRO) {
-            Nop.Plugin.Shipping.Correios.wsRastro.UnidadesSRORequest inValue = new Nop.Plugin.Shipping.Correios.wsRastro.UnidadesSRORequest();
-            inValue.codigoSRO = codigoSRO;
-            Nop.Plugin.Shipping.Correios.wsRastro.UnidadesSROResponse retVal = ((Nop.Plugin.Shipping.Correios.wsRastro.Service)(this)).UnidadesSRO(inValue);
-            return retVal.@return;
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsRastro.UnidadesSROResponse> Nop.Plugin.Shipping.Correios.wsRastro.Service.UnidadesSROAsync(Nop.Plugin.Shipping.Correios.wsRastro.UnidadesSRORequest request) {
-            return base.Channel.UnidadesSROAsync(request);
-        }
-        
-        public System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsRastro.UnidadesSROResponse> UnidadesSROAsync(string codigoSRO) {
-            Nop.Plugin.Shipping.Correios.wsRastro.UnidadesSRORequest inValue = new Nop.Plugin.Shipping.Correios.wsRastro.UnidadesSRORequest();
-            inValue.codigoSRO = codigoSRO;
-            return ((Nop.Plugin.Shipping.Correios.wsRastro.Service)(this)).UnidadesSROAsync(inValue);
         }
     }
 }

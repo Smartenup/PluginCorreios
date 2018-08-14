@@ -1,9 +1,20 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Nop.Core;
+using Nop.Core.Domain.Orders;
+using Nop.Core.Domain.Shipping;
+using Nop.Plugin.Shipping.Correios.Domain.Serialization;
 using Nop.Services.Logging;
+using Nop.Services.Messages;
 using Nop.Services.Orders;
+using Nop.Services.Shipping;
 using Nop.Services.Tasks;
 using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
 using System.ServiceModel;
+using System.Text;
+using System.Xml.Serialization;
 
 namespace Nop.Plugin.Shipping.Correios
 {
@@ -13,39 +24,44 @@ namespace Nop.Plugin.Shipping.Correios
         private readonly IOrderProcessingService _orderProcessingService;
         private readonly ILogger _logger;
         private wsRastro.ServiceClient _wsRastro;
+        private InspectorBehavior _requestInterceptor;
+        private CorreiosSettings _correiosSettings;
+        private readonly IWorkflowMessageService _workflowMessageService;
+        private readonly IWorkContext _workContext;
+        private readonly IShipmentService _shipmentService;
 
 
         public CorreioShippingUpdateTask(IOrderService orderService,
             IOrderProcessingService orderProcessingService,
-            ILogger logger)
+            ILogger logger,
+            CorreiosSettings correiosSettings,
+            IWorkflowMessageService workflowMessageService,
+            IWorkContext workContext,
+            IShipmentService shipmentService)
         {
             _orderService = orderService;
             _orderProcessingService = orderProcessingService;
             _logger = logger;
+            _correiosSettings = correiosSettings;
+            _workflowMessageService = workflowMessageService;
+            _workContext = workContext;
+            _shipmentService = shipmentService;
         }
 
         public void Execute()
         {
-            var ordersShipped = _orderService.SearchOrders(ss: Core.Domain.Shipping.ShippingStatus.Shipped
-            );
+            var lstShippingStatus = new List<int>();
 
-            var ordersPartiallyShipped = _orderService.SearchOrders(ss: Core.Domain.Shipping.ShippingStatus.PartiallyShipped
-            );
+            lstShippingStatus.Add((int)Core.Domain.Shipping.ShippingStatus.Shipped);
+            lstShippingStatus.Add((int)Core.Domain.Shipping.ShippingStatus.PartiallyShipped);
 
+            var ordersShipped = _orderService.SearchOrders(ssIds: lstShippingStatus);
+            
             try
             {
-
                 ConfigurarWsRastro();
 
                 foreach (var order in ordersShipped)
-                {
-                    foreach (var shipment in order.Shipments)
-                    {
-                        CheckMarkShipmentDelivered(shipment);
-                    }
-                }
-
-                foreach (var order in ordersPartiallyShipped)
                 {
                     foreach (var shipment in order.Shipments)
                     {
@@ -61,132 +77,204 @@ namespace Nop.Plugin.Shipping.Correios
             {
                 FecharWsRastro();
             }
-
-            
-
         }
 
 
-        private void ConfigurarWsRastro()
+        public void ConfigurarWsRastro()
         {
-            BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
+            var binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
 
             binding.OpenTimeout = new TimeSpan(0, 10, 0);
             binding.CloseTimeout = new TimeSpan(0, 10, 0);
             binding.SendTimeout = new TimeSpan(0, 10, 0);
             binding.ReceiveTimeout = new TimeSpan(0, 10, 0);
 
-            EndpointAddress address = new EndpointAddress("http://webservice.correios.com.br:80/service/rastro");
+            var address = new EndpointAddress("http://webservice.correios.com.br:80/service/rastro");
 
             _wsRastro = new wsRastro.ServiceClient(binding, address);
+
+            _requestInterceptor = new InspectorBehavior();
+            _wsRastro.Endpoint.Behaviors.Add(_requestInterceptor);
         }
 
-        private void FecharWsRastro()
+        public void FecharWsRastro()
         {
             if (_wsRastro.State != CommunicationState.Closed)
                 _wsRastro.Close();
         }
 
 
-        private void CheckMarkShipmentDelivered(Core.Domain.Shipping.Shipment shipment)
+        private void CheckMarkShipmentDelivered(Shipment shipment)
         {
             if (shipment.DeliveryDateUtc.HasValue)
                 return;
 
-            string tracking = string.Empty;
-
             try
             {
-                tracking = _wsRastro.RastroJson("ECT", "SRO", "L", "U", "101", shipment.TrackingNumber.ToUpperInvariant());
+                if(string.IsNullOrWhiteSpace(_correiosSettings.UsuarioServicoRastreamento))
+                    _wsRastro.buscaEventos("ECT", "SRO", "L", "U", "101", shipment.TrackingNumber.ToUpperInvariant());
+                else
+                    _wsRastro.buscaEventos(_correiosSettings.UsuarioServicoRastreamento,
+                        _correiosSettings.SenhaServicoRastreamento, "L", "U", "101", shipment.TrackingNumber.ToUpperInvariant());
 
-                if (string.IsNullOrWhiteSpace(tracking) || tracking.Equals("{}"))
+
+                var ser = new XmlSerializer(typeof(Envelope));
+                var envelope = new Envelope();
+
+                using (TextReader reader = new StringReader(_requestInterceptor.LastResponseXML))
                 {
-                    string logTrackingEmpty = string.Format("Plugin.Shipping.Correios: Rastreio {0} - Ordem {1} - RetornoCorreios ({2})",
-                        shipment.TrackingNumber, shipment.OrderId.ToString(), tracking);
-
-                    _logger.Information(logTrackingEmpty);
-
-                    return;
+                    envelope = (Envelope)ser.Deserialize(reader);
                 }
 
-                JObject jObject = JObject.Parse(tracking);
+                returnObjeto objetoRastreado = envelope.Body.buscaEventosResponse.@return.objeto;
 
-                string lastShipmentTipo = GetLastShipmentTipo(jObject);
-                string lastShipmentStatus = GetLastShipmentStatus(jObject);
-
-                string logInformation = string.Format("Plugin.Shipping.Correios: Rastreio {0} - Status {1} - Tipo {2} - Ordem {3}",
-                    shipment.TrackingNumber, lastShipmentStatus, lastShipmentTipo, shipment.OrderId.ToString());
-
-                _logger.Information(logInformation);
-
-                if (lastShipmentTipo.Equals("BDE", StringComparison.InvariantCultureIgnoreCase) ||
-                     lastShipmentTipo.Equals("BDI", StringComparison.InvariantCultureIgnoreCase) ||
-                     lastShipmentTipo.Equals("BDR", StringComparison.InvariantCultureIgnoreCase))
+                foreach (var evento in objetoRastreado.evento)
                 {
-                    if (lastShipmentStatus.Equals("01", StringComparison.InvariantCultureIgnoreCase) ||
-                        lastShipmentStatus.Equals("02", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        string logDelivered = string.Format("Plugin.Shipping.Correios: Entregue {0} - Ordem {1}",
-                            shipment.TrackingNumber, shipment.OrderId.ToString());
+                    VerificarPedidoEntregue(shipment, evento);
 
-                        _logger.Information(logDelivered);
+                    VerificarPedidoAguardandoRetirada(shipment, evento);
 
-                        _orderProcessingService.Deliver(shipment, true);
-                    }
+                    VerificarPedidoRoubado(shipment, evento);
                 }
             }
             catch (Exception ex)
             {
-                string logError = string.Format("Plugin.Shipping.Correios: Erro atualização status de rastreamento, Ordem {0} - Rastreio {1} - RetornoCorreios {2}",
+                string logError = string.Format("Plugin.Shipping.Correios: Erro atualização status de rastreamento, Ordem {0} - Rastreio {1}",
                     shipment.OrderId.ToString(),
-                    shipment.TrackingNumber,
-                    tracking);
+                    shipment.TrackingNumber);
 
                 _logger.Error(logError, ex, shipment.Order.Customer);
             }
             
         }
 
-        private string GetLastShipmentStatus(JObject jObject)
+        private void VerificarPedidoRoubado(Shipment shipment, returnObjetoEvento evento)
         {
-            try
+            if (evento.tipo.Equals("BDE", StringComparison.InvariantCultureIgnoreCase) ||
+                evento.tipo.Equals("BDI", StringComparison.InvariantCultureIgnoreCase) ||
+                evento.tipo.Equals("BDR", StringComparison.InvariantCultureIgnoreCase))
             {
-
-                try
+                if (evento.status == 50 || evento.status == 51 || evento.status == 52 )
                 {
-                    return (string)jObject["sroxml"]["objeto"]["evento"][0]["status"];
-                }
-                catch (Exception)
-                {
-                    return (string)jObject["sroxml"]["objeto"]["evento"]["status"];
-                }
 
-            }
-            catch (Exception)
-            {
-                return string.Empty;
+                    var notaLinhaDigitavel = shipment.Order.OrderNotes.Where(note => note.Note.Contains(evento.descricao));
+
+                    ///Caso não tenha anotação da descrição de retirada no local
+                    if (notaLinhaDigitavel.Count() == 0)
+                    {
+                        AddOrderNote(ObterDescricaoObjetoRoubado(evento), true, shipment.Order, true);
+
+                        string logObjetoRoubado = string.Format("Plugin.Shipping.Correios: {0} {1} - Ordem {2}",
+                        evento.descricao, shipment.TrackingNumber, shipment.OrderId);
+
+                        _logger.Information(logObjetoRoubado);
+                    }
+                }
             }
         }
 
-        private string GetLastShipmentTipo(JObject jObject)
+        private void VerificarPedidoAguardandoRetirada(Shipment shipment, returnObjetoEvento evento)
         {
-            try
+            if (evento.tipo.Equals("LDI", StringComparison.InvariantCultureIgnoreCase))
             {
+                if (evento.status == 0 || evento.status == 1 || evento.status == 2 || evento.status == 3 || evento.status == 14)
+                {
 
-                try
-                {
-                    return (string)jObject["sroxml"]["objeto"]["evento"][0]["tipo"];
-                }
-                catch (Exception)
-                {
-                    return (string)jObject["sroxml"]["objeto"]["evento"]["tipo"];
+                    var notaLinhaDigitavel = shipment.Order.OrderNotes.Where(note => note.Note.Contains(evento.descricao));
+
+                    ///Caso não tenha anotação da descrição de retirada no local
+                    if (notaLinhaDigitavel.Count() == 0)
+                    {
+                        AddOrderNote(ObterDescricaoDisponivelRetirada(evento), true, shipment.Order, true);
+
+                        string logAguardandoRetirada = string.Format("Plugin.Shipping.Correios: {0} {1} - Ordem {2}",
+                        evento.descricao, shipment.TrackingNumber, shipment.OrderId );
+
+                        _logger.Information(logAguardandoRetirada);
+                    }
                 }
             }
-            catch (Exception)
-            {
-                return string.Empty;
-            }
-
         }
+
+        private void VerificarPedidoEntregue(Shipment shipment, returnObjetoEvento evento)
+        {
+            if (evento.tipo.Equals("BDE", StringComparison.InvariantCultureIgnoreCase) ||
+                evento.tipo.Equals("BDI", StringComparison.InvariantCultureIgnoreCase) ||
+                evento.tipo.Equals("BDR", StringComparison.InvariantCultureIgnoreCase))
+            {
+                if (evento.status == 0 || evento.status == 1)
+                {
+                    _orderProcessingService.Deliver(shipment, true);
+
+                    string logDelivered = string.Format("Plugin.Shipping.Correios: Entregue {0} - Ordem {1}",
+                        shipment.TrackingNumber, shipment.OrderId.ToString());
+
+                    _logger.Information(logDelivered);
+
+                    var shipmentDate = _shipmentService.GetShipmentById(shipment.Id);
+
+                    IFormatProvider culture = new CultureInfo("pt-BR", true);
+                    DateTime dataAtualizacaoCorreios = DateTime.ParseExact(evento.data + " " + evento.hora, "dd/MM/yyyy HH:mm", culture);
+                    var brasiliaTimeZone = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
+
+                    shipmentDate.DeliveryDateUtc = TimeZoneInfo.ConvertTimeToUtc(dataAtualizacaoCorreios, brasiliaTimeZone);
+
+                    _shipmentService.UpdateShipment(shipmentDate);
+
+                }
+            }
+        }
+
+        //Adiciona anotaçoes ao pedido
+        private void AddOrderNote(string note, bool showNoteToCustomer, Order order, bool sendEmail = false)
+        {
+            var orderNote = new Nop.Core.Domain.Orders.OrderNote();
+            orderNote.CreatedOnUtc = DateTime.UtcNow;
+            orderNote.DisplayToCustomer = showNoteToCustomer;
+            orderNote.Note = note;
+            order.OrderNotes.Add(orderNote);
+
+            _orderService.UpdateOrder(order);
+
+            //new order notification
+            if (sendEmail)
+            {
+                //email
+                _workflowMessageService.SendNewOrderNoteAddedCustomerNotification(
+                    orderNote, _workContext.WorkingLanguage.Id);
+            }
+        }
+
+
+        private string ObterDescricaoObjetoRoubado(returnObjetoEvento evento)
+        {
+            var str = new StringBuilder();
+
+            str.AppendLine(evento.descricao);
+            str.AppendLine(evento.local);
+            str.AppendLine(evento.cidade);
+            str.AppendLine(evento.data + " " + evento.hora);
+
+            return str.ToString();
+        }
+
+
+        private string ObterDescricaoDisponivelRetirada(returnObjetoEvento evento)
+        {
+            var str = new StringBuilder();
+
+            str.AppendLine(evento.descricao);
+            str.AppendLine(evento.detalhe);
+            str.AppendLine(evento.local);
+            str.AppendLine(evento.endereco.logradouro + " " + evento.endereco.numero);
+            str.AppendLine(evento.endereco.bairro);
+            str.AppendLine(evento.endereco.localidade + " / " + evento.endereco.uf);
+
+            return str.ToString();
+        }
+
     }
+
+
+
 }

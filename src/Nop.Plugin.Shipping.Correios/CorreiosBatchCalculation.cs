@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Nop.Plugin.Shipping.Correios
 {
-	public class CorreiosBatchCalculation
+    public class CorreiosBatchCalculation
 	{
 		#region Fields
 		public readonly CultureInfo PtBrCulture = CultureInfo.GetCultureInfo("pt-BR");
@@ -88,7 +88,7 @@ namespace Nop.Plugin.Shipping.Correios
 			}
 			else
 			{
-				//Para uma lógica futura de divisão de produtos em pacotes.
+				///TODO: Para uma lógica futura de divisão de produtos em pacotes.
 				return null;
 			}
 		}
