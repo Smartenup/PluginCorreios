@@ -9,6 +9,8 @@ namespace Nop.Plugin.Shipping.Correios.Domain
         public const string PRIMEIRO_LISTA_MAIS_BARATO = "PRIMEIRO";
         public const decimal CONST_VALOR_DECLARADO_MINIMO_PAC = 50; 
         public const decimal CONST_VALOR_DECLARADO_MINIMO_SEDEX = 75;
+        public const string CONST_CODIGO_VALOR_DECLARADO_PAC = "064";
+        public const string CONST_CODIGO_VALOR_DECLARADO_SEDEX = "019";
 
         /// <summary>
         /// Correios Service names
@@ -139,6 +141,36 @@ namespace Nop.Plugin.Shipping.Correios.Domain
                         
         }
 
+        public static string ObterCodigoValorDeclarado(string codigoServico)
+        {
+            switch (codigoServico)
+            {
+
+                case "40169":
+                case "40215":
+                case "40290":
+                case "4162":
+                case "04162":
+                case "40436":
+                case "40444":
+                case "04014":
+                case "4014":
+                case "40568":
+                case "40606":
+                case "40045":
+                case "40126":
+                case "81019":
+                case "81868":
+                case "81833":
+                case "81850": { return CONST_CODIGO_VALOR_DECLARADO_SEDEX; }
+                case "4510":
+                case "04510":
+                case "4669":
+                case "04669":
+                case "04693": { return CONST_CODIGO_VALOR_DECLARADO_PAC; }
+                default: return CONST_CODIGO_VALOR_DECLARADO_SEDEX;
+            }
+        }
 
         public static Decimal ObterValorDeclaroMinimoServico(string codigoServico)
         {

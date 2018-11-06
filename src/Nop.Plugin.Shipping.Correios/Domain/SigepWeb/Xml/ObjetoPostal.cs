@@ -60,7 +60,7 @@ namespace Nop.Plugin.Shipping.Correios.Domain.SigepWeb.Xml
             obtetoPostal.Add(rt2);
             obtetoPostal.Add(new Destinatario().ObterDestinatario(addressAttributeParser, workContext, shipment.Order.ShippingAddress));
             obtetoPostal.Add(new Nacional().ObterNacional(shipment.Order.ShippingAddress));
-            obtetoPostal.Add(new ServicoAdicional().ObterServicoAdicional(correiosSettings, plpShipment.ValorDeclarado ));
+            obtetoPostal.Add(new ServicoAdicional().ObterServicoAdicional(correiosSettings, plpShipment.ValorDeclarado, plpShipment.Etiqueta.CodigoServico));
             obtetoPostal.Add(new DimensaoObjeto().ObterDimensaoObjeto());
             obtetoPostal.Add(dataPostagemSara);
             obtetoPostal.Add(statusProcessamento);
@@ -164,7 +164,7 @@ namespace Nop.Plugin.Shipping.Correios.Domain.SigepWeb.Xml
 
     public class ServicoAdicional
     {
-        public XElement ObterServicoAdicional(CorreiosSettings correiosSettings, decimal valorDeclarado)
+        public XElement ObterServicoAdicional(CorreiosSettings correiosSettings, decimal valorDeclarado, string codigoServico)
         {
             var servicoAdicional = new XElement("servico_adicional");
 
@@ -176,7 +176,7 @@ namespace Nop.Plugin.Shipping.Correios.Domain.SigepWeb.Xml
             if (correiosSettings.IncluirValorDeclarado)
             {
                 var codigoServicoValorDeclarado = new XElement("codigo_servico_adicional");
-                codigoServicoValorDeclarado.Value = "019";
+                codigoServicoValorDeclarado.Value = CorreiosServices.ObterCodigoValorDeclarado(codigoServico);
                 servicoAdicional.Add(codigoServicoValorDeclarado);
 
                 var valorDeclaradoTag = new XElement("valor_declarado");
