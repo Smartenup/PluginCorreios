@@ -18,6 +18,7 @@ using Nop.Services.Shipping;
 using Nop.Services.Shipping.Tracking;
 using Nop.Services.Tasks;
 using Nop.Web.Framework.Menu;
+using SmartenUP.Core.Util.Helper;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -145,132 +146,143 @@ namespace Nop.Plugin.Shipping.Correios
             if (getShippingOptionRequest.Items == null)
             {
                 response.AddError("Sem items para enviar");
+                _logger.Error("Sem items para enviar");
                 return response;
             }
 
             if (getShippingOptionRequest.ShippingAddress == null)
             {
                 response.AddError("Endereço de envio em branco");
+                _logger.Error("Endereço de envio em branco");
                 return response;
             }
 
             if (string.IsNullOrWhiteSpace(getShippingOptionRequest.ShippingAddress.ZipPostalCode))
             {
                 response.AddError("CEP de envio em branco");
+                _logger.Error("CEP de envio em branco");
                 return response;
             }
 
-            if (getShippingOptionRequest.ShippingAddress.ZipPostalCode.Length != 8)
+            try
             {
-                response.AddError("CEP de envio deve ter 8 posições");
-                return response;
-            }
+                var result = ProcessShipping(getShippingOptionRequest);
 
-            var result = ProcessShipping(getShippingOptionRequest);
-
-            if (result == null)
-            {
-                response.AddError("Não há serviços disponíveis no momento");
-                return response;
-            }
-
-            bool verificarFreteGratisMaisBarato = CheckFreeShippingMaisBarato();
-            bool primeiroDaLista = false;
-
-            if (verificarFreteGratisMaisBarato)
-            {
-                primeiroDaLista = true;
-            }
-
-            DeliveryDate biggestDeliveryDate  = GetBiggestDeliveryDate(getShippingOptionRequest.Items);
-
-            var group = new List<string>();
-
-            foreach (cServico servico in result.Servicos.OrderBy(s => decimal.Parse(s.Valor, CultureInfo.GetCultureInfo("pt-BR"))))
-            {
-                int codigoErro = 0;
-
-                if (Int32.TryParse(servico.Erro, out codigoErro))
+                if (result == null)
                 {
-                    switch (codigoErro)
+                    response.AddError("Não há serviços disponíveis no momento");
+                    _logger.Error("Não há serviços disponíveis no momento");
+                    return response;
+                }
+
+                bool verificarFreteGratisMaisBarato = CheckFreeShippingMaisBarato();
+                bool primeiroDaLista = false;
+
+                if (verificarFreteGratisMaisBarato)
+                {
+                    primeiroDaLista = true;
+                }
+
+                DeliveryDate biggestDeliveryDate = GetBiggestDeliveryDate(getShippingOptionRequest.Items);
+
+                var group = new List<string>();
+
+                foreach (cServico servico in result.Servicos.OrderBy(s => decimal.Parse(s.Valor, CultureInfo.GetCultureInfo("pt-BR"))))
+                {
+                    int codigoErro = 0;
+
+                    if (Int32.TryParse(servico.Erro, out codigoErro))
                     {
-                        case 0:
-                        case 9:
-                        case 10:
-                        case 11:
+                        switch (codigoErro)
+                        {
+                            case 0:
+                            case 9:
+                            case 10:
+                            case 11:
 
-                            string name = CorreiosServices.GetServicePublicNameById(servico.Codigo.ToString());
+                                string name = CorreiosServices.GetServicePublicNameById(servico.Codigo.ToString());
 
-                            if (
-                                (!group.Contains(name) && !getShippingOptionRequest.IsOrderBasead) ||
-                                (
-                                    getShippingOptionRequest.IsOrderBasead && 
+                                if (
+                                    (!group.Contains(name) && !getShippingOptionRequest.IsOrderBasead) ||
                                     (
-                                        getShippingOptionRequest.ShippingMethod.Equals(name) || 
-                                        getShippingOptionRequest.ShippingMethod.Equals(name + " [Frete Grátis]", StringComparison.InvariantCultureIgnoreCase))
+                                        getShippingOptionRequest.IsOrderBasead &&
+                                        (
+                                            getShippingOptionRequest.ShippingMethod.Equals(name) ||
+                                            getShippingOptionRequest.ShippingMethod.Equals(name + " [Frete Grátis]", StringComparison.InvariantCultureIgnoreCase))
+                                        )
                                     )
-                                )
-                            {
-                                var option = new ShippingOption();
-
-                                int prazo = (int.Parse(servico.PrazoEntrega) + _correiosSettings.DiasUteisAdicionais);
-
-                                option.Description =  ObterDescricaoPrazo(biggestDeliveryDate, prazo);
-
-                                option.Description += ObterMensagemErro(servico.MsgErro, codigoErro);
-
-                                if (CheckFreeShipping(servico.Codigo, getShippingOptionRequest, primeiroDaLista))
                                 {
-                                    primeiroDaLista = false;
-                                    option.Name = name + " [Frete Grátis]";
-                                    option.Rate = 0;
-                                    response.ShippingOptions.Insert(0, option);
-                                }
-                                else
-                                {
-                                    option.Name = name;
+                                    var option = new ShippingOption();
 
-                                    if (!getShippingOptionRequest.IsOrderBasead)
+                                    int prazo = (int.Parse(servico.PrazoEntrega) + _correiosSettings.DiasUteisAdicionais);
+
+                                    option.Description = ObterDescricaoPrazo(biggestDeliveryDate, prazo);
+
+                                    option.Description += ObterMensagemErro(servico.MsgErro, codigoErro);
+
+                                    if (CheckFreeShipping(servico.Codigo, getShippingOptionRequest, primeiroDaLista))
                                     {
-                                        option.Rate = decimal.Parse(servico.Valor, CultureInfo.GetCultureInfo("pt-BR")) +
-                                        _orderTotalCalculationService.GetShoppingCartAdditionalShippingCharge(getShippingOptionRequest.Items.Select(x => x.ShoppingCartItem).ToList()) +
-                                        _correiosSettings.CustoAdicionalEnvio;
+                                        primeiroDaLista = false;
+                                        option.Name = name + " [Frete Grátis]";
+                                        option.Rate = 0;
+                                        response.ShippingOptions.Insert(0, option);
+                                    }
+                                    else
+                                    {
+                                        option.Name = name;
+
+                                        if (!getShippingOptionRequest.IsOrderBasead)
+                                        {
+                                            option.Rate = decimal.Parse(servico.Valor, CultureInfo.GetCultureInfo("pt-BR")) +
+                                            _orderTotalCalculationService.GetShoppingCartAdditionalShippingCharge(getShippingOptionRequest.Items.Select(x => x.ShoppingCartItem).ToList()) +
+                                            _correiosSettings.CustoAdicionalEnvio;
+                                        }
+
+                                        response.ShippingOptions.Add(option);
                                     }
 
-                                    response.ShippingOptions.Add(option);
+                                    group.Add(name);
                                 }
+                                break;
 
-                                group.Add(name);
-                            }
-                            break;
+                            default:
 
-                        default:
+                                string msgError = string.Format("Plugin.Shipping.Correios: erro ao calcular frete: ({0})({1}){2} - CEP {3}",
+                                    CorreiosServices.GetServiceName(servico.Codigo.ToString()),
+                                    servico.Erro,
+                                    servico.MsgErro,
+                                    getShippingOptionRequest.ShippingAddress.ZipPostalCode);
 
-                            string msgError = string.Format("Plugin.Shipping.Correios: erro ao calcular frete: ({0})({1}){2} - CEP {3}",
-                                CorreiosServices.GetServiceName(servico.Codigo.ToString()),
-                                servico.Erro,
-                                servico.MsgErro,
-                                getShippingOptionRequest.ShippingAddress.ZipPostalCode);
+                                _logger.Error(msgError, exception: null, customer: getShippingOptionRequest.Customer);
 
-                            _logger.Error(msgError, exception: null, customer: getShippingOptionRequest.Customer);
-
-                            break;
+                                break;
+                        }
                     }
-                }
-                else
-                {
-                    string msgError = string.Format("Plugin.Shipping.Correios: erro ao calcular frete: ({0})({1}){2} - CEP {3}",
-                                CorreiosServices.GetServiceName(servico.Codigo.ToString()),
-                                servico.Erro,
-                                servico.MsgErro,
-                                getShippingOptionRequest.ShippingAddress.ZipPostalCode);
+                    else
+                    {
+                        string msgError = string.Format("Plugin.Shipping.Correios: erro ao calcular frete: ({0})({1}){2} - CEP {3}",
+                                    CorreiosServices.GetServiceName(servico.Codigo.ToString()),
+                                    servico.Erro,
+                                    servico.MsgErro,
+                                    getShippingOptionRequest.ShippingAddress.ZipPostalCode);
 
-                    _logger.Error(msgError, exception: null, customer: getShippingOptionRequest.Customer);
+                        _logger.Error(msgError, exception: null, customer: getShippingOptionRequest.Customer);
+                    }
+
                 }
 
+                return response;
+            }
+            catch (NopException nopExcep)
+            {
+                response.AddError(nopExcep.Message);
+                return response;
+            }
+            catch (Exception)
+            {
+                throw;
             }
 
-            return response;
         }
 
 
@@ -304,100 +316,111 @@ namespace Nop.Plugin.Shipping.Correios
                 return response;
             }
 
-            var result = ProcessShipping(getShippingOptionProductRequest);
-
-            if (result == null)
+            try
             {
-                response.AddError("Não há serviços disponíveis no momento");
+                var result = ProcessShipping(getShippingOptionProductRequest);
+
+                if (result == null)
+                {
+                    response.AddError("Não há serviços disponíveis no momento");
+                    return response;
+                }
+
+                bool verificarFreteGratisMaisBarato = CheckFreeShippingMaisBarato();
+                bool primeiroDaLista = false;
+
+                if (verificarFreteGratisMaisBarato)
+                {
+                    primeiroDaLista = true;
+                }
+
+                DeliveryDate biggestDeliveryDate = GetBiggestDeliveryDate(getShippingOptionProductRequest.Product);
+
+                var group = new List<string>();
+
+                foreach (cServico servico in result.Servicos.OrderBy(s => decimal.Parse(s.Valor, CultureInfo.GetCultureInfo("pt-BR"))))
+                {
+                    int codigoErro = 0;
+
+                    if (Int32.TryParse(servico.Erro, out codigoErro))
+                    {
+                        switch (codigoErro)
+                        {
+                            case 0:
+                            case 9:
+                            case 10:
+                            case 11:
+
+                                string name = CorreiosServices.GetServicePublicNameById(servico.Codigo.ToString());
+
+                                if (!group.Contains(name))
+                                {
+                                    var option = new ShippingOption();
+
+                                    int prazo = (int.Parse(servico.PrazoEntrega) + _correiosSettings.DiasUteisAdicionais);
+
+                                    option.Description = ObterDescricaoPrazo(biggestDeliveryDate, prazo);
+
+                                    option.Description += ObterMensagemErro(servico.MsgErro, codigoErro);
+
+                                    if (CheckFreeShipping(servico.Codigo, getShippingOptionProductRequest, primeiroDaLista))
+                                    {
+                                        primeiroDaLista = false;
+                                        option.Name = name + " [Frete Grátis]";
+                                        option.Rate = 0;
+                                        response.ShippingOptions.Insert(0, option);
+                                    }
+                                    else
+                                    {
+                                        option.Name = name;
+
+                                        option.Rate = decimal.Parse(servico.Valor, CultureInfo.GetCultureInfo("pt-BR")) +
+                                            _correiosSettings.CustoAdicionalEnvio;
+
+                                        response.ShippingOptions.Add(option);
+                                    }
+
+                                    group.Add(name);
+                                }
+                                break;
+
+                            default:
+
+                                string msgError = string.Format("Plugin.Shipping.Correios: erro ao calcular frete: ({0})({1}){2} - CEP {3}",
+                                    CorreiosServices.GetServiceName(servico.Codigo.ToString()),
+                                    servico.Erro,
+                                    servico.MsgErro,
+                                    getShippingOptionProductRequest.ShippingAddress.ZipPostalCode);
+
+                                _logger.Error(msgError, exception: null, customer: getShippingOptionProductRequest.Customer);
+
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        string msgError = string.Format("Plugin.Shipping.Correios: erro ao calcular frete: ({0})({1}){2} - CEP {3}",
+                                    CorreiosServices.GetServiceName(servico.Codigo.ToString()),
+                                    servico.Erro,
+                                    servico.MsgErro,
+                                    getShippingOptionProductRequest.ShippingAddress.ZipPostalCode);
+
+                        _logger.Error(msgError, exception: null, customer: getShippingOptionProductRequest.Customer);
+                    }
+
+                }
+
                 return response;
             }
-
-            bool verificarFreteGratisMaisBarato = CheckFreeShippingMaisBarato();
-            bool primeiroDaLista = false;
-
-            if (verificarFreteGratisMaisBarato)
+            catch (NopException nopExcep)
             {
-                primeiroDaLista = true;
+                response.AddError(nopExcep.Message);
+                return response;
             }
-
-            DeliveryDate biggestDeliveryDate = GetBiggestDeliveryDate(getShippingOptionProductRequest.Product);
-
-            var group = new List<string>();
-
-            foreach (cServico servico in result.Servicos.OrderBy(s => decimal.Parse(s.Valor, CultureInfo.GetCultureInfo("pt-BR"))))
+            catch (Exception)
             {
-                int codigoErro = 0;
-
-                if (Int32.TryParse(servico.Erro, out codigoErro))
-                {
-                    switch (codigoErro)
-                    {
-                        case 0:
-                        case 9:
-                        case 10:
-                        case 11:
-
-                            string name = CorreiosServices.GetServicePublicNameById(servico.Codigo.ToString());
-
-                            if (!group.Contains(name))
-                            {
-                                var option = new ShippingOption();
-
-                                int prazo = (int.Parse(servico.PrazoEntrega) + _correiosSettings.DiasUteisAdicionais);
-
-                                option.Description = ObterDescricaoPrazo(biggestDeliveryDate, prazo);
-
-                                option.Description += ObterMensagemErro(servico.MsgErro, codigoErro);                                
-
-                                if (CheckFreeShipping(servico.Codigo, getShippingOptionProductRequest, primeiroDaLista))
-                                {
-                                    primeiroDaLista = false;
-                                    option.Name = name + " [Frete Grátis]";
-                                    option.Rate = 0;
-                                    response.ShippingOptions.Insert(0, option);
-                                }
-                                else
-                                {
-                                    option.Name = name;
-
-                                    option.Rate = decimal.Parse(servico.Valor, CultureInfo.GetCultureInfo("pt-BR")) +                                   
-                                        _correiosSettings.CustoAdicionalEnvio;
-
-                                    response.ShippingOptions.Add(option);
-                                }
-
-                                group.Add(name);
-                            }
-                            break;
-
-                        default:
-
-                            string msgError = string.Format("Plugin.Shipping.Correios: erro ao calcular frete: ({0})({1}){2} - CEP {3}",
-                                CorreiosServices.GetServiceName(servico.Codigo.ToString()),
-                                servico.Erro,
-                                servico.MsgErro,
-                                getShippingOptionProductRequest.ShippingAddress.ZipPostalCode);
-
-                            _logger.Error(msgError, exception: null, customer: getShippingOptionProductRequest.Customer);
-
-                            break;
-                    }
-                }
-                else
-                {
-                    string msgError = string.Format("Plugin.Shipping.Correios: erro ao calcular frete: ({0})({1}){2} - CEP {3}",
-                                CorreiosServices.GetServiceName(servico.Codigo.ToString()),
-                                servico.Erro,
-                                servico.MsgErro,
-                                getShippingOptionProductRequest.ShippingAddress.ZipPostalCode);
-
-                    _logger.Error(msgError, exception: null, customer: getShippingOptionProductRequest.Customer);
-                }
-
+                throw;
             }
-
-            return response;
-
         }
 
         private string ObterMensagemErro(string msgErro, int codigoErro)
@@ -625,12 +648,16 @@ namespace Nop.Plugin.Shipping.Correios
 				throw new NopException("Plugin.Shipping.Correios: CEP de Envio em branco ou inválido, configure nas opções de envio do NopCommerce.Em Administração > Configurações > Configurações de Envio. Formato: 00000000");
 			}
 			
-            string cepDestino = Regex.Replace(getShippingOptionRequest.ShippingAddress.ZipPostalCode, @"<(.|\n)*?>", " - ");
+            string cepDestino = NumberHelper.ObterApenasNumeros(getShippingOptionRequest.ShippingAddress.ZipPostalCode);
 
-            cepDestino = cepDestino.Replace("/","");
-			
+            if (cepDestino.Length != 8)
+            {
+                _logger.Fatal(string.Format("CEP de envio deve ter 8 posições: {0}", cepDestino));
 
-			decimal subtotalBase = decimal.Zero;
+                throw new NopException(string.Format("CEP de envio deve ter 8 posições: {0}", cepDestino));
+            }
+
+            decimal subtotalBase = decimal.Zero;
             bool includingTax = false;
 			decimal orderSubTotalDiscountAmount = decimal.Zero;
 			List<Discount> orderSubTotalAppliedDiscount = null;
