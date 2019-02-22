@@ -17,7 +17,7 @@ using System.Web.Mvc;
 
 namespace Nop.Plugin.Shipping.Correios.Controllers
 {
-    [AdminAuthorize]
+    
     public class ShippingCorreiosController : Controller
     {
         private readonly CorreiosSettings _correiosSettings;
@@ -44,7 +44,7 @@ namespace Nop.Plugin.Shipping.Correios.Controllers
             _sigepWebPlpService = sigepWebPlpService;
         }
 
-
+        [AdminAuthorize]
         [ChildActionOnly]
         public ActionResult Configure()
         {
@@ -248,10 +248,8 @@ namespace Nop.Plugin.Shipping.Correios.Controllers
             return Configure();
         }
 
-
-        //available even when navigation is not allowed
-        [PublicStoreAllowNavigation(true)]
-        [AcceptVerbs(HttpVerbs.Get)]
+        
+        [ValidateInput(false)]
         public ActionResult GetAddresByCEP(string cep)
         {
             //this action method gets called via an ajax request
