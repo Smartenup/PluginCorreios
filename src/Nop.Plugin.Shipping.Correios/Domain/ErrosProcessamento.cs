@@ -14,6 +14,7 @@ namespace Nop.Plugin.Shipping.Correios.Domain
         public const int ETIQUETA_NAO_ENCONTRADA = 1;
         public const int CEP_INVALIDO = 2;
         public const int SERVICO_CORREIOS_INVALIDO_CEP = 3;
+        public const int PEDIDO_STATUS_CANCELADO_PENDENTE = 4;
 
 
         /// <summary>
@@ -36,6 +37,9 @@ namespace Nop.Plugin.Shipping.Correios.Domain
                     break;
                 case SERVICO_CORREIOS_INVALIDO_CEP:
                     mensagem = _localizationService.GetResource("Plugins.Shippings.Correios.ServicoCorreiosInvalidoCEP");
+                    break;
+                case PEDIDO_STATUS_CANCELADO_PENDENTE:
+                    mensagem = _localizationService.GetResource("Plugins.Shippings.Correios.StatusCanceladoPendente");
                     break;
                 default:
                     break;

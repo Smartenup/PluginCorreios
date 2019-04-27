@@ -63,12 +63,10 @@ namespace Nop.Plugin.Shipping.Correios
 
         private const int TAMANHO_CEP = 8;
         private const string COMPLEMENTO_FAIXA_CEP_INICIAL = "0";
-        private const string COMPLEMENTO_FAIXA_CEP_FINAL = "9";
-        
+        private const string COMPLEMENTO_FAIXA_CEP_FINAL = "9";        
         #endregion
 
         #region Fields
-
         private readonly IMeasureService _measureService;
 		private readonly IShippingService _shippingService;
 		private readonly ISettingService _settingService;
@@ -81,11 +79,9 @@ namespace Nop.Plugin.Shipping.Correios
 		private readonly ILogger _logger;
         private readonly IScheduleTaskService _scheduleTaskService;
         private readonly ILocalizationService _localizationService;
-
         #endregion
 
         #region Ctor
-
         public CorreiosComputationMethod(IMeasureService measureService,
 			IShippingService shippingService, ISettingService settingService,
 			CorreiosSettings correiosSettings, IOrderTotalCalculationService orderTotalCalculationService,
@@ -109,7 +105,6 @@ namespace Nop.Plugin.Shipping.Correios
             _localizationService = localizationService;
 
         }
-
         #endregion
 
 
@@ -179,11 +174,12 @@ namespace Nop.Plugin.Shipping.Correios
                 bool primeiroDaLista = false;
 
                 if (verificarFreteGratisMaisBarato)
-                {
                     primeiroDaLista = true;
-                }
 
-                DeliveryDate biggestDeliveryDate = GetBiggestDeliveryDate(getShippingOptionRequest.Items);
+                DeliveryDate biggestDeliveryDate = null;
+
+                if (_correiosSettings.MostrarTempoFabricacao)
+                    biggestDeliveryDate = GetBiggestDeliveryDate(getShippingOptionRequest.Items);
 
                 var group = new List<string>();
 
@@ -284,7 +280,6 @@ namespace Nop.Plugin.Shipping.Correios
             }
 
         }
-
 
         /// <summary>
         ///  Gets available shipping options
@@ -438,7 +433,6 @@ namespace Nop.Plugin.Shipping.Correios
             return string.Empty;
         }
 
-
         /// <summary>
         /// Gets fixed shipping rate (if shipping rate computation method allows it and the rate can be calculated before checkout).
         /// </summary>
@@ -563,12 +557,9 @@ namespace Nop.Plugin.Shipping.Correios
             rootNode.ChildNodes.Add(siteMapNodeRoot);
 
         }
-
         #endregion
 
         #region Utilities
-
-
         private string ObterDescricaoPrazo(DeliveryDate biggestDeliveryDate, int prazo)
         {
             if (_correiosSettings.MostrarTempoFabricacao && biggestDeliveryDate != null)
@@ -576,7 +567,6 @@ namespace Nop.Plugin.Shipping.Correios
             else
                 return ObterDescricaoPrazo(prazo) + ".";
         }
-
         private bool CheckFreeShippingMaisBarato()
         {
             if (!_correiosSettings.FreteGratis)
@@ -587,7 +577,6 @@ namespace Nop.Plugin.Shipping.Correios
 
             return false;
         }
-
         private string ObterDescricaoEnvio(string prazoMaximo)
         {
             string prazoEnvioFabricao = _localizationService.GetResource("Plugins.Shippings.Correios.PrazoEnvioFabricacao");
@@ -596,14 +585,12 @@ namespace Nop.Plugin.Shipping.Correios
 
             return prazoEnvioFabricao + prazoMaximo;
         }
-
         private string ObterDescricaoPrazo(int prazo)
         {
             string prazoCorreios = _localizationService.GetResource("Plugins.Shippings.Correios.PrazoCorreios");
 
             return string.Format(prazoCorreios, prazo);
         }
-
         private cResultado ProcessShipping(GetShippingOptionRequest getShippingOptionRequest)
 		{
 			var usedMeasureWeight = _measureService.GetMeasureWeightBySystemKeyword(MEASURE_WEIGHT_SYSTEM_KEYWORD);
@@ -784,7 +771,6 @@ namespace Nop.Plugin.Shipping.Correios
 				return result;
 			}
 		}
-
         private cResultado ProcessShipping(GetShippingOptionProductRequest getShippingOptionProductRequest)
         {
             var usedMeasureWeight = _measureService.GetMeasureWeightBySystemKeyword(MEASURE_WEIGHT_SYSTEM_KEYWORD);
@@ -918,7 +904,6 @@ namespace Nop.Plugin.Shipping.Correios
                 return result;
             }
         }
-
         private string GetServiceNotTooHeavyTooLarge(string carrierServicesOffered)
         {
             string serviceNotTooHeavyTooLarge = carrierServicesOffered;
@@ -930,7 +915,6 @@ namespace Nop.Plugin.Shipping.Correios
 
             return serviceNotTooHeavyTooLarge;
         }
-
         private bool IsPackageTooLarge(int length, int height, int width, string carrierServicesOffered)
         {
 
@@ -951,7 +935,6 @@ namespace Nop.Plugin.Shipping.Correios
             return false;
 
         }
-
         private bool IsPackageTooSmall(int length, int height, int width)
 		{
 			int total = TotalPackageSize(length, height, width);
@@ -961,12 +944,10 @@ namespace Nop.Plugin.Shipping.Correios
 			else
 				return false;
 		}
-
 		private int TotalPackageSize(int length, int height, int width)
 		{
 			return length + width + height;
 		}
-
 		private bool IsPackageTooHeavy(int weight)
 		{
 			if (weight > MAX_PACKAGE_WEIGHT)
@@ -974,7 +955,6 @@ namespace Nop.Plugin.Shipping.Correios
 			else
 				return false;
 		}
-
 		private bool IsRollTooLarge(int length, int diameter)
 		{
 			int total = TotalRollSize(length, diameter);
@@ -984,7 +964,6 @@ namespace Nop.Plugin.Shipping.Correios
 			else
 				return false;
 		}
-
 		private bool IsRollTooSmall(int length, int diameter)
 		{
 			int total = TotalRollSize(length, diameter);
@@ -994,12 +973,10 @@ namespace Nop.Plugin.Shipping.Correios
 			else
 				return false;
 		}
-
 		private int TotalRollSize(int length, int diameter)
 		{
 			return length + 2 * diameter;
 		}
-
 		private bool IsRollTooHeavy(int weight)
 		{
 			if (weight > MAX_PACKAGE_WEIGHT)
@@ -1007,9 +984,6 @@ namespace Nop.Plugin.Shipping.Correios
 			else
 				return false;
 		}
-
-
-
         [NonAction]
         private DeliveryDate GetBiggestDeliveryDate(Product product)
         {
@@ -1036,8 +1010,6 @@ namespace Nop.Plugin.Shipping.Correios
 
             return deliveryDate;
         }
-
-
         [NonAction]
         private DeliveryDate GetBiggestDeliveryDate(IList<PackageItem> Items)
         {
@@ -1108,8 +1080,6 @@ namespace Nop.Plugin.Shipping.Correios
 
             return integerResult;
         }
-
-
         private bool CheckExceptCustomerRoles(Customer customer)
         {
             if (!string.IsNullOrWhiteSpace(_correiosSettings.FreteGratisExcetoCustomerRoleIds))
@@ -1124,8 +1094,6 @@ namespace Nop.Plugin.Shipping.Correios
 
             return false;
         }
-
-
         private bool CheckFreeShipping(int CodigoServico, GetShippingOptionProductRequest getShippingOptionProductRequest, bool primeirodaListaFreeShepping)
         {
             if (!_correiosSettings.FreteGratis)
@@ -1168,7 +1136,6 @@ namespace Nop.Plugin.Shipping.Correios
 
             return false;
         }
-
         private bool CheckFreeShipping(int CodigoServico, GetShippingOptionRequest getShippingOptionRequest, bool primeirodaListaFreeShepping)
         {
             if (!_correiosSettings.FreteGratis)
@@ -1233,7 +1200,6 @@ namespace Nop.Plugin.Shipping.Correios
 
             return false;
         }
-
         private string ObterCEPFinal(string CepInicial, string CepFinal)
         {
             string cepInicial = CepInicial;
@@ -1243,7 +1209,6 @@ namespace Nop.Plugin.Shipping.Correios
 
             return cepFinal;
         }
-
         private string ObterCEPInicial(string CepInicial)
         {
             while (CepInicial.Length != TAMANHO_CEP)
@@ -1253,7 +1218,6 @@ namespace Nop.Plugin.Shipping.Correios
 
             return CepInicial;
         }
-
         private string CompletarCEPFinal(string CepFinal)
         {
             while (CepFinal.Length != TAMANHO_CEP)

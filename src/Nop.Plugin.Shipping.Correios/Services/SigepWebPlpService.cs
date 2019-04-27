@@ -104,9 +104,7 @@ namespace Nop.Plugin.Shipping.Correios.Services
             IList<Shipment> lstShipment = ObterPedidos(plpSigebWeb);
 
             foreach (var shipment in lstShipment)
-            {
                 _orderProcessingService.Ship(shipment, true);
-            }
 
             return plpSigebWeb;
         }
@@ -462,26 +460,22 @@ namespace Nop.Plugin.Shipping.Correios.Services
         {
             lstProblemas = new List<KeyValuePair<Order, int>>();
 
-            if (!_correiosSettings.UtilizaValidacaoCEPEtiquetaSIGEP && !_correiosSettings.ValidacaoServicoDisponivelCEPEtiquetaSIGEP)
-                return true;
-
             foreach (var pedido in lstPedidos)
             {
                 if (_correiosSettings.UtilizaValidacaoCEPEtiquetaSIGEP)
                 {
                     if (!ValidarCep(pedido.ShippingAddress.ZipPostalCode))
-                    {
                         lstProblemas.Add(new KeyValuePair<Order, int>(pedido, MensagemErroProcessamentoEtiqueta.CEP_INVALIDO));
-                    }
                 }
 
                 if (_correiosSettings.ValidacaoServicoDisponivelCEPEtiquetaSIGEP)
                 {
                     if (!ValidarServicoCepDestino(pedido))
-                    {
                         lstProblemas.Add(new KeyValuePair<Order, int>(pedido, MensagemErroProcessamentoEtiqueta.SERVICO_CORREIOS_INVALIDO_CEP));
-                    }
                 }
+
+                if (pedido.OrderStatus == OrderStatus.Cancelled || pedido.OrderStatus == OrderStatus.Pending)
+                    lstProblemas.Add(new KeyValuePair<Order, int>(pedido, MensagemErroProcessamentoEtiqueta.PEDIDO_STATUS_CANCELADO_PENDENTE));
             }
 
             ///Remover pedidos com problemas de validação da lista
@@ -490,7 +484,6 @@ namespace Nop.Plugin.Shipping.Correios.Services
                 if (lstPedidos.Contains(item.Key))
                     lstPedidos.Remove(item.Key);
             }
-
 
             return (lstProblemas.Count == 0);
         }
@@ -580,7 +573,6 @@ namespace Nop.Plugin.Shipping.Correios.Services
 
                 var cepRetorno = NumberHelper.ObterApenasNumeros(endereco.cep);
 
-
                 if ( cepRetorno.Equals(cepApenasNumeros, StringComparison.InvariantCultureIgnoreCase))
                     retorno = true;
             }
@@ -648,7 +640,7 @@ namespace Nop.Plugin.Shipping.Correios.Services
             var results = from o in lstPedidos
                           group o.ShippingMethod
                           by o.ShippingMethod
-                  into g
+                          into g
                           select new { ShippingMethod = g.Key, Envios = g.ToList() };
 
 
@@ -670,9 +662,7 @@ namespace Nop.Plugin.Shipping.Correios.Services
             var listaEnvio = new List<string>();
 
             foreach (var item in plpSigepWebShipments)
-            {
                 listaEnvio.Add(item.Etiqueta.CodigoEtiquetaSemVerificador.Replace(" ", string.Empty));
-            }
 
             return listaEnvio;
         }
