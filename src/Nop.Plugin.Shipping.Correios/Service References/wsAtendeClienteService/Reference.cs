@@ -3824,7 +3824,13 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/")]
     public enum categoriaServico {
-        
+
+        /// <remarks/>
+        GRANDES_FORMATOS,
+
+        /// <remarks/>
+        CARTA,
+
         /// <remarks/>
         SEM_CATEGORIA,
         
