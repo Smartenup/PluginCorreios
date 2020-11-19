@@ -214,10 +214,15 @@ namespace Nop.Plugin.Shipping.Correios.Domain
 		{
 			switch (serviceId)
 			{
-                
+                case "3140":
+                case "03140":
                 case "40169": return "SEDEX 12";
-				case "40215": return "SEDEX 10";
-				case "40290": return "SEDEX Hoje";
+                case "03158":
+                case "3158":
+                case "40215": return "SEDEX 10";
+                case "3204":
+                case "03204":
+                case "40290": return "SEDEX Hoje";
                 case "4162":
                 case "04162":
                 case "40436":
@@ -225,14 +230,20 @@ namespace Nop.Plugin.Shipping.Correios.Domain
                 case "04014":
                 case "4014":
                 case "40568":
-				case "40606": return "SEDEX";
+                case "03220":
+                case "3220":
+                case "40606": return "SEDEX";
                 case "41270": return "SEDEX Grandes Volumes";
                 case "40045":
 				case "40126": return "SEDEX a Cobrar";
                 case "4510":
                 case "04510":
                 case "4669":
+                case "03298":
+                case "3298":
                 case "04669": return "PAC";
+                case "03328":
+                case "3328":
                 case "04693": return "PAC Grandes Volumes";
 				case "81019":
 				case "81868":
