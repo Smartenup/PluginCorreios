@@ -132,3 +132,27 @@ C:\Users\Ana\Source\Repos\PluginCorreios\src\Nop.Plugin.Shipping.Correios\obj\De
 C:\Users\Ana\Source\Repos\PluginCorreios\src\Nop.Plugin.Shipping.Correios\obj\Debug\Nop.Plugin.Shipping.Correios.csproj.CopyComplete
 C:\Users\Ana\Source\Repos\PluginCorreios\src\Nop.Plugin.Shipping.Correios\obj\Debug\Nop.Plugin.Shipping.Correios.dll
 C:\Users\Ana\Source\Repos\PluginCorreios\src\Nop.Plugin.Shipping.Correios\obj\Debug\Nop.Plugin.Shipping.Correios.pdb
+C:\smartenup\PluginCorreios\src\Nop.Plugin.Shipping.Correios\obj\Debug\Nop.Plugin.Shipping.Correios.csprojAssemblyReference.cache
+C:\smartenup\PluginCorreios\src\Nop.Plugin.Shipping.Correios\obj\Debug\Nop.Plugin.Shipping.Correios.csproj.CoreCompileInputs.cache
+C:\smartenup\NopCommerceSmartenup\src\Presentation\Nop.Web\Plugins\Shipping.Correios\Notes.txt
+C:\smartenup\NopCommerceSmartenup\src\Presentation\Nop.Web\Plugins\Shipping.Correios\Content\Images\logo.png
+C:\smartenup\NopCommerceSmartenup\src\Presentation\Nop.Web\Plugins\Shipping.Correios\Content\Images\logo_correios.PNG
+C:\smartenup\NopCommerceSmartenup\src\Presentation\Nop.Web\Plugins\Shipping.Correios\Content\Images\logo_correios_fechamento.PNG
+C:\smartenup\NopCommerceSmartenup\src\Presentation\Nop.Web\Plugins\Shipping.Correios\Content\Images\PAC Grandes Volumes.PNG
+C:\smartenup\NopCommerceSmartenup\src\Presentation\Nop.Web\Plugins\Shipping.Correios\Content\Images\pac.png
+C:\smartenup\NopCommerceSmartenup\src\Presentation\Nop.Web\Plugins\Shipping.Correios\Content\Images\sedex 10.png
+C:\smartenup\NopCommerceSmartenup\src\Presentation\Nop.Web\Plugins\Shipping.Correios\Content\Images\sedex hoje.png
+C:\smartenup\NopCommerceSmartenup\src\Presentation\Nop.Web\Plugins\Shipping.Correios\Content\Images\sedex.png
+C:\smartenup\NopCommerceSmartenup\src\Presentation\Nop.Web\Plugins\Shipping.Correios\logo.jpg
+C:\smartenup\NopCommerceSmartenup\src\Presentation\Nop.Web\Plugins\Shipping.Correios\Views\ShippingCorreios\Configure.cshtml
+C:\smartenup\NopCommerceSmartenup\src\Presentation\Nop.Web\Plugins\Shipping.Correios\Views\ShippingCorreios\PLPAberta.cshtml
+C:\smartenup\NopCommerceSmartenup\src\Presentation\Nop.Web\Plugins\Shipping.Correios\sitemap.config
+C:\smartenup\NopCommerceSmartenup\src\Presentation\Nop.Web\Plugins\Shipping.Correios\Description.txt
+C:\smartenup\NopCommerceSmartenup\src\Presentation\Nop.Web\Plugins\Shipping.Correios\Views\ShippingCorreios\PLPFechadaDetalhe.cshtml
+C:\smartenup\NopCommerceSmartenup\src\Presentation\Nop.Web\Plugins\Shipping.Correios\Views\ShippingCorreios\PLPFechada.cshtml
+C:\smartenup\NopCommerceSmartenup\src\Presentation\Nop.Web\Plugins\Shipping.Correios\web.config
+C:\smartenup\NopCommerceSmartenup\src\Presentation\Nop.Web\Plugins\Shipping.Correios\Nop.Plugin.Shipping.Correios.dll.config
+C:\smartenup\NopCommerceSmartenup\src\Presentation\Nop.Web\Plugins\Shipping.Correios\Nop.Plugin.Shipping.Correios.dll
+C:\smartenup\NopCommerceSmartenup\src\Presentation\Nop.Web\Plugins\Shipping.Correios\Nop.Plugin.Shipping.Correios.pdb
+C:\smartenup\PluginCorreios\src\Nop.Plugin.Shipping.Correios\obj\Debug\Nop.Plugin.Shipping.Correios.dll
+C:\smartenup\PluginCorreios\src\Nop.Plugin.Shipping.Correios\obj\Debug\Nop.Plugin.Shipping.Correios.pdb

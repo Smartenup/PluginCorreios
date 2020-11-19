@@ -193,7 +193,7 @@ namespace Nop.Plugin.Shipping.Correios.Services
 
         public PlpSigepWebEtiqueta ObterProximaEtiquetaDisponivel(List<PlpSigepWebEtiqueta> lstEtiquetas, string shippingMethod)
         {
-            string codigoServicoPedido = CorreiosServices.ObterCodigoEnvio(shippingMethod, _correiosSettings.CarrierServicesOffered);
+            string codigoServicoPedido = CorreiosServices.GetPLPServiceCode(shippingMethod, _correiosSettings.CarrierServicesOffered);
 
             foreach (PlpSigepWebEtiqueta etiqueta in lstEtiquetas)
             {
@@ -396,7 +396,7 @@ namespace Nop.Plugin.Shipping.Correios.Services
 
             wsAtendeClienteService.AtendeClienteClient ws = GetAtendeClienteClient();
 
-            string codigoEnvio = CorreiosServices.ObterCodigoEnvio(nomeServicoPublico, _correiosSettings.CarrierServicesOffered);
+            string codigoEnvio = CorreiosServices.GetPLPServiceCode(nomeServicoPublico, _correiosSettings.CarrierServicesOffered);
 
             wsAtendeClienteService.clienteERP clienteERP = ObterClienteSigepWEB();
 
@@ -646,7 +646,7 @@ namespace Nop.Plugin.Shipping.Correios.Services
 
             foreach (var item in results)
             {
-                string codigoEnvio = CorreiosServices.ObterCodigoEnvio(item.ShippingMethod, _correiosSettings.CarrierServicesOffered);
+                string codigoEnvio = CorreiosServices.GetPLPServiceCode(item.ShippingMethod, _correiosSettings.CarrierServicesOffered);
 
                 if (list.ContainsKey(codigoEnvio))
                     list[codigoEnvio] += item.Envios.Count();

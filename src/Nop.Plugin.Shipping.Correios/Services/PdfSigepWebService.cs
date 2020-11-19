@@ -508,7 +508,7 @@ namespace Nop.Plugin.Shipping.Correios.Services
             dataMatrixImagem.ScaleToFit(pointsValue25, pointsValue25);
             dataMatrixImagem.Alignment = Element.ALIGN_CENTER;
 
-            string codigoServicoPedido = CorreiosServices.ObterCodigoEnvio(shipment.Order.ShippingMethod, _correiosSettings.CarrierServicesOffered);
+            string codigoServicoPedido = CorreiosServices.GetPLPServiceCode(shipment.Order.ShippingMethod, _correiosSettings.CarrierServicesOffered);
             string servicoNomePublico = CorreiosServices.GetServicePublicNameById(codigoServicoPedido);
             
             var servico = Image.GetInstance(new Uri(Path.Combine(pathImages, string.Concat(servicoNomePublico, ".png"))));

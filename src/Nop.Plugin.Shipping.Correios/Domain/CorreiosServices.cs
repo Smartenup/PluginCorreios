@@ -114,6 +114,7 @@ namespace Nop.Plugin.Shipping.Correios.Domain
 				case "(Grupo 3) e-SEDEX, com contrato": return "81850";
                 case "PAC Grandes Volumes": return "04693";
                 case "SEDEX 12": return "40169";
+                case "SEDEX Grandes Volumes": return "41270";
 
                 default: return "Desconhecido";
 			}
@@ -162,6 +163,7 @@ namespace Nop.Plugin.Shipping.Correios.Domain
                 case "81019":
                 case "81868":
                 case "81833":
+                case "41270":
                 case "81850": { return CONST_CODIGO_VALOR_DECLARADO_SEDEX; }
                 case "4510":
                 case "04510":
@@ -193,6 +195,7 @@ namespace Nop.Plugin.Shipping.Correios.Domain
                 case "81019":
                 case "81868":
                 case "81833":
+                case "41270":
                 case "81850": { return CONST_VALOR_DECLARADO_MINIMO_SEDEX; }
                 case "4510":
                 case "04510":
@@ -223,7 +226,8 @@ namespace Nop.Plugin.Shipping.Correios.Domain
                 case "4014":
                 case "40568":
 				case "40606": return "SEDEX";
-				case "40045":
+                case "41270": return "SEDEX Grandes Volumes";
+                case "40045":
 				case "40126": return "SEDEX a Cobrar";
                 case "4510":
                 case "04510":
@@ -240,6 +244,41 @@ namespace Nop.Plugin.Shipping.Correios.Domain
 		}
 
 
+        public static string GetPLPServiceCode(string serviceId)
+        {
+            switch (serviceId)
+            {
+
+                case "40169": return "03140";//SEDEX 12
+                case "40215": return "03158";//SEDEX 10
+                case "40290": return "03204";//SEDEX Hoje
+                case "40436": 
+                case "4162":
+                case "04162":
+                case "40444":
+                case "04014":
+                case "4014":
+                case "40568":
+                case "40606": return "03220";//SEDEX
+                case "41270": return "03220";//SEDEX GRANDES VOLUMES
+                case "40045":
+                case "40126": return string.Empty;//SEDEX a Cobrar
+                case "4510":
+                case "04510":
+                case "4669":
+                case "04669": return "03298";//PAC
+                case "04693": return "03328";//PAC GRANDES VOLUMES
+                case "81019":
+                case "81868":
+                case "81833":
+                case "81850": return string.Empty;//e-SEDEX
+
+                default: return string.Empty;
+            }
+
+        }
+
+
 		public static bool ValidateServicePublicName(string publicName)
         {
             switch (publicName)
@@ -252,6 +291,7 @@ namespace Nop.Plugin.Shipping.Correios.Domain
                 case "SEDEX a Cobrar":
                 case "PAC": 
                 case "PAC Grandes Volumes":
+                case "SEDEX Grandes Volumes":
                 case "e-SEDEX":
                     {
                         return true;
@@ -261,7 +301,7 @@ namespace Nop.Plugin.Shipping.Correios.Domain
         }
 
 
-        public static string ObterCodigoEnvio(string shippingMethod, string servicosOferecidos)
+        public static string GetPLPServiceCode(string shippingMethod, string servicosOferecidos)
         {
             string shippingMethodPedido = shippingMethod;
 
@@ -280,7 +320,7 @@ namespace Nop.Plugin.Shipping.Correios.Domain
 
                 if (descricaoServico.Contains(shippingMethodPedido) && publicName.Equals(shippingMethodPedido, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    return codigoServico;
+                    return GetPLPServiceCode(codigoServico);
                 }
             }
 
