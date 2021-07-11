@@ -126,6 +126,7 @@
     <Compile Include="Data\PlpSigepWebMap.cs" />
     <Compile Include="Data\PlpSigepWebShipmentMap.cs" />
     <Compile Include="DependencyRegistrar.cs" />
+    <Compile Include="Domain\ShippingCorreiosConfiguracaoServicos.cs" />
     <Compile Include="Domain\CorreiosServices.cs" />
     <Compile Include="Domain\ErrosProcessamento.cs" />
     <Compile Include="Domain\PlpSigepWeb.cs" />

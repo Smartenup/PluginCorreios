@@ -16,25 +16,19 @@ namespace Nop.Plugin.Shipping.Correios.Domain
         /// Correios Service names
         /// </summary>
         private string[] _services = {
-										"PAC sem contrato",
-										"SEDEX sem contrato",
-										"SEDEX a Cobrar, sem contrato",
-										"SEDEX a Cobrar, com contrato",
-                                        "SEDEX 12",
-                                        "SEDEX 10, sem contrato",
-										"SEDEX Hoje, sem contrato",
-										"SEDEX com contrato",
-										"SEDEX com contrato (40436)",
-										"SEDEX com contrato (40444)",
-                                        "PAC Grandes Volumes",
-                                        "e-SEDEX, com contrato",
-										"PAC com contrato",
-										"SEDEX com contrato (40568)",
-										"SEDEX com contrato (40606)",
-										"(Grupo 1) e-SEDEX, com contrato",
-										"(Grupo 2) e-SEDEX, com contrato",
-										"(Grupo 3) e-SEDEX, com contrato"
-										};
+                                        "PAC sem contrato (04510)",
+                                        "SEDEX sem contrato (04014)",
+                                        "PAC sem contrato (04510)",
+                                        "SEDEX sem contrato (04014)",
+                                        "SEDEX HOJE CONTRATO (03204)",
+                                        "SEDEX 10 CONTRATO (03158)",
+                                        "SEDEX 12 CONTRATO (03140)",
+                                        "SEDEX com contrato (03220)",
+                                        "SEDEX CONTRATO GDES FORMATOS (03212)",
+                                        "PAC CONTRATO GDES FORMATOS (03328)",
+                                        "PAC CONTRATO (03298)",
+                                        "PAC MINI CONTRATO (04227)"
+                                        };
 
 		#region Properties
 
@@ -54,34 +48,21 @@ namespace Nop.Plugin.Shipping.Correios.Domain
 		/// </summary>
 		/// <param name="serviceId">ID of the carrier service -from Correios</param>
 		/// <returns>String representation of the carrier service</returns>
-		public static string GetServiceName(string serviceId)
+		public static string GetServiceName(int serviceId)
 		{
+
 			switch (serviceId)
 			{
-
-                case "4510": return "PAC sem contrato";
-                case "04510": return "PAC sem contrato";
-                case "4014": return "SEDEX sem contrato";
-                case "04014": return "SEDEX sem contrato";
-                case "40045" : return "SEDEX a Cobrar, sem contrato";
-				case "40126": return "SEDEX a Cobrar, com contrato";
-				case "40215": return "SEDEX 10";
-				case "40290": return "SEDEX Hoje";
-                case "40169": return "SEDEX 12";
-                case "04162": return "SEDEX com contrato";
-                case "4162": return "SEDEX com contrato";
-                case "40436": return "SEDEX com contrato (40436)";
-				case "40444": return "SEDEX com contrato (40444)";
-                case "04693": return "PAC Grandes Volumes";
-                case "81019": return "e-SEDEX, com contrato";               
-                case "04669": return "PAC com contrato";
-                case "4669": return "PAC com contrato";
-                case "40568": return "SEDEX com contrato (40568)";
-				case "40606": return "SEDEX com contrato (40606)";
-				case "81868": return "(Grupo 1) e-SEDEX, com contrato";
-				case "81833": return "(Grupo 2) e-SEDEX, com contrato";
-				case "81850": return "(Grupo 3) e-SEDEX, com contrato";
-
+                case 4510: return "PAC sem contrato (04510)";
+                case 4014: return "SEDEX sem contrato (04014)";
+				case 3204: return "SEDEX HOJE CONTRATO (03204)";
+                case 3158: return "SEDEX 10 CONTRATO (03158)";
+                case 3140: return "SEDEX 12 CONTRATO (03140)";
+                case 3220: return "SEDEX com contrato (03220)";
+                case 3212: return "SEDEX CONTRATO GDES FORMATOS (03212)";
+                case 3328: return "PAC CONTRATO GDES FORMATOS (03328)";
+                case 3298: return "PAC CONTRATO (03298)";
+                case 4227: return "PAC MINI CONTRATO (04227)";
 
                 default: return "Desconhecido";
 			}
@@ -96,24 +77,19 @@ namespace Nop.Plugin.Shipping.Correios.Domain
 		{
 			switch (serviceName)
 			{
-                case "PAC sem contrato": return "04510";
-                case "SEDEX sem contrato": return "04014";
-                case "SEDEX a Cobrar, sem contrato": return "40045";
-				case "SEDEX a Cobrar, com contrato": return "40126";
-				case "SEDEX 10": return "40215";
-				case "SEDEX Hoje": return "40290";
-                case "SEDEX com contrato": return "04162";
-                case "SEDEX com contrato (40436)": return "40436";
-				case "SEDEX com contrato (40444)": return "40444";
-				case "e-SEDEX, com contrato": return "81019";
-                case "PAC com contrato": return "04669"; 
-                case "SEDEX com contrato (40568)": return "40568";
-				case "SEDEX com contrato (40606)": return "40606";
-				case "(Grupo 1) e-SEDEX, com contrato": return "81868";
-				case "(Grupo 2) e-SEDEX, com contrato": return "81833";
-				case "(Grupo 3) e-SEDEX, com contrato": return "81850";
-                case "PAC Grandes Volumes": return "04693";
-                case "SEDEX 12": return "40169";
+                case "PAC sem contrato (04510)": return "04510";
+                case "SEDEX sem contrato (04014)": return "04014";
+                case "SEDEX HOJE CONTRATO (03204)": return "03204";
+                case "SEDEX 10 CONTRATO (03158)": return "03158";
+                case "SEDEX 12 CONTRATO (03140)": return "03140";
+                case "SEDEX CONTRATO (03220)": return "03220";
+                case "SEDEX CONTRATO GDES FORMATOS (03212)": return "03212";
+                case "PAC CONTRATO GDES FORMATOS (03328)": return "03328";
+                case "PAC CONTRATO (03298)": return "03298";
+                case "PAC MINI CONTRATO (04227)": return "04227";
+
+                case "SEDEX": return "03220";
+                case "PAC": return "03298";
 
                 default: return "Desconhecido";
 			}
@@ -145,29 +121,16 @@ namespace Nop.Plugin.Shipping.Correios.Domain
         {
             switch (codigoServico)
             {
-
-                case "40169":
-                case "40215":
-                case "40290":
-                case "4162":
-                case "04162":
-                case "40436":
-                case "40444":
                 case "04014":
-                case "4014":
-                case "40568":
-                case "40606":
-                case "40045":
-                case "40126":
-                case "81019":
-                case "81868":
-                case "81833":
-                case "81850": { return CONST_CODIGO_VALOR_DECLARADO_SEDEX; }
-                case "4510":
+                case "03204":
+                case "03158":
+                case "03140":
+                case "03220":
+                case "03212": return CONST_CODIGO_VALOR_DECLARADO_SEDEX;
                 case "04510":
-                case "4669":
-                case "04669":
-                case "04693": { return CONST_CODIGO_VALOR_DECLARADO_PAC; }
+                case "03328":
+                case "03298":
+                case "04227": { return CONST_CODIGO_VALOR_DECLARADO_PAC; }
                 default: return CONST_CODIGO_VALOR_DECLARADO_SEDEX;
             }
         }
@@ -177,29 +140,18 @@ namespace Nop.Plugin.Shipping.Correios.Domain
             switch (codigoServico)
             {
 
-                case "40169": 
-                case "40215": 
-                case "40290": 
-                case "4162":
-                case "04162":
-                case "40436":
-                case "40444":
                 case "04014":
-                case "4014":
-                case "40568":
-                case "40606": 
-                case "40045":
-                case "40126":
-                case "81019":
-                case "81868":
-                case "81833":
-                case "81850": { return CONST_VALOR_DECLARADO_MINIMO_SEDEX; }
-                case "4510":
+                case "03204":
+                case "03158":
+                case "03140":
+                case "03220":
+                case "03212": return CONST_VALOR_DECLARADO_MINIMO_SEDEX;
                 case "04510":
-                case "4669":
-                case "04669": 
-                case "04693": { return CONST_VALOR_DECLARADO_MINIMO_PAC; }
+                case "03328":
+                case "03298":
+                case "04227": { return CONST_VALOR_DECLARADO_MINIMO_PAC; }
                 default: return CONST_VALOR_DECLARADO_MINIMO_PAC;
+
             }
         }
 		/// <summary>
@@ -212,28 +164,17 @@ namespace Nop.Plugin.Shipping.Correios.Domain
 			switch (serviceId)
 			{
                 
-                case "40169": return "SEDEX 12";
-				case "40215": return "SEDEX 10";
-				case "40290": return "SEDEX Hoje";
-                case "4162":
-                case "04162":
-                case "40436":
-				case "40444":
-                case "04014":
-                case "4014":
-                case "40568":
-				case "40606": return "SEDEX";
-				case "40045":
-				case "40126": return "SEDEX a Cobrar";
-                case "4510":
-                case "04510":
-                case "4669":
-                case "04669": return "PAC";
-                case "04693": return "PAC Grandes Volumes";
-				case "81019":
-				case "81868":
-				case "81833":
-				case "81850": return "e-SEDEX";
+                case "04510": return "PAC sem contrato (04510)";
+                case "04014": return "SEDEX sem contrato (04014)";
+				case "03204": return "SEDEX HOJE CONTRATO (03204)";
+                case "03158": return "SEDEX 10 CONTRATO (03158)";
+                case "03140": return "SEDEX 12 CONTRATO (03140)";
+                case "03220": return "SEDEX com contrato (03220)";
+                case "03212": return "SEDEX CONTRATO GDES FORMATOS (03212)";
+                case "03328": return "PAC CONTRATO GDES FORMATOS (03328)";
+                case "03298": return "PAC CONTRATO (03298)";
+                case "04227": return "PAC MINI CONTRATO (04227)";
+
 
 				default: return "Desconhecido";
 			}
@@ -245,14 +186,18 @@ namespace Nop.Plugin.Shipping.Correios.Domain
             switch (publicName)
             {
 
-                case "SEDEX 12":
-                case "SEDEX 10": 
-                case "SEDEX Hoje":
+                case "PAC sem contrato (04510)":
+                case "SEDEX sem contrato (04014)":
+                case "SEDEX HOJE CONTRATO (03204)":
+                case "SEDEX 10 CONTRATO (03158)":
+                case "SEDEX 12 CONTRATO (03140)":
+                case "SEDEX CONTRATO (03220)":
+                case "SEDEX CONTRATO GDES FORMATOS (03212)":
+                case "PAC CONTRATO GDES FORMATOS (03328)":
+                case "PAC CONTRATO (03298)":
+                case "PAC MINI CONTRATO (04227)":
                 case "SEDEX":
-                case "SEDEX a Cobrar":
-                case "PAC": 
-                case "PAC Grandes Volumes":
-                case "e-SEDEX":
+                case "PAC":
                     {
                         return true;
                     }
@@ -269,7 +214,7 @@ namespace Nop.Plugin.Shipping.Correios.Domain
 
             foreach (var codigoServico in codigoServicosOferecidos.Split(','))
             {
-                string descricaoServico = GetServiceName(codigoServico);
+                string descricaoServico = GetServiceName(int.Parse(codigoServico));
 
                 string publicName = GetServicePublicNameById(codigoServico);
 
