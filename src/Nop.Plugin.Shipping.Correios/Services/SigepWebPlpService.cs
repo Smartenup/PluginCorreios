@@ -30,7 +30,7 @@ namespace Nop.Plugin.Shipping.Correios.Services
         private readonly ISigepWebService _sigepWebService;
         private readonly IWorkContext _workContext;
         private readonly IAddressAttributeParser _addressAttributeParser;
-        private readonly ShippingSettings _shippingSettings;        
+        private readonly ShippingSettings _shippingSettings;
         private readonly IAddressService _addressService;
         private readonly IPdfSigepWebService _pdfSigepWebService;
         private readonly IOrderProcessingService _orderProcessingService;
@@ -127,7 +127,7 @@ namespace Nop.Plugin.Shipping.Correios.Services
             }
 
             return plpSigebWeb;
-        }        
+        }
 
 
 
@@ -175,7 +175,7 @@ namespace Nop.Plugin.Shipping.Correios.Services
             try
             {
                 numeroPlpCorreios = ws.fechaPlpVariosServicos(xmlPlp, idPlpNop, _correiosSettings.CartaoPostagemSIGEP, listaEtiquetas, _correiosSettings.UsuarioSIGEP, _correiosSettings.SenhaSIGEP);
-            }            
+            }
             finally
             {
                 ws.Close();
@@ -573,7 +573,7 @@ namespace Nop.Plugin.Shipping.Correios.Services
 
                 var cepRetorno = NumberHelper.ObterApenasNumeros(endereco.cep);
 
-                if ( cepRetorno.Equals(cepApenasNumeros, StringComparison.InvariantCultureIgnoreCase))
+                if (cepRetorno.Equals(cepApenasNumeros, StringComparison.InvariantCultureIgnoreCase))
                     retorno = true;
             }
             catch (Exception ex)
@@ -598,7 +598,7 @@ namespace Nop.Plugin.Shipping.Correios.Services
             }
             catch (Exception ex)
             {
-                _logger.Error(string.Format("Plugin.Shipping.Correios: Erro ao serviço {0} disponivel para o cep {1} pedido {2}", pedido.ShippingMethod , pedido.ShippingAddress.ZipPostalCode, pedido.Id), ex);
+                _logger.Error(string.Format("Plugin.Shipping.Correios: Erro ao serviço {0} disponivel para o cep {1} pedido {2}", pedido.ShippingMethod, pedido.ShippingAddress.ZipPostalCode, pedido.Id), ex);
                 retorno = false;
             }
 

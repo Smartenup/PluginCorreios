@@ -244,7 +244,7 @@ namespace Nop.Plugin.Shipping.Correios.Services
                 quantidadeValorCell.Border = Rectangle.NO_BORDER;
                 fechamentoTable.AddCell(quantidadeValorCell);
 
-                string nomeServico = string.Format("{0} - {1}", item.CodigoServico, CorreiosServices.GetServiceName(int.Parse(item.CodigoServico)));
+                string nomeServico = string.Format("{0} - {1}", item.CodigoServico, CorreiosServices.GetServiceName(item.CodigoServico));
 
                 var servicoValorCell = new PdfPCell(new Phrase(nomeServico, arial9));
                 servicoValorCell.HorizontalAlignment = Element.ALIGN_LEFT;

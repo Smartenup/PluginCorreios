@@ -244,7 +244,7 @@ namespace Nop.Plugin.Shipping.Correios
                             default:
 
                                 string msgError = string.Format("Plugin.Shipping.Correios: erro ao calcular frete: ({0})({1}){2} - CEP {3}",
-                                    CorreiosServices.GetServiceName(servico.Codigo),
+                                    CorreiosServices.GetServiceName(servico.Codigo.ToString()),
                                     servico.Erro,
                                     servico.MsgErro,
                                     getShippingOptionRequest.ShippingAddress.ZipPostalCode);
@@ -257,7 +257,7 @@ namespace Nop.Plugin.Shipping.Correios
                     else
                     {
                         string msgError = string.Format("Plugin.Shipping.Correios: erro ao calcular frete: ({0})({1}){2} - CEP {3}",
-                                    CorreiosServices.GetServiceName(servico.Codigo),
+                                    CorreiosServices.GetServiceName(servico.Codigo.ToString()),
                                     servico.Erro,
                                     servico.MsgErro,
                                     getShippingOptionRequest.ShippingAddress.ZipPostalCode);
@@ -382,7 +382,7 @@ namespace Nop.Plugin.Shipping.Correios
                             default:
 
                                 string msgError = string.Format("Plugin.Shipping.Correios: erro ao calcular frete: ({0})({1}){2} - CEP {3}",
-                                    CorreiosServices.GetServiceName(servico.Codigo),
+                                    CorreiosServices.GetServiceName(servico.Codigo.ToString()),
                                     servico.Erro,
                                     servico.MsgErro,
                                     getShippingOptionProductRequest.ShippingAddress.ZipPostalCode);
@@ -395,7 +395,7 @@ namespace Nop.Plugin.Shipping.Correios
                     else
                     {
                         string msgError = string.Format("Plugin.Shipping.Correios: erro ao calcular frete: ({0})({1}){2} - CEP {3}",
-                                    CorreiosServices.GetServiceName(servico.Codigo),
+                                    CorreiosServices.GetServiceName(servico.Codigo.ToString()),
                                     servico.Erro,
                                     servico.MsgErro,
                                     getShippingOptionProductRequest.ShippingAddress.ZipPostalCode);
