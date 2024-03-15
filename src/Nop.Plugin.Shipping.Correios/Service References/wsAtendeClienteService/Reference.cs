@@ -12,7 +12,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
     
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -86,21 +86,43 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/")]
     public partial class servicoAdicionalXML : object, System.ComponentModel.INotifyPropertyChanged {
         
+        private string categoriaField;
+        
         private string codigoField;
         
         private string descricaoField;
+        
+        private double maximoValorDeclaradoField;
+        
+        private bool maximoValorDeclaradoFieldSpecified;
+        
+        private double minimoValorDeclaradoField;
+        
+        private bool minimoValorDeclaradoFieldSpecified;
         
         private string siglaField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public string categoria {
+            get {
+                return this.categoriaField;
+            }
+            set {
+                this.categoriaField = value;
+                this.RaisePropertyChanged("categoria");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
         public string codigo {
             get {
                 return this.codigoField;
@@ -112,7 +134,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
         public string descricao {
             get {
                 return this.descricaoField;
@@ -124,7 +146,55 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public double maximoValorDeclarado {
+            get {
+                return this.maximoValorDeclaradoField;
+            }
+            set {
+                this.maximoValorDeclaradoField = value;
+                this.RaisePropertyChanged("maximoValorDeclarado");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool maximoValorDeclaradoSpecified {
+            get {
+                return this.maximoValorDeclaradoFieldSpecified;
+            }
+            set {
+                this.maximoValorDeclaradoFieldSpecified = value;
+                this.RaisePropertyChanged("maximoValorDeclaradoSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        public double minimoValorDeclarado {
+            get {
+                return this.minimoValorDeclaradoField;
+            }
+            set {
+                this.minimoValorDeclaradoField = value;
+                this.RaisePropertyChanged("minimoValorDeclarado");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool minimoValorDeclaradoSpecified {
+            get {
+                return this.minimoValorDeclaradoFieldSpecified;
+            }
+            set {
+                this.minimoValorDeclaradoFieldSpecified = value;
+                this.RaisePropertyChanged("minimoValorDeclaradoSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
         public string sigla {
             get {
                 return this.siglaField;
@@ -146,7 +216,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -178,7 +248,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -237,16 +307,6 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         
         // CODEGEN: O parâmetro 'return' requer informações adicionais de esquema que não podem ser capturadas usando o modo do parâmetro. O atributo específico é 'System.Xml.Serialization.XmlElementAttribute'.
         [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
-        [System.ServiceModel.FaultContractAttribute(typeof(string), Action="", Name="SigepClienteException")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        [return: System.ServiceModel.MessageParameterAttribute(Name="return")]
-        Nop.Plugin.Shipping.Correios.wsAtendeClienteService.consultaSROResponse consultaSRO(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.consultaSRO request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
-        System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.consultaSROResponse> consultaSROAsync(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.consultaSRO request);
-        
-        // CODEGEN: O parâmetro 'return' requer informações adicionais de esquema que não podem ser capturadas usando o modo do parâmetro. O atributo específico é 'System.Xml.Serialization.XmlElementAttribute'.
-        [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="", Name="AutenticacaoException")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="", Name="SigepClienteException")]
         [System.ServiceModel.FaultContractAttribute(typeof(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.Exception), Action="", Name="Exception")]
@@ -289,6 +349,15 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         
         [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
         System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.cancelarObjetoResponse> cancelarObjetoAsync(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.cancelarObjeto request);
+        
+        // CODEGEN: O parâmetro 'return' requer informações adicionais de esquema que não podem ser capturadas usando o modo do parâmetro. O atributo específico é 'System.Xml.Serialization.XmlElementAttribute'.
+        [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        [return: System.ServiceModel.MessageParameterAttribute(Name="return")]
+        Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarParametrosPorDescricaoResponse pesquisarParametrosPorDescricao(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarParametrosPorDescricao request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
+        System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarParametrosPorDescricaoResponse> pesquisarParametrosPorDescricaoAsync(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarParametrosPorDescricao request);
         
         // CODEGEN: O parâmetro 'return' requer informações adicionais de esquema que não podem ser capturadas usando o modo do parâmetro. O atributo específico é 'System.Xml.Serialization.XmlElementAttribute'.
         [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
@@ -361,32 +430,10 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="", Name="SigepClienteException")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [return: System.ServiceModel.MessageParameterAttribute(Name="return")]
-        Nop.Plugin.Shipping.Correios.wsAtendeClienteService.registrarPedidosInformacaoResponse registrarPedidosInformacao(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.registrarPedidosInformacao request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
-        System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.registrarPedidosInformacaoResponse> registrarPedidosInformacaoAsync(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.registrarPedidosInformacao request);
-        
-        // CODEGEN: O parâmetro 'return' requer informações adicionais de esquema que não podem ser capturadas usando o modo do parâmetro. O atributo específico é 'System.Xml.Serialization.XmlElementAttribute'.
-        [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
-        [System.ServiceModel.FaultContractAttribute(typeof(string), Action="", Name="AutenticacaoException")]
-        [System.ServiceModel.FaultContractAttribute(typeof(string), Action="", Name="SigepClienteException")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        [return: System.ServiceModel.MessageParameterAttribute(Name="return")]
         Nop.Plugin.Shipping.Correios.wsAtendeClienteService.validaEtiquetaPLPResponse validaEtiquetaPLP(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.validaEtiquetaPLP request);
         
         [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
         System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.validaEtiquetaPLPResponse> validaEtiquetaPLPAsync(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.validaEtiquetaPLP request);
-        
-        // CODEGEN: O parâmetro 'return' requer informações adicionais de esquema que não podem ser capturadas usando o modo do parâmetro. O atributo específico é 'System.Xml.Serialization.XmlElementAttribute'.
-        [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
-        [System.ServiceModel.FaultContractAttribute(typeof(string), Action="", Name="AutenticacaoException")]
-        [System.ServiceModel.FaultContractAttribute(typeof(string), Action="", Name="SigepClienteException")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        [return: System.ServiceModel.MessageParameterAttribute(Name="return")]
-        Nop.Plugin.Shipping.Correios.wsAtendeClienteService.consultarPedidosInformacaoResponse consultarPedidosInformacao(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.consultarPedidosInformacao request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
-        System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.consultarPedidosInformacaoResponse> consultarPedidosInformacaoAsync(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.consultarPedidosInformacao request);
         
         // CODEGEN: O parâmetro 'return' requer informações adicionais de esquema que não podem ser capturadas usando o modo do parâmetro. O atributo específico é 'System.Xml.Serialization.XmlElementAttribute'.
         [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
@@ -402,6 +449,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         // CODEGEN: O parâmetro 'return' requer informações adicionais de esquema que não podem ser capturadas usando o modo do parâmetro. O atributo específico é 'System.Xml.Serialization.XmlElementAttribute'.
         [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
         [System.ServiceModel.FaultContractAttribute(typeof(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.SQLException), Action="", Name="SQLException")]
+        [System.ServiceModel.FaultContractAttribute(typeof(string), Action="", Name="AutenticacaoException")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="", Name="SigepClienteException")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [return: System.ServiceModel.MessageParameterAttribute(Name="return")]
@@ -423,13 +471,21 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         
         // CODEGEN: O parâmetro 'return' requer informações adicionais de esquema que não podem ser capturadas usando o modo do parâmetro. O atributo específico é 'System.Xml.Serialization.XmlElementAttribute'.
         [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
-        [System.ServiceModel.FaultContractAttribute(typeof(string), Action="", Name="SigepClienteException")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [return: System.ServiceModel.MessageParameterAttribute(Name="return")]
-        Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterMensagemRetornoPIResponse obterMensagemRetornoPI(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterMensagemRetornoPI request);
+        Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarDimensoesServicoResponse pesquisarDimensoesServico(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarDimensoesServico request);
         
         [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
-        System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterMensagemRetornoPIResponse> obterMensagemRetornoPIAsync(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterMensagemRetornoPI request);
+        System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarDimensoesServicoResponse> pesquisarDimensoesServicoAsync(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarDimensoesServico request);
+        
+        // CODEGEN: O parâmetro 'return' requer informações adicionais de esquema que não podem ser capturadas usando o modo do parâmetro. O atributo específico é 'System.Xml.Serialization.XmlElementAttribute'.
+        [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        [return: System.ServiceModel.MessageParameterAttribute(Name="return")]
+        Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarEmbalagensPorServicoResponse pesquisarEmbalagensPorServico(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarEmbalagensPorServico request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
+        System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarEmbalagensPorServicoResponse> pesquisarEmbalagensPorServicoAsync(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarEmbalagensPorServico request);
         
         // CODEGEN: O parâmetro 'return' requer informações adicionais de esquema que não podem ser capturadas usando o modo do parâmetro. O atributo específico é 'System.Xml.Serialization.XmlElementAttribute'.
         [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
@@ -468,6 +524,26 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="", Name="AutenticacaoException")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="", Name="SigepClienteException")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        [return: System.ServiceModel.MessageParameterAttribute(Name="return")]
+        Nop.Plugin.Shipping.Correios.wsAtendeClienteService.verificaModalTransporteResponse verificaModalTransporte(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.verificaModalTransporte request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
+        System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.verificaModalTransporteResponse> verificaModalTransporteAsync(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.verificaModalTransporte request);
+        
+        // CODEGEN: O parâmetro 'return' requer informações adicionais de esquema que não podem ser capturadas usando o modo do parâmetro. O atributo específico é 'System.Xml.Serialization.XmlElementAttribute'.
+        [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        [return: System.ServiceModel.MessageParameterAttribute(Name="return")]
+        Nop.Plugin.Shipping.Correios.wsAtendeClienteService.buscaDataAtualResponse buscaDataAtual(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.buscaDataAtual request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
+        System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.buscaDataAtualResponse> buscaDataAtualAsync(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.buscaDataAtual request);
+        
+        // CODEGEN: O parâmetro 'return' requer informações adicionais de esquema que não podem ser capturadas usando o modo do parâmetro. O atributo específico é 'System.Xml.Serialization.XmlElementAttribute'.
+        [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(string), Action="", Name="AutenticacaoException")]
+        [System.ServiceModel.FaultContractAttribute(typeof(string), Action="", Name="SigepClienteException")]
         [System.ServiceModel.FaultContractAttribute(typeof(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.Exception), Action="", Name="Exception")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [return: System.ServiceModel.MessageParameterAttribute(Name="return")]
@@ -492,20 +568,19 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="", Name="SigepClienteException")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [return: System.ServiceModel.MessageParameterAttribute(Name="return")]
-        Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterMotivosPIResponse obterMotivosPI(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterMotivosPI request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
-        System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterMotivosPIResponse> obterMotivosPIAsync(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterMotivosPI request);
-        
-        // CODEGEN: O parâmetro 'return' requer informações adicionais de esquema que não podem ser capturadas usando o modo do parâmetro. O atributo específico é 'System.Xml.Serialization.XmlElementAttribute'.
-        [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
-        [System.ServiceModel.FaultContractAttribute(typeof(string), Action="", Name="SigepClienteException")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        [return: System.ServiceModel.MessageParameterAttribute(Name="return")]
         Nop.Plugin.Shipping.Correios.wsAtendeClienteService.getStatusPLPResponse getStatusPLP(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.getStatusPLP request);
         
         [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
         System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.getStatusPLPResponse> getStatusPLPAsync(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.getStatusPLP request);
+        
+        // CODEGEN: O parâmetro 'return' requer informações adicionais de esquema que não podem ser capturadas usando o modo do parâmetro. O atributo específico é 'System.Xml.Serialization.XmlElementAttribute'.
+        [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        [return: System.ServiceModel.MessageParameterAttribute(Name="return")]
+        Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarServicosAdicionaisResponse pesquisarServicosAdicionais(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarServicosAdicionais request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
+        System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarServicosAdicionaisResponse> pesquisarServicosAdicionaisAsync(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarServicosAdicionais request);
         
         // CODEGEN: O parâmetro 'return' requer informações adicionais de esquema que não podem ser capturadas usando o modo do parâmetro. O atributo específico é 'System.Xml.Serialization.XmlElementAttribute'.
         [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
@@ -550,16 +625,6 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         
         [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
         System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.buscaContratoResponse> buscaContratoAsync(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.buscaContrato request);
-        
-        // CODEGEN: O parâmetro 'return' requer informações adicionais de esquema que não podem ser capturadas usando o modo do parâmetro. O atributo específico é 'System.Xml.Serialization.XmlElementAttribute'.
-        [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
-        [System.ServiceModel.FaultContractAttribute(typeof(string), Action="", Name="SigepClienteException")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        [return: System.ServiceModel.MessageParameterAttribute(Name="return")]
-        Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterAssuntosPIResponse obterAssuntosPI(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterAssuntosPI request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
-        System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterAssuntosPIResponse> obterAssuntosPIAsync(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterAssuntosPI request);
         
         // CODEGEN: O parâmetro 'return' requer informações adicionais de esquema que não podem ser capturadas usando o modo do parâmetro. O atributo específico é 'System.Xml.Serialization.XmlElementAttribute'.
         [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
@@ -638,6 +703,25 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         
         [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
         System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.buscaServicosResponse> buscaServicosAsync(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.buscaServicos request);
+        
+        // CODEGEN: O parâmetro 'return' requer informações adicionais de esquema que não podem ser capturadas usando o modo do parâmetro. O atributo específico é 'System.Xml.Serialization.XmlElementAttribute'.
+        [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        [return: System.ServiceModel.MessageParameterAttribute(Name="return")]
+        Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterMensagemParametrizadaResponse obterMensagemParametrizada(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterMensagemParametrizada request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
+        System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterMensagemParametrizadaResponse> obterMensagemParametrizadaAsync(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterMensagemParametrizada request);
+        
+        // CODEGEN: O parâmetro 'return' requer informações adicionais de esquema que não podem ser capturadas usando o modo do parâmetro. O atributo específico é 'System.Xml.Serialization.XmlElementAttribute'.
+        [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(string), Action="", Name="SigepClienteException")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        [return: System.ServiceModel.MessageParameterAttribute(Name="return")]
+        Nop.Plugin.Shipping.Correios.wsAtendeClienteService.buscaOpcoesResponse buscaOpcoes(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.buscaOpcoes request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
+        System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.buscaOpcoesResponse> buscaOpcoesAsync(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.buscaOpcoes request);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -738,62 +822,6 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         }
         
         public fechaPlpResponse(long @return) {
-            this.@return = @return;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="consultaSRO", WrapperNamespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", IsWrapped=true)]
-    public partial class consultaSRO {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute("listaObjetos", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string[] listaObjetos;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", Order=1)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string tipoConsulta;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", Order=2)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string tipoResultado;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", Order=3)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string usuarioSro;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", Order=4)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string senhaSro;
-        
-        public consultaSRO() {
-        }
-        
-        public consultaSRO(string[] listaObjetos, string tipoConsulta, string tipoResultado, string usuarioSro, string senhaSro) {
-            this.listaObjetos = listaObjetos;
-            this.tipoConsulta = tipoConsulta;
-            this.tipoResultado = tipoResultado;
-            this.usuarioSro = usuarioSro;
-            this.senhaSro = senhaSro;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="consultaSROResponse", WrapperNamespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", IsWrapped=true)]
-    public partial class consultaSROResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string @return;
-        
-        public consultaSROResponse() {
-        }
-        
-        public consultaSROResponse(string @return) {
             this.@return = @return;
         }
     }
@@ -981,7 +1009,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1013,6 +1041,10 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         private bool plpNuFieldSpecified;
         
         private preListaPostagem preListaPostagemField;
+        
+        private simNao restricaoAereaField;
+        
+        private bool restricaoAereaFieldSpecified;
         
         private string statusBloqueioField;
         
@@ -1178,6 +1210,30 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
+        public simNao restricaoAerea {
+            get {
+                return this.restricaoAereaField;
+            }
+            set {
+                this.restricaoAereaField = value;
+                this.RaisePropertyChanged("restricaoAerea");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool restricaoAereaSpecified {
+            get {
+                return this.restricaoAereaFieldSpecified;
+            }
+            set {
+                this.restricaoAereaFieldSpecified = value;
+                this.RaisePropertyChanged("restricaoAereaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=9)]
         public string statusBloqueio {
             get {
                 return this.statusBloqueioField;
@@ -1189,7 +1245,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=9)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=10)]
         public statusObjetoPostal statusEtiqueta {
             get {
                 return this.statusEtiquetaField;
@@ -1223,7 +1279,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1269,7 +1325,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1277,6 +1333,10 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
     public partial class preListaPostagem : object, System.ComponentModel.INotifyPropertyChanged {
         
         private cartaoPostagemERP cartaoPostagemField;
+        
+        private simNao conteudoProibidoField;
+        
+        private bool conteudoProibidoFieldSpecified;
         
         private System.DateTime dataAtualizacaoClienteField;
         
@@ -1326,6 +1386,30 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public simNao conteudoProibido {
+            get {
+                return this.conteudoProibidoField;
+            }
+            set {
+                this.conteudoProibidoField = value;
+                this.RaisePropertyChanged("conteudoProibido");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool conteudoProibidoSpecified {
+            get {
+                return this.conteudoProibidoFieldSpecified;
+            }
+            set {
+                this.conteudoProibidoFieldSpecified = value;
+                this.RaisePropertyChanged("conteudoProibidoSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
         public System.DateTime dataAtualizacaoCliente {
             get {
                 return this.dataAtualizacaoClienteField;
@@ -1349,7 +1433,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
         public System.DateTime dataAtualizacaoSara {
             get {
                 return this.dataAtualizacaoSaraField;
@@ -1373,7 +1457,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
         public System.DateTime dataFechamento {
             get {
                 return this.dataFechamentoField;
@@ -1397,7 +1481,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
         public System.DateTime dataPostagem {
             get {
                 return this.dataPostagemField;
@@ -1421,7 +1505,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
         public System.DateTime dataPostagemSara {
             get {
                 return this.dataPostagemSaraField;
@@ -1445,7 +1529,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("objetosPostais", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
+        [System.Xml.Serialization.XmlElementAttribute("objetosPostais", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
         public objetoPostal[] objetosPostais {
             get {
                 return this.objetosPostaisField;
@@ -1457,7 +1541,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
         public long plpCliente {
             get {
                 return this.plpClienteField;
@@ -1469,7 +1553,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=9)]
         public long plpNu {
             get {
                 return this.plpNuField;
@@ -1481,7 +1565,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("plpXml", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=9)]
+        [System.Xml.Serialization.XmlElementAttribute("plpXml", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=10)]
         public System.Nullable<ushort>[] plpXml {
             get {
                 return this.plpXmlField;
@@ -1493,7 +1577,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("plpXmlRetorno", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=10)]
+        [System.Xml.Serialization.XmlElementAttribute("plpXmlRetorno", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=11)]
         public System.Nullable<ushort>[] plpXmlRetorno {
             get {
                 return this.plpXmlRetornoField;
@@ -1505,7 +1589,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=11)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=12)]
         public statusPlp status {
             get {
                 return this.statusField;
@@ -1539,7 +1623,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1893,7 +1977,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -2275,7 +2359,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -2489,7 +2573,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -2731,7 +2815,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/")]
     public enum statusGerente {
@@ -2744,7 +2828,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/")]
     public enum tipoGerente {
@@ -2757,7 +2841,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -3013,7 +3097,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -3073,7 +3157,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/")]
     public enum statusUsuario {
@@ -3086,7 +3170,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -3132,7 +3216,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -3234,7 +3318,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -3247,13 +3331,9 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         
         private string cidadeField;
         
-        private string complementoField;
-        
         private string complemento2Field;
         
         private string endField;
-        
-        private long idField;
         
         private string ufField;
         
@@ -3297,18 +3377,6 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
-        public string complemento {
-            get {
-                return this.complementoField;
-            }
-            set {
-                this.complementoField = value;
-                this.RaisePropertyChanged("complemento");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
         public string complemento2 {
             get {
                 return this.complemento2Field;
@@ -3320,7 +3388,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
         public string end {
             get {
                 return this.endField;
@@ -3332,19 +3400,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
-        public long id {
-            get {
-                return this.idField;
-            }
-            set {
-                this.idField = value;
-                this.RaisePropertyChanged("id");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
         public string uf {
             get {
                 return this.ufField;
@@ -3356,7 +3412,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("unidadesPostagem", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=8)]
+        [System.Xml.Serialization.XmlElementAttribute("unidadesPostagem", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
         public unidadePostagemERP[] unidadesPostagem {
             get {
                 return this.unidadesPostagemField;
@@ -3378,7 +3434,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -3620,7 +3676,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -3632,6 +3688,8 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         private bool categoriaServicoFieldSpecified;
         
         private chancelaMaster chancelaField;
+        
+        private string descricaoField;
         
         private bool exigeDimensoesField;
         
@@ -3646,6 +3704,10 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         private string pagamentoEntregaField;
         
         private string remessaAgrupadaField;
+        
+        private simNao restricaoField;
+        
+        private bool restricaoFieldSpecified;
         
         private long servicoField;
         
@@ -3691,6 +3753,18 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public string descricao {
+            get {
+                return this.descricaoField;
+            }
+            set {
+                this.descricaoField = value;
+                this.RaisePropertyChanged("descricao");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
         public bool exigeDimensoes {
             get {
                 return this.exigeDimensoesField;
@@ -3714,7 +3788,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
         public bool exigeValorCobrar {
             get {
                 return this.exigeValorCobrarField;
@@ -3738,7 +3812,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
         public long imitm {
             get {
                 return this.imitmField;
@@ -3750,7 +3824,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
         public string pagamentoEntrega {
             get {
                 return this.pagamentoEntregaField;
@@ -3762,7 +3836,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
         public string remessaAgrupada {
             get {
                 return this.remessaAgrupadaField;
@@ -3774,7 +3848,31 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
+        public simNao restricao {
+            get {
+                return this.restricaoField;
+            }
+            set {
+                this.restricaoField = value;
+                this.RaisePropertyChanged("restricao");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool restricaoSpecified {
+            get {
+                return this.restricaoFieldSpecified;
+            }
+            set {
+                this.restricaoFieldSpecified = value;
+                this.RaisePropertyChanged("restricaoSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=9)]
         public long servico {
             get {
                 return this.servicoField;
@@ -3786,7 +3884,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=10)]
         public servicoERP servicoERP {
             get {
                 return this.servicoERPField;
@@ -3798,7 +3896,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=9)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=11)]
         public string ssiCoCodigoPostal {
             get {
                 return this.ssiCoCodigoPostalField;
@@ -3820,17 +3918,11 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/")]
     public enum categoriaServico {
-
-        /// <remarks/>
-        GRANDES_FORMATOS,
-
-        /// <remarks/>
-        CARTA,
-
+        
         /// <remarks/>
         SEM_CATEGORIA,
         
@@ -3841,25 +3933,26 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         SEDEX,
         
         /// <remarks/>
-        CARTA_REGISTRADA,
+        CARTA,
         
         /// <remarks/>
-        SERVICO_COM_RESTRICAO,
+        GRANDES_FORMATOS,
         
         /// <remarks/>
         REVERSO,
-        
-        /// <remarks/>
-        CARTA_CTR,
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/")]
     public partial class chancelaMaster : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private simNao ativoField;
+        
+        private bool ativoFieldSpecified;
         
         private byte[] chancelaField;
         
@@ -3871,10 +3964,36 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         
         private long idField;
         
+        private bool idFieldSpecified;
+        
         private servicoSigep[] servicosSigepField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, DataType="base64Binary", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public simNao ativo {
+            get {
+                return this.ativoField;
+            }
+            set {
+                this.ativoField = value;
+                this.RaisePropertyChanged("ativo");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool ativoSpecified {
+            get {
+                return this.ativoFieldSpecified;
+            }
+            set {
+                this.ativoFieldSpecified = value;
+                this.RaisePropertyChanged("ativoSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, DataType="base64Binary", Order=1)]
         public byte[] chancela {
             get {
                 return this.chancelaField;
@@ -3886,7 +4005,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
         public System.DateTime dataAtualizacao {
             get {
                 return this.dataAtualizacaoField;
@@ -3910,7 +4029,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
         public string descricao {
             get {
                 return this.descricaoField;
@@ -3922,7 +4041,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
         public long id {
             get {
                 return this.idField;
@@ -3934,7 +4053,19 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("servicosSigep", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool idSpecified {
+            get {
+                return this.idFieldSpecified;
+            }
+            set {
+                this.idFieldSpecified = value;
+                this.RaisePropertyChanged("idSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("servicosSigep", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
         public servicoSigep[] servicosSigep {
             get {
                 return this.servicosSigepField;
@@ -3956,12 +4087,27 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/")]
+    public enum simNao {
+        
+        /// <remarks/>
+        S,
+        
+        /// <remarks/>
+        N,
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/")]
     public partial class servicoAdicionalERP : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string categoriaField;
         
         private string codigoField;
         
@@ -3985,8 +4131,22 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         
         private string siglaField;
         
+        private valorDeclarado valorDeclaradoField;
+        
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public string categoria {
+            get {
+                return this.categoriaField;
+            }
+            set {
+                this.categoriaField = value;
+                this.RaisePropertyChanged("categoria");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
         public string codigo {
             get {
                 return this.codigoField;
@@ -3998,7 +4158,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
         public System.DateTime dataAtualizacao {
             get {
                 return this.dataAtualizacaoField;
@@ -4022,7 +4182,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
         public int datajAtualizacao {
             get {
                 return this.datajAtualizacaoField;
@@ -4046,7 +4206,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
         public string descricao {
             get {
                 return this.descricaoField;
@@ -4058,7 +4218,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
         public int horajAtualizacao {
             get {
                 return this.horajAtualizacaoField;
@@ -4082,7 +4242,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
         public int id {
             get {
                 return this.idField;
@@ -4106,7 +4266,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
         public string sigla {
             get {
                 return this.siglaField;
@@ -4114,6 +4274,18 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
             set {
                 this.siglaField = value;
                 this.RaisePropertyChanged("sigla");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
+        public valorDeclarado valorDeclarado {
+            get {
+                return this.valorDeclaradoField;
+            }
+            set {
+                this.valorDeclaradoField = value;
+                this.RaisePropertyChanged("valorDeclarado");
             }
         }
         
@@ -4128,7 +4300,81 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/")]
+    public partial class valorDeclarado : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private double maximoField;
+        
+        private bool maximoFieldSpecified;
+        
+        private double minimoField;
+        
+        private bool minimoFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public double maximo {
+            get {
+                return this.maximoField;
+            }
+            set {
+                this.maximoField = value;
+                this.RaisePropertyChanged("maximo");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool maximoSpecified {
+            get {
+                return this.maximoFieldSpecified;
+            }
+            set {
+                this.maximoFieldSpecified = value;
+                this.RaisePropertyChanged("maximoSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public double minimo {
+            get {
+                return this.minimoField;
+            }
+            set {
+                this.minimoField = value;
+                this.RaisePropertyChanged("minimo");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool minimoSpecified {
+            get {
+                return this.minimoFieldSpecified;
+            }
+            set {
+                this.minimoFieldSpecified = value;
+                this.RaisePropertyChanged("minimoSpecified");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4286,7 +4532,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/")]
     public enum statusPlp {
@@ -4302,7 +4548,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/")]
     public enum statusObjetoPostal {
@@ -4403,6 +4649,218 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         }
         
         public cancelarObjetoResponse(bool @return) {
+            this.@return = @return;
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/")]
+    public partial class dimensaoTO : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private medidaTO alturaField;
+        
+        private medidaTO comprimentoField;
+        
+        private medidaTO diametroField;
+        
+        private medidaTO larguraField;
+        
+        private medidaTO pesoField;
+        
+        private medidaTO somaField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public medidaTO altura {
+            get {
+                return this.alturaField;
+            }
+            set {
+                this.alturaField = value;
+                this.RaisePropertyChanged("altura");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public medidaTO comprimento {
+            get {
+                return this.comprimentoField;
+            }
+            set {
+                this.comprimentoField = value;
+                this.RaisePropertyChanged("comprimento");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public medidaTO diametro {
+            get {
+                return this.diametroField;
+            }
+            set {
+                this.diametroField = value;
+                this.RaisePropertyChanged("diametro");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public medidaTO largura {
+            get {
+                return this.larguraField;
+            }
+            set {
+                this.larguraField = value;
+                this.RaisePropertyChanged("largura");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        public medidaTO peso {
+            get {
+                return this.pesoField;
+            }
+            set {
+                this.pesoField = value;
+                this.RaisePropertyChanged("peso");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
+        public medidaTO soma {
+            get {
+                return this.somaField;
+            }
+            set {
+                this.somaField = value;
+                this.RaisePropertyChanged("soma");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/")]
+    public partial class medidaTO : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private decimal maximoField;
+        
+        private bool maximoFieldSpecified;
+        
+        private decimal minimoField;
+        
+        private bool minimoFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public decimal maximo {
+            get {
+                return this.maximoField;
+            }
+            set {
+                this.maximoField = value;
+                this.RaisePropertyChanged("maximo");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool maximoSpecified {
+            get {
+                return this.maximoFieldSpecified;
+            }
+            set {
+                this.maximoFieldSpecified = value;
+                this.RaisePropertyChanged("maximoSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public decimal minimo {
+            get {
+                return this.minimoField;
+            }
+            set {
+                this.minimoField = value;
+                this.RaisePropertyChanged("minimo");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool minimoSpecified {
+            get {
+                return this.minimoFieldSpecified;
+            }
+            set {
+                this.minimoFieldSpecified = value;
+                this.RaisePropertyChanged("minimoSpecified");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="pesquisarParametrosPorDescricao", WrapperNamespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", IsWrapped=true)]
+    public partial class pesquisarParametrosPorDescricao {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string prefix;
+        
+        public pesquisarParametrosPorDescricao() {
+        }
+        
+        public pesquisarParametrosPorDescricao(string prefix) {
+            this.prefix = prefix;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="pesquisarParametrosPorDescricaoResponse", WrapperNamespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", IsWrapped=true)]
+    public partial class pesquisarParametrosPorDescricaoResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Nop.Plugin.Shipping.Correios.wsAtendeClienteService.dimensaoTO @return;
+        
+        public pesquisarParametrosPorDescricaoResponse() {
+        }
+        
+        public pesquisarParametrosPorDescricaoResponse(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.dimensaoTO @return) {
             this.@return = @return;
         }
     }
@@ -4545,12 +5003,12 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public bool @return;
+        public string @return;
         
         public verificaDisponibilidadeServicoResponse() {
         }
         
-        public verificaDisponibilidadeServicoResponse(bool @return) {
+        public verificaDisponibilidadeServicoResponse(string @return) {
             this.@return = @return;
         }
     }
@@ -4663,7 +5121,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4750,998 +5208,6 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         }
     }
     
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/")]
-    public partial class pedidoInformacaoRegistro : pedidoInformacao {
-        
-        private clienteFaleconosco clienteField;
-        
-        private string codigoRegistroField;
-        
-        private conta contaField;
-        
-        private string conteudoObjetoField;
-        
-        private string cpfCnpjField;
-        
-        private destinatarioFaleConosco destinatarioField;
-        
-        private string embalagemField;
-        
-        private int motivoField;
-        
-        private bool motivoFieldSpecified;
-        
-        private string observacaoField;
-        
-        private postagem postagemField;
-        
-        private remetenteFaleConosco remetenteField;
-        
-        private int servicoField;
-        
-        private bool servicoFieldSpecified;
-        
-        private string tipoDocumentoField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
-        public clienteFaleconosco cliente {
-            get {
-                return this.clienteField;
-            }
-            set {
-                this.clienteField = value;
-                this.RaisePropertyChanged("cliente");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
-        public string codigoRegistro {
-            get {
-                return this.codigoRegistroField;
-            }
-            set {
-                this.codigoRegistroField = value;
-                this.RaisePropertyChanged("codigoRegistro");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
-        public conta conta {
-            get {
-                return this.contaField;
-            }
-            set {
-                this.contaField = value;
-                this.RaisePropertyChanged("conta");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
-        public string conteudoObjeto {
-            get {
-                return this.conteudoObjetoField;
-            }
-            set {
-                this.conteudoObjetoField = value;
-                this.RaisePropertyChanged("conteudoObjeto");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
-        public string cpfCnpj {
-            get {
-                return this.cpfCnpjField;
-            }
-            set {
-                this.cpfCnpjField = value;
-                this.RaisePropertyChanged("cpfCnpj");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
-        public destinatarioFaleConosco destinatario {
-            get {
-                return this.destinatarioField;
-            }
-            set {
-                this.destinatarioField = value;
-                this.RaisePropertyChanged("destinatario");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
-        public string embalagem {
-            get {
-                return this.embalagemField;
-            }
-            set {
-                this.embalagemField = value;
-                this.RaisePropertyChanged("embalagem");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
-        public int motivo {
-            get {
-                return this.motivoField;
-            }
-            set {
-                this.motivoField = value;
-                this.RaisePropertyChanged("motivo");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool motivoSpecified {
-            get {
-                return this.motivoFieldSpecified;
-            }
-            set {
-                this.motivoFieldSpecified = value;
-                this.RaisePropertyChanged("motivoSpecified");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
-        public string observacao {
-            get {
-                return this.observacaoField;
-            }
-            set {
-                this.observacaoField = value;
-                this.RaisePropertyChanged("observacao");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=9)]
-        public postagem postagem {
-            get {
-                return this.postagemField;
-            }
-            set {
-                this.postagemField = value;
-                this.RaisePropertyChanged("postagem");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=10)]
-        public remetenteFaleConosco remetente {
-            get {
-                return this.remetenteField;
-            }
-            set {
-                this.remetenteField = value;
-                this.RaisePropertyChanged("remetente");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=11)]
-        public int servico {
-            get {
-                return this.servicoField;
-            }
-            set {
-                this.servicoField = value;
-                this.RaisePropertyChanged("servico");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool servicoSpecified {
-            get {
-                return this.servicoFieldSpecified;
-            }
-            set {
-                this.servicoFieldSpecified = value;
-                this.RaisePropertyChanged("servicoSpecified");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=12)]
-        public string tipoDocumento {
-            get {
-                return this.tipoDocumentoField;
-            }
-            set {
-                this.tipoDocumentoField = value;
-                this.RaisePropertyChanged("tipoDocumento");
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/")]
-    public partial class clienteFaleconosco : object, System.ComponentModel.INotifyPropertyChanged {
-        
-        private string numeroContratoField;
-        
-        private string possuiContratoField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
-        public string numeroContrato {
-            get {
-                return this.numeroContratoField;
-            }
-            set {
-                this.numeroContratoField = value;
-                this.RaisePropertyChanged("numeroContrato");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
-        public string possuiContrato {
-            get {
-                return this.possuiContratoField;
-            }
-            set {
-                this.possuiContratoField = value;
-                this.RaisePropertyChanged("possuiContrato");
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/")]
-    public partial class conta : object, System.ComponentModel.INotifyPropertyChanged {
-        
-        private string codigoBancoField;
-        
-        private string nomeBancoField;
-        
-        private string numeroAgenciaField;
-        
-        private string numeroContaField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
-        public string codigoBanco {
-            get {
-                return this.codigoBancoField;
-            }
-            set {
-                this.codigoBancoField = value;
-                this.RaisePropertyChanged("codigoBanco");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
-        public string nomeBanco {
-            get {
-                return this.nomeBancoField;
-            }
-            set {
-                this.nomeBancoField = value;
-                this.RaisePropertyChanged("nomeBanco");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
-        public string numeroAgencia {
-            get {
-                return this.numeroAgenciaField;
-            }
-            set {
-                this.numeroAgenciaField = value;
-                this.RaisePropertyChanged("numeroAgencia");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
-        public string numeroConta {
-            get {
-                return this.numeroContaField;
-            }
-            set {
-                this.numeroContaField = value;
-                this.RaisePropertyChanged("numeroConta");
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/")]
-    public partial class destinatarioFaleConosco : pessoaFaleconosco {
-    }
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(remetenteFaleConosco))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(destinatarioFaleConosco))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/")]
-    public partial class pessoaFaleconosco : object, System.ComponentModel.INotifyPropertyChanged {
-        
-        private string bairroField;
-        
-        private string cepField;
-        
-        private string cidadeField;
-        
-        private string complementoField;
-        
-        private string dddField;
-        
-        private string enderecoField;
-        
-        private string nomeField;
-        
-        private string numeroField;
-        
-        private string paisField;
-        
-        private string telefoneField;
-        
-        private string ufField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
-        public string bairro {
-            get {
-                return this.bairroField;
-            }
-            set {
-                this.bairroField = value;
-                this.RaisePropertyChanged("bairro");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
-        public string cep {
-            get {
-                return this.cepField;
-            }
-            set {
-                this.cepField = value;
-                this.RaisePropertyChanged("cep");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
-        public string cidade {
-            get {
-                return this.cidadeField;
-            }
-            set {
-                this.cidadeField = value;
-                this.RaisePropertyChanged("cidade");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
-        public string complemento {
-            get {
-                return this.complementoField;
-            }
-            set {
-                this.complementoField = value;
-                this.RaisePropertyChanged("complemento");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
-        public string ddd {
-            get {
-                return this.dddField;
-            }
-            set {
-                this.dddField = value;
-                this.RaisePropertyChanged("ddd");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
-        public string endereco {
-            get {
-                return this.enderecoField;
-            }
-            set {
-                this.enderecoField = value;
-                this.RaisePropertyChanged("endereco");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
-        public string nome {
-            get {
-                return this.nomeField;
-            }
-            set {
-                this.nomeField = value;
-                this.RaisePropertyChanged("nome");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
-        public string numero {
-            get {
-                return this.numeroField;
-            }
-            set {
-                this.numeroField = value;
-                this.RaisePropertyChanged("numero");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
-        public string pais {
-            get {
-                return this.paisField;
-            }
-            set {
-                this.paisField = value;
-                this.RaisePropertyChanged("pais");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=9)]
-        public string telefone {
-            get {
-                return this.telefoneField;
-            }
-            set {
-                this.telefoneField = value;
-                this.RaisePropertyChanged("telefone");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=10)]
-        public string uf {
-            get {
-                return this.ufField;
-            }
-            set {
-                this.ufField = value;
-                this.RaisePropertyChanged("uf");
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/")]
-    public partial class remetenteFaleConosco : pessoaFaleconosco {
-        
-        private string emailField;
-        
-        private string empresaField;
-        
-        private string faxField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
-        public string email {
-            get {
-                return this.emailField;
-            }
-            set {
-                this.emailField = value;
-                this.RaisePropertyChanged("email");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
-        public string empresa {
-            get {
-                return this.empresaField;
-            }
-            set {
-                this.empresaField = value;
-                this.RaisePropertyChanged("empresa");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
-        public string fax {
-            get {
-                return this.faxField;
-            }
-            set {
-                this.faxField = value;
-                this.RaisePropertyChanged("fax");
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/")]
-    public partial class postagem : object, System.ComponentModel.INotifyPropertyChanged {
-        
-        private string agenciaField;
-        
-        private string avisoRecebimentoField;
-        
-        private string dataField;
-        
-        private string localField;
-        
-        private string valorDeclaradoField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
-        public string agencia {
-            get {
-                return this.agenciaField;
-            }
-            set {
-                this.agenciaField = value;
-                this.RaisePropertyChanged("agencia");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
-        public string avisoRecebimento {
-            get {
-                return this.avisoRecebimentoField;
-            }
-            set {
-                this.avisoRecebimentoField = value;
-                this.RaisePropertyChanged("avisoRecebimento");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
-        public string data {
-            get {
-                return this.dataField;
-            }
-            set {
-                this.dataField = value;
-                this.RaisePropertyChanged("data");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
-        public string local {
-            get {
-                return this.localField;
-            }
-            set {
-                this.localField = value;
-                this.RaisePropertyChanged("local");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
-        public string valorDeclarado {
-            get {
-                return this.valorDeclaradoField;
-            }
-            set {
-                this.valorDeclaradoField = value;
-                this.RaisePropertyChanged("valorDeclarado");
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(pedidoInformacaoConsulta))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(pedidoInformacaoRegistro))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/")]
-    public abstract partial class pedidoInformacao : object, System.ComponentModel.INotifyPropertyChanged {
-        
-        private long idField;
-        
-        private bool idFieldSpecified;
-        
-        private string usuarioField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
-        public long id {
-            get {
-                return this.idField;
-            }
-            set {
-                this.idField = value;
-                this.RaisePropertyChanged("id");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool idSpecified {
-            get {
-                return this.idFieldSpecified;
-            }
-            set {
-                this.idFieldSpecified = value;
-                this.RaisePropertyChanged("idSpecified");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
-        public string usuario {
-            get {
-                return this.usuarioField;
-            }
-            set {
-                this.usuarioField = value;
-                this.RaisePropertyChanged("usuario");
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/")]
-    public partial class pedidoInformacaoConsulta : pedidoInformacao {
-        
-        private long numeroField;
-        
-        private bool numeroFieldSpecified;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
-        public long numero {
-            get {
-                return this.numeroField;
-            }
-            set {
-                this.numeroField = value;
-                this.RaisePropertyChanged("numero");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool numeroSpecified {
-            get {
-                return this.numeroFieldSpecified;
-            }
-            set {
-                this.numeroFieldSpecified = value;
-                this.RaisePropertyChanged("numeroSpecified");
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/")]
-    public partial class retorno : object, System.ComponentModel.INotifyPropertyChanged {
-        
-        private long codigoPIField;
-        
-        private bool codigoPIFieldSpecified;
-        
-        private string codigoRegistroField;
-        
-        private string codigoRetornoField;
-        
-        private string dataPrazoRespostaField;
-        
-        private string dataRegistroField;
-        
-        private string dataRespostaField;
-        
-        private string dataUltimaRecorrenciaField;
-        
-        private long idField;
-        
-        private bool idFieldSpecified;
-        
-        private string mensagemRetornoField;
-        
-        private string respostaField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
-        public long codigoPI {
-            get {
-                return this.codigoPIField;
-            }
-            set {
-                this.codigoPIField = value;
-                this.RaisePropertyChanged("codigoPI");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool codigoPISpecified {
-            get {
-                return this.codigoPIFieldSpecified;
-            }
-            set {
-                this.codigoPIFieldSpecified = value;
-                this.RaisePropertyChanged("codigoPISpecified");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
-        public string codigoRegistro {
-            get {
-                return this.codigoRegistroField;
-            }
-            set {
-                this.codigoRegistroField = value;
-                this.RaisePropertyChanged("codigoRegistro");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
-        public string codigoRetorno {
-            get {
-                return this.codigoRetornoField;
-            }
-            set {
-                this.codigoRetornoField = value;
-                this.RaisePropertyChanged("codigoRetorno");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
-        public string dataPrazoResposta {
-            get {
-                return this.dataPrazoRespostaField;
-            }
-            set {
-                this.dataPrazoRespostaField = value;
-                this.RaisePropertyChanged("dataPrazoResposta");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
-        public string dataRegistro {
-            get {
-                return this.dataRegistroField;
-            }
-            set {
-                this.dataRegistroField = value;
-                this.RaisePropertyChanged("dataRegistro");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
-        public string dataResposta {
-            get {
-                return this.dataRespostaField;
-            }
-            set {
-                this.dataRespostaField = value;
-                this.RaisePropertyChanged("dataResposta");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
-        public string dataUltimaRecorrencia {
-            get {
-                return this.dataUltimaRecorrenciaField;
-            }
-            set {
-                this.dataUltimaRecorrenciaField = value;
-                this.RaisePropertyChanged("dataUltimaRecorrencia");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
-        public long id {
-            get {
-                return this.idField;
-            }
-            set {
-                this.idField = value;
-                this.RaisePropertyChanged("id");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool idSpecified {
-            get {
-                return this.idFieldSpecified;
-            }
-            set {
-                this.idFieldSpecified = value;
-                this.RaisePropertyChanged("idSpecified");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
-        public string mensagemRetorno {
-            get {
-                return this.mensagemRetornoField;
-            }
-            set {
-                this.mensagemRetornoField = value;
-                this.RaisePropertyChanged("mensagemRetorno");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=9)]
-        public string resposta {
-            get {
-                return this.respostaField;
-            }
-            set {
-                this.respostaField = value;
-                this.RaisePropertyChanged("resposta");
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="registrarPedidosInformacao", WrapperNamespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", IsWrapped=true)]
-    public partial class registrarPedidosInformacao {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute("pedidosInformacao", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pedidoInformacaoRegistro[] pedidosInformacao;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", Order=1)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string usuario;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", Order=2)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string senha;
-        
-        public registrarPedidosInformacao() {
-        }
-        
-        public registrarPedidosInformacao(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pedidoInformacaoRegistro[] pedidosInformacao, string usuario, string senha) {
-            this.pedidosInformacao = pedidosInformacao;
-            this.usuario = usuario;
-            this.senha = senha;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="registrarPedidosInformacaoResponse", WrapperNamespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", IsWrapped=true)]
-    public partial class registrarPedidosInformacaoResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute("return", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public Nop.Plugin.Shipping.Correios.wsAtendeClienteService.retorno[] @return;
-        
-        public registrarPedidosInformacaoResponse() {
-        }
-        
-        public registrarPedidosInformacaoResponse(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.retorno[] @return) {
-            this.@return = @return;
-        }
-    }
-    
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -5789,52 +5255,6 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         }
         
         public validaEtiquetaPLPResponse(bool @return) {
-            this.@return = @return;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="consultarPedidosInformacao", WrapperNamespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", IsWrapped=true)]
-    public partial class consultarPedidosInformacao {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute("pedidosInformacao", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pedidoInformacaoConsulta[] pedidosInformacao;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", Order=1)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string usuario;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", Order=2)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string senha;
-        
-        public consultarPedidosInformacao() {
-        }
-        
-        public consultarPedidosInformacao(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pedidoInformacaoConsulta[] pedidosInformacao, string usuario, string senha) {
-            this.pedidosInformacao = pedidosInformacao;
-            this.usuario = usuario;
-            this.senha = senha;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="consultarPedidosInformacaoResponse", WrapperNamespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", IsWrapped=true)]
-    public partial class consultarPedidosInformacaoResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute("return", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public Nop.Plugin.Shipping.Correios.wsAtendeClienteService.retorno[] @return;
-        
-        public consultarPedidosInformacaoResponse() {
-        }
-        
-        public consultarPedidosInformacaoResponse(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.retorno[] @return) {
             this.@return = @return;
         }
     }
@@ -5890,11 +5310,21 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public string cep;
         
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string usuario;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", Order=2)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string senha;
+        
         public consultaCEP() {
         }
         
-        public consultaCEP(string cep) {
+        public consultaCEP(string cep, string usuario, string senha) {
             this.cep = cep;
+            this.usuario = usuario;
+            this.senha = senha;
         }
     }
     
@@ -5962,90 +5392,95 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="pesquisarDimensoesServico", WrapperNamespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", IsWrapped=true)]
+    public partial class pesquisarDimensoesServico {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string codigo;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string embalagem;
+        
+        public pesquisarDimensoesServico() {
+        }
+        
+        public pesquisarDimensoesServico(string codigo, string embalagem) {
+            this.codigo = codigo;
+            this.embalagem = embalagem;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="pesquisarDimensoesServicoResponse", WrapperNamespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", IsWrapped=true)]
+    public partial class pesquisarDimensoesServicoResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Nop.Plugin.Shipping.Correios.wsAtendeClienteService.dimensaoTO @return;
+        
+        public pesquisarDimensoesServicoResponse() {
+        }
+        
+        public pesquisarDimensoesServicoResponse(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.dimensaoTO @return) {
+            this.@return = @return;
+        }
+    }
+    
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/")]
-    public partial class mensagemRetornoPIMaster : object, System.ComponentModel.INotifyPropertyChanged {
-        
-        private int codigoField;
-        
-        private bool codigoFieldSpecified;
-        
-        private string mensagemField;
+    public enum tipoEmbalagem {
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
-        public int codigo {
-            get {
-                return this.codigoField;
-            }
-            set {
-                this.codigoField = value;
-                this.RaisePropertyChanged("codigo");
-            }
-        }
+        DE,
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool codigoSpecified {
-            get {
-                return this.codigoFieldSpecified;
-            }
-            set {
-                this.codigoFieldSpecified = value;
-                this.RaisePropertyChanged("codigoSpecified");
-            }
-        }
+        PD,
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
-        public string mensagem {
-            get {
-                return this.mensagemField;
-            }
-            set {
-                this.mensagemField = value;
-                this.RaisePropertyChanged("mensagem");
-            }
+        RL,
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="pesquisarEmbalagensPorServico", WrapperNamespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", IsWrapped=true)]
+    public partial class pesquisarEmbalagensPorServico {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string codigo;
+        
+        public pesquisarEmbalagensPorServico() {
         }
         
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
+        public pesquisarEmbalagensPorServico(string codigo) {
+            this.codigo = codigo;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="obterMensagemRetornoPI", WrapperNamespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", IsWrapped=true)]
-    public partial class obterMensagemRetornoPI {
-        
-        public obterMensagemRetornoPI() {
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="obterMensagemRetornoPIResponse", WrapperNamespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", IsWrapped=true)]
-    public partial class obterMensagemRetornoPIResponse {
+    [System.ServiceModel.MessageContractAttribute(WrapperName="pesquisarEmbalagensPorServicoResponse", WrapperNamespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", IsWrapped=true)]
+    public partial class pesquisarEmbalagensPorServicoResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute("return", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public Nop.Plugin.Shipping.Correios.wsAtendeClienteService.mensagemRetornoPIMaster[] @return;
+        public Nop.Plugin.Shipping.Correios.wsAtendeClienteService.tipoEmbalagem[] @return;
         
-        public obterMensagemRetornoPIResponse() {
+        public pesquisarEmbalagensPorServicoResponse() {
         }
         
-        public obterMensagemRetornoPIResponse(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.mensagemRetornoPIMaster[] @return) {
+        public pesquisarEmbalagensPorServicoResponse(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.tipoEmbalagem[] @return) {
             this.@return = @return;
         }
     }
@@ -6143,7 +5578,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/")]
     public enum statusCartao {
@@ -6210,8 +5645,92 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="verificaModalTransporte", WrapperNamespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", IsWrapped=true)]
+    public partial class verificaModalTransporte {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string codigoServico;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string cepOrigem;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", Order=2)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string cepDestino;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", Order=3)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string usuario;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", Order=4)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string senha;
+        
+        public verificaModalTransporte() {
+        }
+        
+        public verificaModalTransporte(string codigoServico, string cepOrigem, string cepDestino, string usuario, string senha) {
+            this.codigoServico = codigoServico;
+            this.cepOrigem = cepOrigem;
+            this.cepDestino = cepDestino;
+            this.usuario = usuario;
+            this.senha = senha;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="verificaModalTransporteResponse", WrapperNamespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", IsWrapped=true)]
+    public partial class verificaModalTransporteResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string @return;
+        
+        public verificaModalTransporteResponse() {
+        }
+        
+        public verificaModalTransporteResponse(string @return) {
+            this.@return = @return;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="buscaDataAtual", WrapperNamespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", IsWrapped=true)]
+    public partial class buscaDataAtual {
+        
+        public buscaDataAtual() {
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="buscaDataAtualResponse", WrapperNamespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", IsWrapped=true)]
+    public partial class buscaDataAtualResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public System.DateTime @return;
+        
+        public buscaDataAtualResponse() {
+        }
+        
+        public buscaDataAtualResponse(System.DateTime @return) {
+            this.@return = @return;
+        }
+    }
+    
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -6871,7 +6390,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -6910,7 +6429,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
     /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(coletaReversa))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(coletaSimultanea))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7040,7 +6559,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7100,7 +6619,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7166,7 +6685,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(remetente))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7352,7 +6871,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7473,7 +6992,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7626,94 +7145,6 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         }
     }
     
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/")]
-    public partial class motivoPIMaster : object, System.ComponentModel.INotifyPropertyChanged {
-        
-        private int codigoField;
-        
-        private bool codigoFieldSpecified;
-        
-        private string descricaoField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
-        public int codigo {
-            get {
-                return this.codigoField;
-            }
-            set {
-                this.codigoField = value;
-                this.RaisePropertyChanged("codigo");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool codigoSpecified {
-            get {
-                return this.codigoFieldSpecified;
-            }
-            set {
-                this.codigoFieldSpecified = value;
-                this.RaisePropertyChanged("codigoSpecified");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
-        public string descricao {
-            get {
-                return this.descricaoField;
-            }
-            set {
-                this.descricaoField = value;
-                this.RaisePropertyChanged("descricao");
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="obterMotivosPI", WrapperNamespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", IsWrapped=true)]
-    public partial class obterMotivosPI {
-        
-        public obterMotivosPI() {
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="obterMotivosPIResponse", WrapperNamespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", IsWrapped=true)]
-    public partial class obterMotivosPIResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute("return", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public Nop.Plugin.Shipping.Correios.wsAtendeClienteService.motivoPIMaster[] @return;
-        
-        public obterMotivosPIResponse() {
-        }
-        
-        public obterMotivosPIResponse(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.motivoPIMaster[] @return) {
-            this.@return = @return;
-        }
-    }
-    
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -7751,6 +7182,116 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         }
         
         public getStatusPLPResponse(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.statusPlp @return) {
+            this.@return = @return;
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/")]
+    public partial class servicoAdicionalTO : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string categoriaField;
+        
+        private string codigoField;
+        
+        private string siglaField;
+        
+        private string tipoField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public string categoria {
+            get {
+                return this.categoriaField;
+            }
+            set {
+                this.categoriaField = value;
+                this.RaisePropertyChanged("categoria");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public string codigo {
+            get {
+                return this.codigoField;
+            }
+            set {
+                this.codigoField = value;
+                this.RaisePropertyChanged("codigo");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public string sigla {
+            get {
+                return this.siglaField;
+            }
+            set {
+                this.siglaField = value;
+                this.RaisePropertyChanged("sigla");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public string tipo {
+            get {
+                return this.tipoField;
+            }
+            set {
+                this.tipoField = value;
+                this.RaisePropertyChanged("tipo");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="pesquisarServicosAdicionais", WrapperNamespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", IsWrapped=true)]
+    public partial class pesquisarServicosAdicionais {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string codigo;
+        
+        public pesquisarServicosAdicionais() {
+        }
+        
+        public pesquisarServicosAdicionais(string codigo) {
+            this.codigo = codigo;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="pesquisarServicosAdicionaisResponse", WrapperNamespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", IsWrapped=true)]
+    public partial class pesquisarServicosAdicionaisResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute("return", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Nop.Plugin.Shipping.Correios.wsAtendeClienteService.servicoAdicionalTO[] @return;
+        
+        public pesquisarServicosAdicionaisResponse() {
+        }
+        
+        public pesquisarServicosAdicionaisResponse(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.servicoAdicionalTO[] @return) {
             this.@return = @return;
         }
     }
@@ -7797,7 +7338,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7899,7 +7440,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8029,7 +7570,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/")]
     public enum tipoBloqueio {
@@ -8051,7 +7592,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/")]
     public enum acao {
@@ -8177,108 +7718,6 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         }
         
         public buscaContratoResponse(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.contratoERP @return) {
-            this.@return = @return;
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/")]
-    public partial class assuntoPIMaster : object, System.ComponentModel.INotifyPropertyChanged {
-        
-        private int codigoField;
-        
-        private bool codigoFieldSpecified;
-        
-        private string descricaoField;
-        
-        private string tipoField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
-        public int codigo {
-            get {
-                return this.codigoField;
-            }
-            set {
-                this.codigoField = value;
-                this.RaisePropertyChanged("codigo");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool codigoSpecified {
-            get {
-                return this.codigoFieldSpecified;
-            }
-            set {
-                this.codigoFieldSpecified = value;
-                this.RaisePropertyChanged("codigoSpecified");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
-        public string descricao {
-            get {
-                return this.descricaoField;
-            }
-            set {
-                this.descricaoField = value;
-                this.RaisePropertyChanged("descricao");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
-        public string tipo {
-            get {
-                return this.tipoField;
-            }
-            set {
-                this.tipoField = value;
-                this.RaisePropertyChanged("tipo");
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="obterAssuntosPI", WrapperNamespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", IsWrapped=true)]
-    public partial class obterAssuntosPI {
-        
-        public obterAssuntosPI() {
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="obterAssuntosPIResponse", WrapperNamespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", IsWrapped=true)]
-    public partial class obterAssuntosPIResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute("return", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public Nop.Plugin.Shipping.Correios.wsAtendeClienteService.assuntoPIMaster[] @return;
-        
-        public obterAssuntosPIResponse() {
-        }
-        
-        public obterAssuntosPIResponse(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.assuntoPIMaster[] @return) {
             this.@return = @return;
         }
     }
@@ -8670,6 +8109,183 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         }
     }
     
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/")]
+    public partial class mensagemParametrizadaTO : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string mensagemField;
+        
+        private tipoMensagem tipoField;
+        
+        private bool tipoFieldSpecified;
+        
+        private string tituloField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public string mensagem {
+            get {
+                return this.mensagemField;
+            }
+            set {
+                this.mensagemField = value;
+                this.RaisePropertyChanged("mensagem");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public tipoMensagem tipo {
+            get {
+                return this.tipoField;
+            }
+            set {
+                this.tipoField = value;
+                this.RaisePropertyChanged("tipo");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool tipoSpecified {
+            get {
+                return this.tipoFieldSpecified;
+            }
+            set {
+                this.tipoFieldSpecified = value;
+                this.RaisePropertyChanged("tipoSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public string titulo {
+            get {
+                return this.tituloField;
+            }
+            set {
+                this.tituloField = value;
+                this.RaisePropertyChanged("titulo");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/")]
+    public enum tipoMensagem {
+        
+        /// <remarks/>
+        A,
+        
+        /// <remarks/>
+        E,
+        
+        /// <remarks/>
+        S,
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="obterMensagemParametrizada", WrapperNamespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", IsWrapped=true)]
+    public partial class obterMensagemParametrizada {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public short id;
+        
+        public obterMensagemParametrizada() {
+        }
+        
+        public obterMensagemParametrizada(short id) {
+            this.id = id;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="obterMensagemParametrizadaResponse", WrapperNamespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", IsWrapped=true)]
+    public partial class obterMensagemParametrizadaResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Nop.Plugin.Shipping.Correios.wsAtendeClienteService.mensagemParametrizadaTO @return;
+        
+        public obterMensagemParametrizadaResponse() {
+        }
+        
+        public obterMensagemParametrizadaResponse(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.mensagemParametrizadaTO @return) {
+            this.@return = @return;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="buscaOpcoes", WrapperNamespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", IsWrapped=true)]
+    public partial class buscaOpcoes {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute("listaObjetos", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string[] listaObjetos;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string tipoResultado;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", Order=2)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string usuario;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", Order=3)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string senha;
+        
+        public buscaOpcoes() {
+        }
+        
+        public buscaOpcoes(string[] listaObjetos, string tipoResultado, string usuario, string senha) {
+            this.listaObjetos = listaObjetos;
+            this.tipoResultado = tipoResultado;
+            this.usuario = usuario;
+            this.senha = senha;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="buscaOpcoesResponse", WrapperNamespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", IsWrapped=true)]
+    public partial class buscaOpcoesResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://cliente.bean.master.sigep.bsb.correios.com.br/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string @return;
+        
+        public buscaOpcoesResponse() {
+        }
+        
+        public buscaOpcoesResponse(string @return) {
+            this.@return = @return;
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     public interface AtendeClienteChannel : Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente, System.ServiceModel.IClientChannel {
     }
@@ -8753,37 +8369,6 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
             inValue.usuario = usuario;
             inValue.senha = senha;
             return ((Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente)(this)).fechaPlpAsync(inValue);
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        Nop.Plugin.Shipping.Correios.wsAtendeClienteService.consultaSROResponse Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente.consultaSRO(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.consultaSRO request) {
-            return base.Channel.consultaSRO(request);
-        }
-        
-        public string consultaSRO(string[] listaObjetos, string tipoConsulta, string tipoResultado, string usuarioSro, string senhaSro) {
-            Nop.Plugin.Shipping.Correios.wsAtendeClienteService.consultaSRO inValue = new Nop.Plugin.Shipping.Correios.wsAtendeClienteService.consultaSRO();
-            inValue.listaObjetos = listaObjetos;
-            inValue.tipoConsulta = tipoConsulta;
-            inValue.tipoResultado = tipoResultado;
-            inValue.usuarioSro = usuarioSro;
-            inValue.senhaSro = senhaSro;
-            Nop.Plugin.Shipping.Correios.wsAtendeClienteService.consultaSROResponse retVal = ((Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente)(this)).consultaSRO(inValue);
-            return retVal.@return;
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.consultaSROResponse> Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente.consultaSROAsync(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.consultaSRO request) {
-            return base.Channel.consultaSROAsync(request);
-        }
-        
-        public System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.consultaSROResponse> consultaSROAsync(string[] listaObjetos, string tipoConsulta, string tipoResultado, string usuarioSro, string senhaSro) {
-            Nop.Plugin.Shipping.Correios.wsAtendeClienteService.consultaSRO inValue = new Nop.Plugin.Shipping.Correios.wsAtendeClienteService.consultaSRO();
-            inValue.listaObjetos = listaObjetos;
-            inValue.tipoConsulta = tipoConsulta;
-            inValue.tipoResultado = tipoResultado;
-            inValue.usuarioSro = usuarioSro;
-            inValue.senhaSro = senhaSro;
-            return ((Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente)(this)).consultaSROAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -8929,6 +8514,29 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarParametrosPorDescricaoResponse Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente.pesquisarParametrosPorDescricao(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarParametrosPorDescricao request) {
+            return base.Channel.pesquisarParametrosPorDescricao(request);
+        }
+        
+        public Nop.Plugin.Shipping.Correios.wsAtendeClienteService.dimensaoTO pesquisarParametrosPorDescricao(string prefix) {
+            Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarParametrosPorDescricao inValue = new Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarParametrosPorDescricao();
+            inValue.prefix = prefix;
+            Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarParametrosPorDescricaoResponse retVal = ((Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente)(this)).pesquisarParametrosPorDescricao(inValue);
+            return retVal.@return;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarParametrosPorDescricaoResponse> Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente.pesquisarParametrosPorDescricaoAsync(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarParametrosPorDescricao request) {
+            return base.Channel.pesquisarParametrosPorDescricaoAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarParametrosPorDescricaoResponse> pesquisarParametrosPorDescricaoAsync(string prefix) {
+            Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarParametrosPorDescricao inValue = new Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarParametrosPorDescricao();
+            inValue.prefix = prefix;
+            return ((Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente)(this)).pesquisarParametrosPorDescricaoAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         Nop.Plugin.Shipping.Correios.wsAtendeClienteService.atualizaPagamentoNaEntregaResponse Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente.atualizaPagamentoNaEntrega(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.atualizaPagamentoNaEntrega request) {
             return base.Channel.atualizaPagamentoNaEntrega(request);
         }
@@ -8985,7 +8593,7 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
             return base.Channel.verificaDisponibilidadeServico(request);
         }
         
-        public bool verificaDisponibilidadeServico(int codAdministrativo, string numeroServico, string cepOrigem, string cepDestino, string usuario, string senha) {
+        public string verificaDisponibilidadeServico(int codAdministrativo, string numeroServico, string cepOrigem, string cepDestino, string usuario, string senha) {
             Nop.Plugin.Shipping.Correios.wsAtendeClienteService.verificaDisponibilidadeServico inValue = new Nop.Plugin.Shipping.Correios.wsAtendeClienteService.verificaDisponibilidadeServico();
             inValue.codAdministrativo = codAdministrativo;
             inValue.numeroServico = numeroServico;
@@ -9095,33 +8703,6 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        Nop.Plugin.Shipping.Correios.wsAtendeClienteService.registrarPedidosInformacaoResponse Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente.registrarPedidosInformacao(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.registrarPedidosInformacao request) {
-            return base.Channel.registrarPedidosInformacao(request);
-        }
-        
-        public Nop.Plugin.Shipping.Correios.wsAtendeClienteService.retorno[] registrarPedidosInformacao(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pedidoInformacaoRegistro[] pedidosInformacao, string usuario, string senha) {
-            Nop.Plugin.Shipping.Correios.wsAtendeClienteService.registrarPedidosInformacao inValue = new Nop.Plugin.Shipping.Correios.wsAtendeClienteService.registrarPedidosInformacao();
-            inValue.pedidosInformacao = pedidosInformacao;
-            inValue.usuario = usuario;
-            inValue.senha = senha;
-            Nop.Plugin.Shipping.Correios.wsAtendeClienteService.registrarPedidosInformacaoResponse retVal = ((Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente)(this)).registrarPedidosInformacao(inValue);
-            return retVal.@return;
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.registrarPedidosInformacaoResponse> Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente.registrarPedidosInformacaoAsync(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.registrarPedidosInformacao request) {
-            return base.Channel.registrarPedidosInformacaoAsync(request);
-        }
-        
-        public System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.registrarPedidosInformacaoResponse> registrarPedidosInformacaoAsync(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pedidoInformacaoRegistro[] pedidosInformacao, string usuario, string senha) {
-            Nop.Plugin.Shipping.Correios.wsAtendeClienteService.registrarPedidosInformacao inValue = new Nop.Plugin.Shipping.Correios.wsAtendeClienteService.registrarPedidosInformacao();
-            inValue.pedidosInformacao = pedidosInformacao;
-            inValue.usuario = usuario;
-            inValue.senha = senha;
-            return ((Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente)(this)).registrarPedidosInformacaoAsync(inValue);
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         Nop.Plugin.Shipping.Correios.wsAtendeClienteService.validaEtiquetaPLPResponse Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente.validaEtiquetaPLP(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.validaEtiquetaPLP request) {
             return base.Channel.validaEtiquetaPLP(request);
         }
@@ -9148,33 +8729,6 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
             inValue.usuario = usuario;
             inValue.senha = senha;
             return ((Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente)(this)).validaEtiquetaPLPAsync(inValue);
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        Nop.Plugin.Shipping.Correios.wsAtendeClienteService.consultarPedidosInformacaoResponse Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente.consultarPedidosInformacao(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.consultarPedidosInformacao request) {
-            return base.Channel.consultarPedidosInformacao(request);
-        }
-        
-        public Nop.Plugin.Shipping.Correios.wsAtendeClienteService.retorno[] consultarPedidosInformacao(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pedidoInformacaoConsulta[] pedidosInformacao, string usuario, string senha) {
-            Nop.Plugin.Shipping.Correios.wsAtendeClienteService.consultarPedidosInformacao inValue = new Nop.Plugin.Shipping.Correios.wsAtendeClienteService.consultarPedidosInformacao();
-            inValue.pedidosInformacao = pedidosInformacao;
-            inValue.usuario = usuario;
-            inValue.senha = senha;
-            Nop.Plugin.Shipping.Correios.wsAtendeClienteService.consultarPedidosInformacaoResponse retVal = ((Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente)(this)).consultarPedidosInformacao(inValue);
-            return retVal.@return;
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.consultarPedidosInformacaoResponse> Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente.consultarPedidosInformacaoAsync(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.consultarPedidosInformacao request) {
-            return base.Channel.consultarPedidosInformacaoAsync(request);
-        }
-        
-        public System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.consultarPedidosInformacaoResponse> consultarPedidosInformacaoAsync(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pedidoInformacaoConsulta[] pedidosInformacao, string usuario, string senha) {
-            Nop.Plugin.Shipping.Correios.wsAtendeClienteService.consultarPedidosInformacao inValue = new Nop.Plugin.Shipping.Correios.wsAtendeClienteService.consultarPedidosInformacao();
-            inValue.pedidosInformacao = pedidosInformacao;
-            inValue.usuario = usuario;
-            inValue.senha = senha;
-            return ((Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente)(this)).consultarPedidosInformacaoAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -9207,9 +8761,11 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
             return base.Channel.consultaCEP(request);
         }
         
-        public Nop.Plugin.Shipping.Correios.wsAtendeClienteService.enderecoERP consultaCEP(string cep) {
+        public Nop.Plugin.Shipping.Correios.wsAtendeClienteService.enderecoERP consultaCEP(string cep, string usuario, string senha) {
             Nop.Plugin.Shipping.Correios.wsAtendeClienteService.consultaCEP inValue = new Nop.Plugin.Shipping.Correios.wsAtendeClienteService.consultaCEP();
             inValue.cep = cep;
+            inValue.usuario = usuario;
+            inValue.senha = senha;
             Nop.Plugin.Shipping.Correios.wsAtendeClienteService.consultaCEPResponse retVal = ((Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente)(this)).consultaCEP(inValue);
             return retVal.@return;
         }
@@ -9219,9 +8775,11 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
             return base.Channel.consultaCEPAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.consultaCEPResponse> consultaCEPAsync(string cep) {
+        public System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.consultaCEPResponse> consultaCEPAsync(string cep, string usuario, string senha) {
             Nop.Plugin.Shipping.Correios.wsAtendeClienteService.consultaCEP inValue = new Nop.Plugin.Shipping.Correios.wsAtendeClienteService.consultaCEP();
             inValue.cep = cep;
+            inValue.usuario = usuario;
+            inValue.senha = senha;
             return ((Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente)(this)).consultaCEPAsync(inValue);
         }
         
@@ -9253,24 +8811,51 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterMensagemRetornoPIResponse Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente.obterMensagemRetornoPI(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterMensagemRetornoPI request) {
-            return base.Channel.obterMensagemRetornoPI(request);
+        Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarDimensoesServicoResponse Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente.pesquisarDimensoesServico(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarDimensoesServico request) {
+            return base.Channel.pesquisarDimensoesServico(request);
         }
         
-        public Nop.Plugin.Shipping.Correios.wsAtendeClienteService.mensagemRetornoPIMaster[] obterMensagemRetornoPI() {
-            Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterMensagemRetornoPI inValue = new Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterMensagemRetornoPI();
-            Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterMensagemRetornoPIResponse retVal = ((Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente)(this)).obterMensagemRetornoPI(inValue);
+        public Nop.Plugin.Shipping.Correios.wsAtendeClienteService.dimensaoTO pesquisarDimensoesServico(string codigo, string embalagem) {
+            Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarDimensoesServico inValue = new Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarDimensoesServico();
+            inValue.codigo = codigo;
+            inValue.embalagem = embalagem;
+            Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarDimensoesServicoResponse retVal = ((Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente)(this)).pesquisarDimensoesServico(inValue);
             return retVal.@return;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterMensagemRetornoPIResponse> Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente.obterMensagemRetornoPIAsync(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterMensagemRetornoPI request) {
-            return base.Channel.obterMensagemRetornoPIAsync(request);
+        System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarDimensoesServicoResponse> Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente.pesquisarDimensoesServicoAsync(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarDimensoesServico request) {
+            return base.Channel.pesquisarDimensoesServicoAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterMensagemRetornoPIResponse> obterMensagemRetornoPIAsync() {
-            Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterMensagemRetornoPI inValue = new Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterMensagemRetornoPI();
-            return ((Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente)(this)).obterMensagemRetornoPIAsync(inValue);
+        public System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarDimensoesServicoResponse> pesquisarDimensoesServicoAsync(string codigo, string embalagem) {
+            Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarDimensoesServico inValue = new Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarDimensoesServico();
+            inValue.codigo = codigo;
+            inValue.embalagem = embalagem;
+            return ((Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente)(this)).pesquisarDimensoesServicoAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarEmbalagensPorServicoResponse Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente.pesquisarEmbalagensPorServico(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarEmbalagensPorServico request) {
+            return base.Channel.pesquisarEmbalagensPorServico(request);
+        }
+        
+        public Nop.Plugin.Shipping.Correios.wsAtendeClienteService.tipoEmbalagem[] pesquisarEmbalagensPorServico(string codigo) {
+            Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarEmbalagensPorServico inValue = new Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarEmbalagensPorServico();
+            inValue.codigo = codigo;
+            Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarEmbalagensPorServicoResponse retVal = ((Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente)(this)).pesquisarEmbalagensPorServico(inValue);
+            return retVal.@return;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarEmbalagensPorServicoResponse> Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente.pesquisarEmbalagensPorServicoAsync(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarEmbalagensPorServico request) {
+            return base.Channel.pesquisarEmbalagensPorServicoAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarEmbalagensPorServicoResponse> pesquisarEmbalagensPorServicoAsync(string codigo) {
+            Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarEmbalagensPorServico inValue = new Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarEmbalagensPorServico();
+            inValue.codigo = codigo;
+            return ((Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente)(this)).pesquisarEmbalagensPorServicoAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -9352,6 +8937,58 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
             inValue.usuario = usuario;
             inValue.senha = senha;
             return ((Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente)(this)).getStatusCartaoPostagemAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Nop.Plugin.Shipping.Correios.wsAtendeClienteService.verificaModalTransporteResponse Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente.verificaModalTransporte(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.verificaModalTransporte request) {
+            return base.Channel.verificaModalTransporte(request);
+        }
+        
+        public string verificaModalTransporte(string codigoServico, string cepOrigem, string cepDestino, string usuario, string senha) {
+            Nop.Plugin.Shipping.Correios.wsAtendeClienteService.verificaModalTransporte inValue = new Nop.Plugin.Shipping.Correios.wsAtendeClienteService.verificaModalTransporte();
+            inValue.codigoServico = codigoServico;
+            inValue.cepOrigem = cepOrigem;
+            inValue.cepDestino = cepDestino;
+            inValue.usuario = usuario;
+            inValue.senha = senha;
+            Nop.Plugin.Shipping.Correios.wsAtendeClienteService.verificaModalTransporteResponse retVal = ((Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente)(this)).verificaModalTransporte(inValue);
+            return retVal.@return;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.verificaModalTransporteResponse> Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente.verificaModalTransporteAsync(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.verificaModalTransporte request) {
+            return base.Channel.verificaModalTransporteAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.verificaModalTransporteResponse> verificaModalTransporteAsync(string codigoServico, string cepOrigem, string cepDestino, string usuario, string senha) {
+            Nop.Plugin.Shipping.Correios.wsAtendeClienteService.verificaModalTransporte inValue = new Nop.Plugin.Shipping.Correios.wsAtendeClienteService.verificaModalTransporte();
+            inValue.codigoServico = codigoServico;
+            inValue.cepOrigem = cepOrigem;
+            inValue.cepDestino = cepDestino;
+            inValue.usuario = usuario;
+            inValue.senha = senha;
+            return ((Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente)(this)).verificaModalTransporteAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Nop.Plugin.Shipping.Correios.wsAtendeClienteService.buscaDataAtualResponse Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente.buscaDataAtual(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.buscaDataAtual request) {
+            return base.Channel.buscaDataAtual(request);
+        }
+        
+        public System.DateTime buscaDataAtual() {
+            Nop.Plugin.Shipping.Correios.wsAtendeClienteService.buscaDataAtual inValue = new Nop.Plugin.Shipping.Correios.wsAtendeClienteService.buscaDataAtual();
+            Nop.Plugin.Shipping.Correios.wsAtendeClienteService.buscaDataAtualResponse retVal = ((Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente)(this)).buscaDataAtual(inValue);
+            return retVal.@return;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.buscaDataAtualResponse> Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente.buscaDataAtualAsync(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.buscaDataAtual request) {
+            return base.Channel.buscaDataAtualAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.buscaDataAtualResponse> buscaDataAtualAsync() {
+            Nop.Plugin.Shipping.Correios.wsAtendeClienteService.buscaDataAtual inValue = new Nop.Plugin.Shipping.Correios.wsAtendeClienteService.buscaDataAtual();
+            return ((Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente)(this)).buscaDataAtualAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -9437,27 +9074,6 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterMotivosPIResponse Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente.obterMotivosPI(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterMotivosPI request) {
-            return base.Channel.obterMotivosPI(request);
-        }
-        
-        public Nop.Plugin.Shipping.Correios.wsAtendeClienteService.motivoPIMaster[] obterMotivosPI() {
-            Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterMotivosPI inValue = new Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterMotivosPI();
-            Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterMotivosPIResponse retVal = ((Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente)(this)).obterMotivosPI(inValue);
-            return retVal.@return;
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterMotivosPIResponse> Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente.obterMotivosPIAsync(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterMotivosPI request) {
-            return base.Channel.obterMotivosPIAsync(request);
-        }
-        
-        public System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterMotivosPIResponse> obterMotivosPIAsync() {
-            Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterMotivosPI inValue = new Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterMotivosPI();
-            return ((Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente)(this)).obterMotivosPIAsync(inValue);
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         Nop.Plugin.Shipping.Correios.wsAtendeClienteService.getStatusPLPResponse Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente.getStatusPLP(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.getStatusPLP request) {
             return base.Channel.getStatusPLP(request);
         }
@@ -9480,6 +9096,29 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
             inValue.arg0 = arg0;
             inValue.arg1 = arg1;
             return ((Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente)(this)).getStatusPLPAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarServicosAdicionaisResponse Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente.pesquisarServicosAdicionais(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarServicosAdicionais request) {
+            return base.Channel.pesquisarServicosAdicionais(request);
+        }
+        
+        public Nop.Plugin.Shipping.Correios.wsAtendeClienteService.servicoAdicionalTO[] pesquisarServicosAdicionais(string codigo) {
+            Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarServicosAdicionais inValue = new Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarServicosAdicionais();
+            inValue.codigo = codigo;
+            Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarServicosAdicionaisResponse retVal = ((Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente)(this)).pesquisarServicosAdicionais(inValue);
+            return retVal.@return;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarServicosAdicionaisResponse> Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente.pesquisarServicosAdicionaisAsync(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarServicosAdicionais request) {
+            return base.Channel.pesquisarServicosAdicionaisAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarServicosAdicionaisResponse> pesquisarServicosAdicionaisAsync(string codigo) {
+            Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarServicosAdicionais inValue = new Nop.Plugin.Shipping.Correios.wsAtendeClienteService.pesquisarServicosAdicionais();
+            inValue.codigo = codigo;
+            return ((Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente)(this)).pesquisarServicosAdicionaisAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -9598,27 +9237,6 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
             inValue.usuario = usuario;
             inValue.senha = senha;
             return ((Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente)(this)).buscaContratoAsync(inValue);
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterAssuntosPIResponse Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente.obterAssuntosPI(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterAssuntosPI request) {
-            return base.Channel.obterAssuntosPI(request);
-        }
-        
-        public Nop.Plugin.Shipping.Correios.wsAtendeClienteService.assuntoPIMaster[] obterAssuntosPI() {
-            Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterAssuntosPI inValue = new Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterAssuntosPI();
-            Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterAssuntosPIResponse retVal = ((Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente)(this)).obterAssuntosPI(inValue);
-            return retVal.@return;
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterAssuntosPIResponse> Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente.obterAssuntosPIAsync(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterAssuntosPI request) {
-            return base.Channel.obterAssuntosPIAsync(request);
-        }
-        
-        public System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterAssuntosPIResponse> obterAssuntosPIAsync() {
-            Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterAssuntosPI inValue = new Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterAssuntosPI();
-            return ((Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente)(this)).obterAssuntosPIAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -9834,6 +9452,58 @@ namespace Nop.Plugin.Shipping.Correios.wsAtendeClienteService {
             inValue.usuario = usuario;
             inValue.senha = senha;
             return ((Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente)(this)).buscaServicosAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterMensagemParametrizadaResponse Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente.obterMensagemParametrizada(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterMensagemParametrizada request) {
+            return base.Channel.obterMensagemParametrizada(request);
+        }
+        
+        public Nop.Plugin.Shipping.Correios.wsAtendeClienteService.mensagemParametrizadaTO obterMensagemParametrizada(short id) {
+            Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterMensagemParametrizada inValue = new Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterMensagemParametrizada();
+            inValue.id = id;
+            Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterMensagemParametrizadaResponse retVal = ((Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente)(this)).obterMensagemParametrizada(inValue);
+            return retVal.@return;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterMensagemParametrizadaResponse> Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente.obterMensagemParametrizadaAsync(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterMensagemParametrizada request) {
+            return base.Channel.obterMensagemParametrizadaAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterMensagemParametrizadaResponse> obterMensagemParametrizadaAsync(short id) {
+            Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterMensagemParametrizada inValue = new Nop.Plugin.Shipping.Correios.wsAtendeClienteService.obterMensagemParametrizada();
+            inValue.id = id;
+            return ((Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente)(this)).obterMensagemParametrizadaAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Nop.Plugin.Shipping.Correios.wsAtendeClienteService.buscaOpcoesResponse Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente.buscaOpcoes(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.buscaOpcoes request) {
+            return base.Channel.buscaOpcoes(request);
+        }
+        
+        public string buscaOpcoes(string[] listaObjetos, string tipoResultado, string usuario, string senha) {
+            Nop.Plugin.Shipping.Correios.wsAtendeClienteService.buscaOpcoes inValue = new Nop.Plugin.Shipping.Correios.wsAtendeClienteService.buscaOpcoes();
+            inValue.listaObjetos = listaObjetos;
+            inValue.tipoResultado = tipoResultado;
+            inValue.usuario = usuario;
+            inValue.senha = senha;
+            Nop.Plugin.Shipping.Correios.wsAtendeClienteService.buscaOpcoesResponse retVal = ((Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente)(this)).buscaOpcoes(inValue);
+            return retVal.@return;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.buscaOpcoesResponse> Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente.buscaOpcoesAsync(Nop.Plugin.Shipping.Correios.wsAtendeClienteService.buscaOpcoes request) {
+            return base.Channel.buscaOpcoesAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Nop.Plugin.Shipping.Correios.wsAtendeClienteService.buscaOpcoesResponse> buscaOpcoesAsync(string[] listaObjetos, string tipoResultado, string usuario, string senha) {
+            Nop.Plugin.Shipping.Correios.wsAtendeClienteService.buscaOpcoes inValue = new Nop.Plugin.Shipping.Correios.wsAtendeClienteService.buscaOpcoes();
+            inValue.listaObjetos = listaObjetos;
+            inValue.tipoResultado = tipoResultado;
+            inValue.usuario = usuario;
+            inValue.senha = senha;
+            return ((Nop.Plugin.Shipping.Correios.wsAtendeClienteService.AtendeCliente)(this)).buscaOpcoesAsync(inValue);
         }
     }
 }

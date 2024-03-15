@@ -529,7 +529,7 @@ namespace Nop.Plugin.Shipping.Correios.Services
 
             try
             {
-                dados = ws.consultaCEP(cep);
+                dados = ws.consultaCEP(cep, _correiosSettings.UsuarioSIGEP, _correiosSettings.SenhaSIGEP);
             }
             catch (Exception ex)
             {
