@@ -248,7 +248,7 @@ namespace Nop.Plugin.Shipping.Correios.Services
                     ///If doesn't exists description of Stolen
                     if (notaLinhaDigitavel.Count() == 0)
                     {
-                        AddOrderNote(ObterDescricaoObjetoRoubado(evento), true, shipment.Order, true);
+                        AddOrderNote(GetDescriptionStolen(evento), true, shipment.Order, true);
 
                         string logObjetoRoubado = string.Format("Plugin.Shipping.Correios: {0} {1} - Ordem {2}",
                         evento.Descricao, shipment.TrackingNumber, shipment.OrderId);
@@ -258,9 +258,6 @@ namespace Nop.Plugin.Shipping.Correios.Services
                 }
             }
         }
-
-
-       
 
         private void CheckWaitingWithdrawal(Shipment shipment, Evento evento)
         {
@@ -273,7 +270,7 @@ namespace Nop.Plugin.Shipping.Correios.Services
                     ///If doesn't exists description of withdraw
                     if (noteDescription.Count() == 0)
                     {
-                        AddOrderNote(ObterDescricaoDisponivelRetirada(evento), true, shipment.Order, true);
+                        AddOrderNote(GetDescriptionWaitingWithdraw(evento), true, shipment.Order, true);
 
                         string logWaitingWithdrawal = string.Format("Plugin.Shipping.Correios: {0} {1} - Ordem {2}",
                         evento.Descricao, shipment.TrackingNumber, shipment.OrderId);
@@ -315,10 +312,9 @@ namespace Nop.Plugin.Shipping.Correios.Services
             }
         }
 
-
         private void AddOrderNote(string note, bool showNoteToCustomer, Order order, bool sendEmail = false)
         {
-            var orderNote = new Nop.Core.Domain.Orders.OrderNote();
+            var orderNote = new OrderNote();
             orderNote.CreatedOnUtc = DateTime.UtcNow;
             orderNote.DisplayToCustomer = showNoteToCustomer;
             orderNote.Note = note;
@@ -338,7 +334,7 @@ namespace Nop.Plugin.Shipping.Correios.Services
             }
         }
 
-        private string ObterDescricaoDisponivelRetirada(Evento evento)
+        private string GetDescriptionWaitingWithdraw(Evento evento)
         {
             var str = new StringBuilder();
 
@@ -354,7 +350,7 @@ namespace Nop.Plugin.Shipping.Correios.Services
             return str.ToString();
         }
 
-        private string ObterDescricaoObjetoRoubado(Evento evento)
+        private string GetDescriptionStolen(Evento evento)
         {
             var str = new StringBuilder();
 

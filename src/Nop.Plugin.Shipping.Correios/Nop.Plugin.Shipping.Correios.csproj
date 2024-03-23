@@ -168,11 +168,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="Service References\wsRastro\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="Services\APICorreios.cs" />
     <Compile Include="Services\IAPICorreios.cs" />
     <Compile Include="Services\ShipmentDeletedEventConsumer.cs" />
@@ -395,21 +390,6 @@
     <None Include="Service References\wsAtendeClienteService\Nop.Plugin.Shipping.Correios.wsAtendeClienteService.VerificaSeTodosObjetosCanceladosResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\wsRastro\configuration91.svcinfo" />
-    <None Include="Service References\wsRastro\configuration.svcinfo" />
-    <None Include="Service References\wsRastro\Nop.Plugin.Shipping.Correios.wsRastro.buscaEventosListaResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\wsRastro\Nop.Plugin.Shipping.Correios.wsRastro.buscaEventosResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\wsRastro\Nop.Plugin.Shipping.Correios.wsRastro.sroxml.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\wsRastro\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
     <None Include="Service References\wsAtendeClienteService\configuration91.svcinfo" />
     <None Include="Service References\wsAtendeClienteService\configuration.svcinfo" />
     <None Include="Service References\wsAtendeClienteService\Reference.svcmap">
@@ -419,10 +399,6 @@
     <Content Include="Views\ShippingCorreios\Configure.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="Service References\wsRastro\rastro.wsdl" />
-    <None Include="Service References\wsRastro\Rastro_schema1.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <Content Include="Views\ShippingCorreios\PLPAberta.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -479,7 +455,6 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\wsAtendeClienteService\" />
-    <WCFMetadataStorage Include="Service References\wsRastro\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\NopCommerceSmartenup\src\Libraries\Nop.Core\Nop.Core.csproj">
