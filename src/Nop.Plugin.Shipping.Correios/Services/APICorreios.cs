@@ -162,7 +162,7 @@ namespace Nop.Plugin.Shipping.Correios.Services
 
             var url = "https://api.correios.com.br/token/v1/autentica/contrato";
 
-            ///iIgNw4KuSZhvpZIycrbd6eUhCNPaD3CA5eBOgJao
+            
             var authenticationString = $"{_correiosSettings.NumeroCNPJ}:{_correiosSettings.ChaveAPICorreios}";
             var base64EncodedAuthenticationString = Convert.ToBase64String(ASCIIEncoding.ASCII.GetBytes(authenticationString));
 
