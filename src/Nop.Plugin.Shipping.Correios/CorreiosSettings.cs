@@ -97,6 +97,8 @@ namespace Nop.Plugin.Shipping.Correios
 
         public bool ValidacaoServicoDisponivelCEPEtiquetaSIGEP { get; set; }
 
+        public string ChaveAPICorreios {  get; set; }
+
         #endregion
     }
 }

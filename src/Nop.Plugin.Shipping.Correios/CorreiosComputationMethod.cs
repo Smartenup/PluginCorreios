@@ -8,6 +8,7 @@ using Nop.Core.Domain.Tasks;
 using Nop.Core.Plugins;
 using Nop.Plugin.Shipping.Correios.CalcPrecoPrazoWebReference;
 using Nop.Plugin.Shipping.Correios.Domain;
+using Nop.Plugin.Shipping.Correios.Services;
 using Nop.Services.Common;
 using Nop.Services.Configuration;
 using Nop.Services.Directory;
@@ -79,6 +80,7 @@ namespace Nop.Plugin.Shipping.Correios
 		private readonly ILogger _logger;
         private readonly IScheduleTaskService _scheduleTaskService;
         private readonly ILocalizationService _localizationService;
+        private readonly IAPICorreios _apiCorreios;
         #endregion
 
         #region Ctor
@@ -88,7 +90,8 @@ namespace Nop.Plugin.Shipping.Correios
 			ICurrencyService currencyService, CurrencySettings currencySettings, ShippingSettings shippingSettings, 
             IAddressService addressService, ILogger logger,
             IScheduleTaskService scheduleTaskService,
-            ILocalizationService localizationService
+            ILocalizationService localizationService,
+            IAPICorreios apiCorreios
             )
 		{
             _measureService = measureService;
@@ -103,6 +106,7 @@ namespace Nop.Plugin.Shipping.Correios
             _logger = logger;
             _scheduleTaskService = scheduleTaskService;
             _localizationService = localizationService;
+            _apiCorreios = apiCorreios;
 
         }
         #endregion
@@ -122,7 +126,7 @@ namespace Nop.Plugin.Shipping.Correios
 
         public IShipmentTracker ShipmentTracker
         {
-            get { return new CorreiosShipmentTracker(_logger, _correiosSettings); }
+            get { return new CorreiosShipmentTracker(_apiCorreios); }
         }
         #endregion
 

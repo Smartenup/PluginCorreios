@@ -2,6 +2,7 @@
 using Nop.Core.Domain.Orders;
 using Nop.Core.Domain.Shipping;
 using Nop.Plugin.Shipping.Correios.Domain.Serialization;
+using Nop.Plugin.Shipping.Correios.Services;
 using Nop.Services.Logging;
 using Nop.Services.Messages;
 using Nop.Services.Orders;
@@ -29,6 +30,7 @@ namespace Nop.Plugin.Shipping.Correios
         private readonly IWorkflowMessageService _workflowMessageService;
         private readonly IWorkContext _workContext;
         private readonly IShipmentService _shipmentService;
+        private readonly IAPICorreios _apiCorreios;
 
 
         public CorreioShippingUpdateTask(IOrderService orderService,
@@ -37,7 +39,8 @@ namespace Nop.Plugin.Shipping.Correios
             CorreiosSettings correiosSettings,
             IWorkflowMessageService workflowMessageService,
             IWorkContext workContext,
-            IShipmentService shipmentService)
+            IShipmentService shipmentService,
+            IAPICorreios apiCorreios)
         {
             _orderService = orderService;
             _orderProcessingService = orderProcessingService;
@@ -46,63 +49,34 @@ namespace Nop.Plugin.Shipping.Correios
             _workflowMessageService = workflowMessageService;
             _workContext = workContext;
             _shipmentService = shipmentService;
+            _apiCorreios = apiCorreios;
         }
 
         public void Execute()
         {
-            var lstShippingStatus = new List<int>();
-
-            lstShippingStatus.Add((int)Core.Domain.Shipping.ShippingStatus.Shipped);
-            lstShippingStatus.Add((int)Core.Domain.Shipping.ShippingStatus.PartiallyShipped);
+            var lstShippingStatus = new List<int>
+            {
+                (int)ShippingStatus.Shipped,
+                (int)ShippingStatus.PartiallyShipped
+            };
 
             var ordersShipped = _orderService.SearchOrders(ssIds: lstShippingStatus);
             
             try
             {
-                ConfigurarWsRastro();
-
                 foreach (var order in ordersShipped)
                 {
                     foreach (var shipment in order.Shipments)
                     {
-                        CheckMarkShipmentDelivered(shipment);
+                        _apiCorreios.CheckShipmentDelived(shipment);
                     }
                 }
             }
             catch (Exception ex)
             {
                 _logger.Error("Plugin.Shipping.Correios: Erro atualização status de rastreamento", ex);
-            }
-            finally
-            {
-                FecharWsRastro();
-            }
+            }            
         }
-
-
-        public void ConfigurarWsRastro()
-        {
-            var binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
-
-            binding.OpenTimeout = new TimeSpan(0, 10, 0);
-            binding.CloseTimeout = new TimeSpan(0, 10, 0);
-            binding.SendTimeout = new TimeSpan(0, 10, 0);
-            binding.ReceiveTimeout = new TimeSpan(0, 10, 0);
-
-            var address = new EndpointAddress("http://webservice.correios.com.br:80/service/rastro");
-
-            _wsRastro = new wsRastro.ServiceClient(binding, address);
-
-            _requestInterceptor = new InspectorBehavior();
-            _wsRastro.Endpoint.Behaviors.Add(_requestInterceptor);
-        }
-
-        public void FecharWsRastro()
-        {
-            if (_wsRastro.State != CommunicationState.Closed)
-                _wsRastro.Close();
-        }
-
 
         private void CheckMarkShipmentDelivered(Shipment shipment)
         {

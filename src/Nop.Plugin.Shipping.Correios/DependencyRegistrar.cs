@@ -22,6 +22,9 @@ namespace Nop.Plugin.Shipping.Correios
             builder.RegisterType<PdfSigepWebService>().As<IPdfSigepWebService>().InstancePerLifetimeScope();
             builder.RegisterType<SigepWebPlpService>().As<ISigepWebPlpService>().InstancePerLifetimeScope();
 
+
+            builder.RegisterType<APICorreios>().As<IAPICorreios>().SingleInstance();
+
             //data context
             this.RegisterPluginDataContext<CorreiosObjectContext>(builder, "nop_object_context_correios");
 

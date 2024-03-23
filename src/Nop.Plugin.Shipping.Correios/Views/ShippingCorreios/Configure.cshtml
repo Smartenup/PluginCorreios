@@ -377,7 +377,7 @@
                         @Html.ValidationMessageFor(model => model.NumeroCNPJ)
                     </div>
                 </div>
-                
+
                 <div class="form-group">
                     <div class="col-md-3">
                         @Html.NopLabelFor(model => model.CartaoPostagemSIGEP)
@@ -538,6 +538,15 @@
                     <div class="col-md-9">
                         @Html.EditorFor(model => model.ValidacaoServicoDisponivelCEPEtiquetaSIGEP)
                         @Html.ValidationMessageFor(model => model.ValidacaoServicoDisponivelCEPEtiquetaSIGEP)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        @Html.NopLabelFor(model => model.ChaveAPICorreios)
+                    </div>
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.ChaveAPICorreios)
+                        @Html.ValidationMessageFor(model => model.ChaveAPICorreios)
                     </div>
                 </div>
                 <div class="form-group">

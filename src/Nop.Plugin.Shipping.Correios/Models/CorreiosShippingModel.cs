@@ -160,6 +160,10 @@ namespace Nop.Plugin.Shipping.Correios.Models
         [DisplayName("Utiliza validação de serviço disponível ao CEP ao gerar etiqueta")]
         public bool ValidacaoServicoDisponivelCEPEtiquetaSIGEP { get; set; }
 
+
+        [DisplayName("Chave API Correios gerada no portal correios")]
+        public string ChaveAPICorreios { get; set; }
+
         #endregion
 
     }

@@ -65,6 +65,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web" />
@@ -126,6 +127,16 @@
     <Compile Include="Data\PlpSigepWebMap.cs" />
     <Compile Include="Data\PlpSigepWebShipmentMap.cs" />
     <Compile Include="DependencyRegistrar.cs" />
+    <Compile Include="Domain\CorreiosAPI\Rastro\Endereco.cs" />
+    <Compile Include="Domain\CorreiosAPI\Rastro\EntregadorExterno.cs" />
+    <Compile Include="Domain\CorreiosAPI\Rastro\Evento.cs" />
+    <Compile Include="Domain\CorreiosAPI\Rastro\Objeto.cs" />
+    <Compile Include="Domain\CorreiosAPI\Rastro\Rastro.cs" />
+    <Compile Include="Domain\CorreiosAPI\Rastro\TipoPostal.cs" />
+    <Compile Include="Domain\CorreiosAPI\Rastro\Unidade.cs" />
+    <Compile Include="Domain\CorreiosAPI\Rastro\UnidadeDestino.cs" />
+    <Compile Include="Domain\CorreiosAPI\Token\Contrato.cs" />
+    <Compile Include="Domain\CorreiosAPI\Token\Token.cs" />
     <Compile Include="Domain\ShippingCorreiosConfiguracaoServicos.cs" />
     <Compile Include="Domain\CorreiosServices.cs" />
     <Compile Include="Domain\ErrosProcessamento.cs" />
@@ -162,6 +173,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Services\APICorreios.cs" />
+    <Compile Include="Services\IAPICorreios.cs" />
     <Compile Include="Services\ShipmentDeletedEventConsumer.cs" />
     <Compile Include="Services\ShipmentInsertedEventConsumer.cs" />
     <Compile Include="Services\ShipmentUpdatedEventConsumer.cs" />

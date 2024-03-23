@@ -145,7 +145,7 @@ namespace Nop.Plugin.Shipping.Correios.Controllers
             model.TelefoneRemetenteSIGEP = _correiosSettings.TelefoneRemetenteSIGEP;
             model.UtilizaValidacaoCEPEtiquetaSIGEP = _correiosSettings.UtilizaValidacaoCEPEtiquetaSIGEP;
             model.ValidacaoServicoDisponivelCEPEtiquetaSIGEP = _correiosSettings.ValidacaoServicoDisponivelCEPEtiquetaSIGEP;
-
+            model.ChaveAPICorreios = _correiosSettings.ChaveAPICorreios;
 
 
             return View("~/Plugins/Shipping.Correios/Views/ShippingCorreios/Configure.cshtml", model);
@@ -201,6 +201,7 @@ namespace Nop.Plugin.Shipping.Correios.Controllers
             _correiosSettings.ServicoFreteGratis = model.ServicoFreteGratis;
             _correiosSettings.UsuarioServicoRastreamento = model.UsuarioServicoRastreamento;
             _correiosSettings.SenhaServicoRastreamento = model.SenhaServicoRastreamento;
+            
 
             string selectedCustomerRoleIds = string.Empty;
 
@@ -240,6 +241,7 @@ namespace Nop.Plugin.Shipping.Correios.Controllers
             _correiosSettings.TelefoneRemetenteSIGEP = model.TelefoneRemetenteSIGEP;
             _correiosSettings.UtilizaValidacaoCEPEtiquetaSIGEP = model.UtilizaValidacaoCEPEtiquetaSIGEP;
             _correiosSettings.ValidacaoServicoDisponivelCEPEtiquetaSIGEP = model.ValidacaoServicoDisponivelCEPEtiquetaSIGEP;
+            _correiosSettings.ChaveAPICorreios = model.ChaveAPICorreios;
 
             _settingService.SaveSetting(_correiosSettings);
 
