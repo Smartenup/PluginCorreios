@@ -39,4 +39,7 @@ values ( '04227','04227', 'PAC MINI CONTRATO', '064', 50)
 insert ShippingCorreiosConfiguracaoServicos (CodigoServicoEstimativa, CodigoServicoEnvioPLP, DescricaoServicoPedido, CodigoServicoValorDeclaradoEnvioPLP, ValorMinimoValorDeclaradoEnvioPLP) 
 values ( '03212','03212', 'SEDEX CONTRATO GDES FORMATOS', '019', 75)
 
-select * from PlpSigepWebEtiqueta
+--select * from PlpSigepWebEtiqueta
+
+select * from ShippingCorreiosConfiguracaoServicos
+

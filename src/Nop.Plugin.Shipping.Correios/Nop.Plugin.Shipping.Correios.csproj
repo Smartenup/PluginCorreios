@@ -121,12 +121,21 @@
     <Compile Include="CorreioShippingUpdateTask.cs" />
     <Compile Include="CorreiosSettings.cs" />
     <Compile Include="CorreiosShipmentTracker.cs" />
+    <Compile Include="Data\EmbalagemMap.cs" />
+    <Compile Include="Data\EmbalagemServicoCorreiosMap.cs" />
+    <Compile Include="Data\GrandeFormatoMap.cs" />
     <Compile Include="Data\PlpSigepWebEtiquetaMap.cs" />
     <Compile Include="Data\CorreiosObjectContext.cs" />
     <Compile Include="Data\EfStartUpTask.cs" />
     <Compile Include="Data\PlpSigepWebMap.cs" />
     <Compile Include="Data\PlpSigepWebShipmentMap.cs" />
+    <Compile Include="Data\ServicoCorreiosMap.cs" />
+    <Compile Include="Data\ValorDeclaradoMap.cs" />
     <Compile Include="DependencyRegistrar.cs" />
+    <Compile Include="Domain\CorreiosAPI\Prazo\PrazosRequest.cs" />
+    <Compile Include="Domain\CorreiosAPI\Prazo\PrazoResponse.cs" />
+    <Compile Include="Domain\CorreiosAPI\Preco\PrecosRequest.cs" />
+    <Compile Include="Domain\CorreiosAPI\Preco\PrecoResponse.cs" />
     <Compile Include="Domain\CorreiosAPI\Rastro\Endereco.cs" />
     <Compile Include="Domain\CorreiosAPI\Rastro\EntregadorExterno.cs" />
     <Compile Include="Domain\CorreiosAPI\Rastro\Evento.cs" />
@@ -137,6 +146,10 @@
     <Compile Include="Domain\CorreiosAPI\Rastro\UnidadeDestino.cs" />
     <Compile Include="Domain\CorreiosAPI\Token\Contrato.cs" />
     <Compile Include="Domain\CorreiosAPI\Token\Token.cs" />
+    <Compile Include="Domain\Embalagem.cs" />
+    <Compile Include="Domain\GrandeFormato.cs" />
+    <Compile Include="Domain\ServicoCorreios.cs" />
+    <Compile Include="Domain\EmbalagemServicoCorreios.cs" />
     <Compile Include="Domain\ShippingCorreiosConfiguracaoServicos.cs" />
     <Compile Include="Domain\CorreiosServices.cs" />
     <Compile Include="Domain\ErrosProcessamento.cs" />
@@ -148,6 +161,7 @@
     <Compile Include="Domain\Serialization\Envelope.cs" />
     <Compile Include="Domain\Serialization\InspectorBehavior.cs" />
     <Compile Include="Domain\Serialization\MyMessageInspector.cs" />
+    <Compile Include="Domain\ValorDeclarado.cs" />
     <Compile Include="Models\CorreiosShippingModel.cs" />
     <Compile Include="Models\PLPAbertarResultErrorModel.cs" />
     <Compile Include="Models\PLPAbertaSearchModel.cs" />
@@ -169,7 +183,10 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="Services\APICorreios.cs" />
+    <Compile Include="Services\EmbalagemServicoCorreiosService.cs" />
     <Compile Include="Services\IAPICorreios.cs" />
+    <Compile Include="Services\IEmbalagemServicoCorreiosService.cs" />
+    <Compile Include="Services\IValorDeclaradoService.cs" />
     <Compile Include="Services\ShipmentDeletedEventConsumer.cs" />
     <Compile Include="Services\ShipmentInsertedEventConsumer.cs" />
     <Compile Include="Services\ShipmentUpdatedEventConsumer.cs" />
@@ -182,6 +199,7 @@
     <Compile Include="Domain\SigepWeb\Xml\ObjetoPostal.cs" />
     <Compile Include="Domain\SigepWeb\Xml\Principal.cs" />
     <Compile Include="Domain\SigepWeb\Xml\Remetente.cs" />
+    <Compile Include="Services\ValorDeclaradoService.cs" />
     <Compile Include="Util\CorreiosHelper.cs" />
     <Compile Include="Util\ImageHelper.cs" />
     <Compile Include="Web References\CalcPrecoPrazoWebReference\Reference.cs">

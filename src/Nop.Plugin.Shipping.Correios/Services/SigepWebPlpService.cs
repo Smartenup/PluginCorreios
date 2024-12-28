@@ -10,6 +10,7 @@ using Nop.Services.Directory;
 using Nop.Services.Logging;
 using Nop.Services.Orders;
 using Nop.Services.Shipping;
+using SmartenUP.Core.Services.Shippping;
 using SmartenUP.Core.Util.Helper;
 using System;
 using System.Collections.Generic;
@@ -26,7 +27,8 @@ namespace Nop.Plugin.Shipping.Correios.Services
         private readonly CorreiosSettings _correiosSettings;
         private readonly IOrderService _orderService;
         private readonly IShipmentService _shipmentService;
-        private readonly IShippingService _shippingService;
+        private readonly ISUPShippingService _supShippingService;
+        
         private readonly ISigepWebService _sigepWebService;
         private readonly IWorkContext _workContext;
         private readonly IAddressAttributeParser _addressAttributeParser;
@@ -53,7 +55,7 @@ namespace Nop.Plugin.Shipping.Correios.Services
             ILogger logger,
             IStateProvinceService stateProvinceService,
             ICountryService countryService,
-            IShippingService shippingService
+            ISUPShippingService supShippingService
             )
         {
             _correiosSettings = correiosSettings;
@@ -69,7 +71,7 @@ namespace Nop.Plugin.Shipping.Correios.Services
             _logger = logger;
             _stateProvinceService = stateProvinceService;
             _countryService = countryService;
-            _shippingService = shippingService;
+            _supShippingService = supShippingService;
         }
 
         public PlpSigepWeb FecharPlp()
@@ -591,7 +593,7 @@ namespace Nop.Plugin.Shipping.Correios.Services
             bool retorno = false;
             try
             {
-                var shippingOption = _shippingService.GetShippingOption(pedido);
+                var shippingOption = _supShippingService.GetShippingOption(pedido);
 
                 if (shippingOption.Name.Equals(pedido.ShippingMethod, StringComparison.InvariantCultureIgnoreCase))
                     retorno = true;

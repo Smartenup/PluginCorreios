@@ -2,12 +2,16 @@
 using Nop.Core;
 using Nop.Core.Domain.Orders;
 using Nop.Core.Domain.Shipping;
+using Nop.Plugin.Shipping.Correios.Domain.CorreiosAPI.Prazo;
+using Nop.Plugin.Shipping.Correios.Domain.CorreiosAPI.Preco;
 using Nop.Plugin.Shipping.Correios.Domain.CorreiosAPI.Rastro;
+using Nop.Plugin.Shipping.Correios.Domain.CorreiosAPI.Token;
 using Nop.Services.Logging;
 using Nop.Services.Messages;
 using Nop.Services.Orders;
 using Nop.Services.Shipping;
 using Nop.Services.Shipping.Tracking;
+using Org.BouncyCastle.Asn1.Ocsp;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -94,6 +98,79 @@ namespace Nop.Plugin.Shipping.Correios.Services
         }
 
 
+        public async Task<IList<PrazoResponse>> GetPrazoResponsesAsync(PrazosRequest prazoRequest)
+        {
+            List<PrazoResponse> prazoResponse = null;
+
+            string url = string.Concat("https://api.correios.com.br/prazo/v1/nacional");
+
+            string jsonRequest = JsonConvert.SerializeObject(prazoRequest);
+            var encodeJsonRequest = Encoding.ASCII.GetBytes(jsonRequest);
+
+            var request = (HttpWebRequest)WebRequest.Create(url);
+
+            request.PreAuthenticate = true;
+            request.Headers.Add("Authorization", "Bearer " + TokenAPI.token);
+            request.Accept = "application/json";
+            request.ContentType = "application/json";
+            request.MediaType = "application/json";
+            request.Method = "POST";
+            request.ContentLength = encodeJsonRequest.Length;
+
+            using (var stream = request.GetRequestStream())
+            {
+                stream.Write(encodeJsonRequest, 0, encodeJsonRequest.Length);
+            }
+
+            var response = (HttpWebResponse)request.GetResponse();
+
+            var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
+
+            if (!string.IsNullOrWhiteSpace(responseString))
+                prazoResponse = JsonConvert.DeserializeObject<List<PrazoResponse>>(HttpUtility.HtmlDecode(responseString));
+
+            return await Task.FromResult(prazoResponse);
+        }
+
+
+        public async Task<IList<PrecoResponse>> GetPrecoResponsesAsync(PrecosRequest precoRequest)
+        {
+            List<PrecoResponse> precoResponse = null;
+
+            string url = string.Concat("https://api.correios.com.br/preco/v1/nacional");
+
+            string jsonRequest = JsonConvert.SerializeObject(precoRequest);
+            var encodeJsonRequest = Encoding.ASCII.GetBytes(jsonRequest);
+
+
+            var myUri = new Uri(url);
+            var myWebRequest = WebRequest.Create(myUri);
+            var myHttpWebRequest = (HttpWebRequest)myWebRequest;
+
+            myHttpWebRequest.PreAuthenticate = true;
+            myHttpWebRequest.Headers.Add("Authorization", "Bearer " + TokenAPI.token);
+            myHttpWebRequest.Accept = "application/json";
+            myHttpWebRequest.ContentType = "application/json";
+            myHttpWebRequest.MediaType = "application/json";
+            myHttpWebRequest.Method = "POST";
+            myHttpWebRequest.ContentLength = encodeJsonRequest.Length;
+
+            using (var stream = myHttpWebRequest.GetRequestStream())
+            {
+                stream.Write(encodeJsonRequest, 0, encodeJsonRequest.Length);
+            }
+
+
+            var response = (HttpWebResponse)myHttpWebRequest.GetResponse();
+
+            var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
+
+            if (!string.IsNullOrWhiteSpace(responseString))
+                precoResponse = JsonConvert.DeserializeObject<List<PrecoResponse>>(HttpUtility.HtmlDecode(responseString));
+
+            return await Task.FromResult(precoResponse);
+        }
+
         private string GetEventName(Evento evento)
         {
             var sb = new StringBuilder();
@@ -123,7 +200,10 @@ namespace Nop.Plugin.Shipping.Correios.Services
         }
 
 
-        public async Task<Rastro> GetRastroAsync(string trackingNumber)
+        
+
+
+        private async Task<Rastro> GetRastroAsync(string trackingNumber)
         {
             Rastro rastro = null;
 
@@ -151,12 +231,12 @@ namespace Nop.Plugin.Shipping.Correios.Services
                 rastro = JsonConvert.DeserializeObject<Rastro>(json);
             }
 
-            return rastro;
+            return await Task.FromResult(rastro);
 
         }
 
 
-        public Domain.CorreiosAPI.Token.Token GetTokenAPIAsync()
+        private Domain.CorreiosAPI.Token.Token GetTokenAPIAsync()
         {
             Domain.CorreiosAPI.Token.Token token = null;
 

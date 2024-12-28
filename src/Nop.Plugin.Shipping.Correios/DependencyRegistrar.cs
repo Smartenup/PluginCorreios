@@ -22,6 +22,9 @@ namespace Nop.Plugin.Shipping.Correios
             builder.RegisterType<PdfSigepWebService>().As<IPdfSigepWebService>().InstancePerLifetimeScope();
             builder.RegisterType<SigepWebPlpService>().As<ISigepWebPlpService>().InstancePerLifetimeScope();
 
+            builder.RegisterType<EmbalagemServicoCorreiosService>().As<IEmbalagemServicoCorreiosService>().InstancePerLifetimeScope();
+            builder.RegisterType<ValorDeclaradoService>().As<IValorDeclaradoService>().InstancePerLifetimeScope();
+
 
             builder.RegisterType<APICorreios>().As<IAPICorreios>().SingleInstance();
 
@@ -42,7 +45,18 @@ namespace Nop.Plugin.Shipping.Correios
             builder.RegisterType<EfRepository<PlpSigepWebShipment>>()
                 .As<IRepository<PlpSigepWebShipment>>()
                 .WithParameter(ResolvedParameter.ForNamed<IDbContext>("nop_object_context_correios"))
-                .InstancePerLifetimeScope();            
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<EfRepository<EmbalagemServicoCorreios>>()
+                .As<IRepository<EmbalagemServicoCorreios>>()
+                .WithParameter(ResolvedParameter.ForNamed<IDbContext>("nop_object_context_correios"))
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<EfRepository<ValorDeclarado>>()
+                            .As<IRepository<ValorDeclarado>>()
+                            .WithParameter(ResolvedParameter.ForNamed<IDbContext>("nop_object_context_correios"))
+                            .InstancePerLifetimeScope();
+
         }
     }
 }

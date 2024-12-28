@@ -6,9 +6,9 @@ using Nop.Plugin.Shipping.Correios.Services;
 using Nop.Services.Localization;
 using Nop.Services.Logging;
 using Nop.Services.Orders;
-using Nop.Services.Shipping;
 using Nop.Services.Tasks;
 using SmartenUP.Core.Services;
+using SmartenUP.Core.Services.Shippping;
 using SmartenUP.Core.Util.Extensions;
 using SmartenUP.Core.Util.Helper;
 using System;
@@ -22,7 +22,7 @@ namespace Nop.Plugin.Shipping.Correios
         private readonly ISigepWebService _sigepWebService;
         private readonly ISigepWebPlpService _sigepWebPlpService;
         private readonly IOrderService _orderService;
-        private readonly IShippingService _shippingService;
+        private readonly ISUPShippingService _shippingService;
         private readonly ILocalizationService _localizationService;
         private readonly ILogger _logger;
         private readonly IHolidayService _holidayService;
@@ -30,7 +30,7 @@ namespace Nop.Plugin.Shipping.Correios
         public CorreioControleSigepWebTask(ISigepWebService sigepWebService,
             ISigepWebPlpService sigepWebPlpService,
             IOrderService orderService,
-            IShippingService shippingService,
+            ISUPShippingService shippingService,
             ILocalizationService localizationService,
             ILogger logger,
             IHolidayService holidayService)

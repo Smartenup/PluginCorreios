@@ -22,6 +22,13 @@ namespace Nop.Plugin.Shipping.Correios.Data
             modelBuilder.Configurations.Add(new PlpSigepWebShipmentMap());
             modelBuilder.Configurations.Add(new PlpSigepWebEtiquetaMap());
 
+
+            modelBuilder.Configurations.Add(new EmbalagemMap());
+            modelBuilder.Configurations.Add(new ServicoCorreiosMap());
+            modelBuilder.Configurations.Add(new EmbalagemServicoCorreiosMap());
+            modelBuilder.Configurations.Add(new ValorDeclaradoMap());
+            modelBuilder.Configurations.Add(new GrandeFormatoMap());
+
             //disable EdmMetadata generation
             //modelBuilder.Conventions.Remove<IncludeMetadataConvention>();
             base.OnModelCreating(modelBuilder);

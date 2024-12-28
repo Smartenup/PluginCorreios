@@ -1,7 +1,7 @@
 ﻿Group: Shipping rate computation
 FriendlyName: Correios
 SystemName: Shipping.Correios
-Version: 2.00
+Version: 2.50
 SupportedVersions: 3.80
 Author: SmartenUP team/Pedro Usinskas
 DisplayOrder: 1

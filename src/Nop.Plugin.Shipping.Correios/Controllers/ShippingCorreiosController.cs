@@ -259,7 +259,7 @@ namespace Nop.Plugin.Shipping.Correios.Controllers
                 throw new ArgumentNullException("cep");
 
             if (cep.Trim().Length != 8)
-                throw new ArgumentNullException("cep");
+                throw new ArgumentException("cep");
 
             wsAtendeClienteService.enderecoERP dados = _sigepWebPlpService.BuscarEndereco(cep);
 
