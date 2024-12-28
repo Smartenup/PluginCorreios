@@ -1562,6 +1562,11 @@ namespace Nop.Plugin.Shipping.Correios
                 weight = Convert.ToInt32(Math.Ceiling(_measureService.ConvertFromPrimaryMeasureWeight(_shippingService.GetTotalWeight(getShippingOptionRequest),
                     usedMeasureWeight)));
 
+            if (weight == 0)
+            {
+                weight = 1;
+            }
+
 
             var correiosPrazoPrecoParametersRequest = new CorreiosPrazoPrecoParametersRequest()
             {
@@ -1654,12 +1659,6 @@ namespace Nop.Plugin.Shipping.Correios
     }
 
 
-    internal class CorreiosPrazoPrecoReturn
-    {
-        public IList<PrazoResponse> PrazoResponse { get; set; }
-
-        public IList<PrecoResponse> PrecoResponse { get; set; }
-    }
 
     internal class CorreiosPrazoPrecoParametersRequest
     {
