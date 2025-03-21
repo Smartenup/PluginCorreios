@@ -207,7 +207,7 @@ namespace Nop.Plugin.Shipping.Correios
 
                 var group = new List<string>();
 
-                foreach (var precoResponse in precosResponse.OrderBy(s => decimal.Parse(s.PcFinal, CultureInfo.GetCultureInfo("pt-BR"))))
+                foreach (var precoResponse in precosResponse.OrderBy(s => decimal.Parse((s.PcFinal ?? "0"), CultureInfo.GetCultureInfo("pt-BR"))))
                 {
 
                     var precoRequest = precosRequest.ParametrosProduto.AsQueryable().Where(param => param.NuRequisicao == precoResponse.NuRequisicao).FirstOrDefault();
@@ -217,8 +217,8 @@ namespace Nop.Plugin.Shipping.Correios
                     if (!string.IsNullOrEmpty(precoResponse.textoErro))
                     {
                         string msgError = string.Format("Plugin.Shipping.Correios: erro ao calcular frete: ({0})({1}){2} - CEP {3}",
-                            embalagemServico.ServicoCorreios.CodigoServico,
-                            embalagemServico.ServicoCorreios.Descricao,
+                            embalagemServico?.ServicoCorreios?.CodigoServico,
+                            embalagemServico?.ServicoCorreios?.Descricao,
                             precoResponse.textoErro,
                             getShippingOptionRequest.ShippingAddress.ZipPostalCode);
 
