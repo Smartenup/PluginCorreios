@@ -132,6 +132,7 @@
     <Compile Include="Data\ServicoCorreiosMap.cs" />
     <Compile Include="Data\ValorDeclaradoMap.cs" />
     <Compile Include="DependencyRegistrar.cs" />
+    <Compile Include="Domain\CorreiosAPI\CEP\CEPResponse.cs" />
     <Compile Include="Domain\CorreiosAPI\Prazo\PrazosRequest.cs" />
     <Compile Include="Domain\CorreiosAPI\Prazo\PrazoResponse.cs" />
     <Compile Include="Domain\CorreiosAPI\Preco\PrecosRequest.cs" />

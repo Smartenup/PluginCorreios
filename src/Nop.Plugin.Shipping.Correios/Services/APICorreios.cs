@@ -1,17 +1,18 @@
 ﻿using Newtonsoft.Json;
 using Nop.Core;
+using Nop.Core.Domain.Directory;
 using Nop.Core.Domain.Orders;
 using Nop.Core.Domain.Shipping;
+using Nop.Plugin.Shipping.Correios.Domain.CorreiosAPI.CEP;
 using Nop.Plugin.Shipping.Correios.Domain.CorreiosAPI.Prazo;
 using Nop.Plugin.Shipping.Correios.Domain.CorreiosAPI.Preco;
 using Nop.Plugin.Shipping.Correios.Domain.CorreiosAPI.Rastro;
-using Nop.Plugin.Shipping.Correios.Domain.CorreiosAPI.Token;
+using Nop.Services.Directory;
 using Nop.Services.Logging;
 using Nop.Services.Messages;
 using Nop.Services.Orders;
 using Nop.Services.Shipping;
 using Nop.Services.Shipping.Tracking;
-using Org.BouncyCastle.Asn1.Ocsp;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -50,13 +51,19 @@ namespace Nop.Plugin.Shipping.Correios.Services
         private readonly IWorkContext _workContext;
         private readonly IOrderProcessingService _orderProcessingService;
         private readonly IShipmentService _shipmentService;
+        private readonly IStateProvinceService _stateProvinceService;
+        private readonly ICountryService _countryService;
+
         public APICorreios(ILogger logger, 
             CorreiosSettings correiosSettings,
             IOrderService orderService,
             IWorkflowMessageService workflowMessageService,
             IWorkContext workContext,
             IOrderProcessingService orderProcessingService,
-            IShipmentService shipmentService)
+            IShipmentService shipmentService,
+            IStateProvinceService stateProvinceService,
+            ICountryService countryService
+)
         {
             _logger = logger;
             _correiosSettings = correiosSettings;
@@ -65,6 +72,8 @@ namespace Nop.Plugin.Shipping.Correios.Services
             _workContext = workContext;
             _orderProcessingService = orderProcessingService;
             _shipmentService = shipmentService;
+            _stateProvinceService = stateProvinceService; 
+            _countryService = countryService;
         }
         
         public async Task<IList<ShipmentStatusEvent>> GetShipmentEventsAsync(string trackingNumber)
@@ -170,6 +179,54 @@ namespace Nop.Plugin.Shipping.Correios.Services
 
             return await Task.FromResult(precoResponse);
         }
+
+
+        public async Task<CEPResponse> GetCEPResponseAsync(string cep)
+        {
+
+            CEPResponse cepResponse = null;
+
+            string url = string.Concat("https://api.correios.com.br/cep/v2/enderecos/", cep);
+
+            var myUri = new Uri(url);
+            var myWebRequest = WebRequest.Create(myUri);
+            var myHttpWebRequest = (HttpWebRequest)myWebRequest;
+
+            myHttpWebRequest.PreAuthenticate = true;
+            myHttpWebRequest.Headers.Add("Authorization", "Bearer " + TokenAPI.token);
+            myHttpWebRequest.Accept = "application/json";
+            myHttpWebRequest.ContentType = "application/json";
+            myHttpWebRequest.MediaType = "application/json";
+            myHttpWebRequest.Method = "GET";
+
+            var response = (HttpWebResponse)myHttpWebRequest.GetResponse();
+
+            var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
+
+            if (!string.IsNullOrWhiteSpace(responseString))
+                cepResponse = JsonConvert.DeserializeObject<CEPResponse>(HttpUtility.HtmlDecode(responseString));
+
+
+            if (!string.IsNullOrWhiteSpace(cepResponse.Uf))
+            {
+                Country country = _countryService.GetCountryByTwoLetterIsoCode("BR");
+
+                if (country != null && country.Id > 0)
+                {
+                    StateProvince stateProvince = _stateProvinceService.GetStateProvinceByAbbreviation(country.Id, cepResponse.Uf);
+
+                    if (stateProvince != null)
+                    {
+                        cepResponse.Uf = stateProvince.Id.ToString();
+                    }
+                }
+            }
+
+
+            return await Task.FromResult(cepResponse);
+        }
+
+
 
         private string GetEventName(Evento evento)
         {

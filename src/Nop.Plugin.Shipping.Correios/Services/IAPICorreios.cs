@@ -1,4 +1,5 @@
 ﻿using Nop.Core.Domain.Shipping;
+using Nop.Plugin.Shipping.Correios.Domain.CorreiosAPI.CEP;
 using Nop.Plugin.Shipping.Correios.Domain.CorreiosAPI.Prazo;
 using Nop.Plugin.Shipping.Correios.Domain.CorreiosAPI.Preco;
 using Nop.Services.Shipping.Tracking;
@@ -15,6 +16,8 @@ namespace Nop.Plugin.Shipping.Correios.Services
         Task<IList<PrazoResponse>> GetPrazoResponsesAsync(PrazosRequest prazoRequest);
 
         Task<IList<PrecoResponse>> GetPrecoResponsesAsync(PrecosRequest precoRequest);
+
+        Task<CEPResponse> GetCEPResponseAsync(string cep);
 
     }
 }

@@ -23,25 +23,18 @@ namespace Nop.Plugin.Shipping.Correios.Controllers
         private readonly CorreiosSettings _correiosSettings;
         private readonly ISettingService _settingService;
         private readonly ICustomerService _customerService;
-        private readonly ISigepWebPlpService _sigepWebPlpService;
+        private readonly IAPICorreios _apiCorreios;
 
         public ShippingCorreiosController(CorreiosSettings correiosSettings,
             ISettingService settingService,
-            ILocalizationService localizationService,
             ICustomerService customerService,
-            ILogger logger,
-            IStateProvinceService stateProvinceService,
-            ICountryService countryService,
-            IOrderService orderService,
-            IShipmentService shipmentService,
-            ISigepWebService sigepWebService,
-            ISigepWebPlpService sigepWebPlpService
+            IAPICorreios apiCorreios
             )
         {
             _customerService = customerService;
             _correiosSettings = correiosSettings;
             _settingService = settingService;
-            _sigepWebPlpService = sigepWebPlpService;
+            _apiCorreios = apiCorreios;
         }
 
         [AdminAuthorize]
@@ -250,8 +243,10 @@ namespace Nop.Plugin.Shipping.Correios.Controllers
             return Configure();
         }
 
-        
+
+        [HttpGet]
         [ValidateInput(false)]
+        
         public ActionResult GetAddresByCEP(string cep)
         {
             //this action method gets called via an ajax request
@@ -261,9 +256,9 @@ namespace Nop.Plugin.Shipping.Correios.Controllers
             if (cep.Trim().Length != 8)
                 throw new ArgumentException("cep");
 
-            wsAtendeClienteService.enderecoERP dados = _sigepWebPlpService.BuscarEndereco(cep);
+            var cepResponse = _apiCorreios.GetCEPResponseAsync(cep).GetAwaiter().GetResult();
 
-            return Json(dados, JsonRequestBehavior.AllowGet);
+            return Json(cepResponse, JsonRequestBehavior.AllowGet);
         }
         
        
